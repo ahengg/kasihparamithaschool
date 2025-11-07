@@ -129,6 +129,38 @@ h6,
     transform: rotate(-180deg);
 }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+        
+.navbar-brand .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+        
+.navbar-brand .logo-container img {
+    height: 35px;
+    width: auto;
+}
+
+.navbar-brand h1 {
+    font-size: 2rem !important;
+    margin: 0;
+}
+        
+@media (max-width: 768px) {
+    .navbar-brand .logo-container img {
+        height: 30px;
+    }
+            
+    .navbar-brand h1 {
+        font-size: 2rem !important;
+    }
+}
+
 @media (max-width: 991.98px) {
     .navbar .navbar-nav .nav-link  {
         margin-right: 0;
@@ -241,7 +273,7 @@ h6,
 
 /* background header tiap page*/
 .page-header {
-    background: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), url(../assetkps/New\ folder/Foto/JAV_0096.jpg) center center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), url(../assetkps/Home/JAV_0096.jpg) center center no-repeat;
     background-size: cover;
 }
 
