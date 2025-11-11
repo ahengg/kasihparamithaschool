@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<!--Program terus School-->
 <head>
     <meta charset="utf-8">
     <title>Kasih Paramitha School - School</title>
@@ -39,10 +37,14 @@
             font-size: 16px;
             font-family: "Open Sans", sans-serif;
         }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
     
-
 <body>
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
@@ -53,7 +55,6 @@
         </div>
         <!-- Spinner End -->
 
-
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
             <a href="index.html" class="navbar-brand">
@@ -61,7 +62,6 @@
                     <img src="assetkps/Logo/Logo Yayasan.png" alt="Vidya Parahita Foundation">
                     <img src="assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School">    
                 </div>
-                <h1 class="m-0 text-primary">Kasih Paramitha School</h1>
             </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
@@ -72,37 +72,36 @@
                     <a href="about.html" class="nav-item nav-link">About Us</a>
                     <a href="classes.html" class="nav-item nav-link">Gallery</a>
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Program</a>
+                        <a href="facility.html" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Program</a>
                         <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
-                            <a href="facility.html" class="dropdown-item active">School</a>
-                            <a href="team.html" class="dropdown-item">After School</a>
+                            <a href="#school-section" class="dropdown-item">School</a>
+                            <a href="#afterschool-section" class="dropdown-item">After School</a>
                         </div>
                     </div>
                     <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-                    <a href="kalenderakademik.html" class="nav-item nav-link">Kalender Akademik</a>
+                    <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
                 </div>
             </div>
         </nav>
         <!-- Navbar End -->
 
-
        <!-- Page Header End -->
         <div class="container-xxl py-5 page-header position-relative mb-5">
             <div class="container py-5">
-                <h1 class="display-2 text-white animated slideInDown mb-4">School</h1>
+                <h1 class="display-2 text-white animated slideInDown mb-4">Program</h1>
                 <nav aria-label="breadcrumb animated slideInDown">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page">School</li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">Program</li>
                     </ol>
                 </nav>
             </div>
         </div>
         <!-- Page Header End -->
 
-        <!-- Classes Start -->
-        <div class="container-xxl py-5">
+        <!-- School Start -->
+        <div id="school-section" class="container-xxl py-5">
             <div class="container">
                 <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
                     <h1 class="mb-3">School Classes</h1>
@@ -119,7 +118,7 @@
                                 <div class="d-flex align-items-center justify-content-between mb-4">
                                     <div class="d-flex align-items-center">
                                         <div>
-                                            <b class=".about-Kasih">Deskripsi KG A</b>
+                                            <b class=".about-Kasih">KG A class is designed to develop children's basic skills in reading, writing, counting, and social interaction through fun and educational activities. Students are encouraged to learn joyfully, fostering curiosity, confidence, and independence.</b>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +135,7 @@
                                 <div class="d-flex align-items-center justify-content-between mb-4">
                                     <div class="d-flex align-items-center">
                                         <div>
-                                            <b class=".about-Kasih">Deskripsi KG B</b>
+                                            <b class=".about-Kasih">KG B class prepares children for elementary school by focusing on academic readiness, discipline, and responsibility. Learning is conducted interactively through small projects, group activities, and experiential learning that promote teamwork and critical thinking.</b>
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +152,7 @@
                                 <div class="d-flex align-items-center justify-content-between mb-4">
                                     <div class="d-flex align-items-center">
                                         <div>
-                                            <b class=".about-Kasih">Deskripsi PG A</b>
+                                            <b class=".about-Kasih">PG A class focuses on stimulating children's sensory and motor development. Through play, music, and exploration, students begin to understand the world around them while enhancing communication and social skills in a warm and nurturing environment.</b>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +169,7 @@
                                 <div class="d-flex align-items-center justify-content-between mb-4">
                                     <div class="d-flex align-items-center">
                                         <div>
-                                            <b class=".about-Kasih">Deskripsi PG B</b>
+                                            <b class=".about-Kasih">PG B class helps children become more independent and confident. Through enjoyable and structured activities, students develop coordination, basic thinking skills, and positive habits to prepare them for the next stage of learning.</b>
                                         </div>
                                     </div>
                                 </div>
@@ -180,89 +179,125 @@
                 </div>
             </div>
         </div>
-        <!-- Classes End -->
+        <!-- School End -->
 
+        
+        <!-- After School Start -->
+        <div id="afterschool-section" class="container-xxl py-5">
+            <div class="container">
+                <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                    <h1 class="mb-3">After School Classes</h1>
+                    <b>Our after-school classes offer children the opportunity to explore their interests and talents beyond regular lessons. These programs help students develop creativity, confidence in a fun and supportive environment.</b>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="classes-item">
+                            <div class="bg-light rounded-circle w-75 mx-auto p-3">
+                                <img class="img-fluid rounded-circle" src="assetkps/Program/AfterSchool/RobotikClass.jpg" alt="Robotik Class">
+                            </div>
+                            <div class="bg-light rounded p-4 pt-5 mt-n5">
+                                <a class="d-block text-center h3 mt-3 mb-4" href="">Robotics</a>
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <b class=".about-Kasih">The Robotics program is designed to develop children's foundational skills in reading, writing, counting, and social interaction through fun and educational activities. Students are encouraged to learn joyfully while building curiosity, confidence, and independence through exploration of simple robotics technology.</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="classes-item">
+                            <div class="bg-light rounded-circle w-75 mx-auto p-3">
+                                <img class="img-fluid rounded-circle" src="assetkps/Program/AfterSchool/Outbond3.jpeg" alt="Outbond">
+                            </div>
+                            <div class="bg-light rounded p-4 pt-5 mt-n5">
+                                <a class="d-block text-center h3 mt-3 mb-4" href="">Outbond</a>
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <b class=".about-Kasih">The Outbound program prepares children for elementary school by focusing on academic readiness, discipline, and responsibility. Learning is conducted interactively through small group projects, team activities, and experiential learning that promotes teamwork and critical thinking skills in challenging outdoor environments.</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="classes-item">
+                            <div class="bg-light rounded-circle w-75 mx-auto p-3">
+                                <img class="img-fluid rounded-circle" src="assetkps/Program/AfterSchool/ParentsTeaching.jpg" alt="">
+                            </div>
+                            <div class="bg-light rounded p-4 pt-5 mt-n5">
+                                <a class="d-block text-center h3 mt-3 mb-4" href="">Parents Teaching</a>
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <b class=".about-Kasih">The Parents Teaching program focuses on stimulating children's sensory and motor development. Students begin to understand the world around them while enhancing communication and social skills in a warm and nurturing environment, with active parental involvement in the learning process.</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="classes-item">
+                            <div class="bg-light rounded-circle w-75 mx-auto p-3">
+                                <img class="img-fluid rounded-circle" src="assetkps/Program/AfterSchool/FieldTrip1.jpg" alt="">
+                            </div>
+                            <div class="bg-light rounded p-4 pt-5 mt-n5">
+                                <a class="d-block text-center h3 mt-3 mb-4" href="">Fieldtrip</a>
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <b class=".about-Kasih">The Fieldtrip program helps children become more independent and confident. Through enjoyable and structured activities, students develop coordination, basic thinking skills, and positive habits to prepare them for the next stage of learning while expanding their knowledge through educational visits to various interesting places.</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- untuk bagian Dancing start -->
+                     <!-- blm ada fotonya -->
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="classes-item">
+                            <div class="bg-light rounded-circle w-75 mx-auto p-3">
+                                <img class="img-fluid rounded-circle" src="assetkps/Program/AfterSchool/ParentsTeaching.jpg" alt="">
+                            </div>
+                            <div class="bg-light rounded p-4 pt-5 mt-n5">
+                                <a class="d-block text-center h3 mt-3 mb-4" href="">Dancing</a>
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <b class=".about-Kasih">The Dancing program encourages children to express themselves through movement and rhythm. Students develop physical coordination, balance, and body awareness while learning various dance styles. Through dance, children build confidence, enhance artistic expression, and improve social interaction in a fun and supportive environment.</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- untuk bagian Dancing end -->
+                </div>
+            </div>
+        </div>
+        <!-- After School End -->
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5">
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <h3 class="text-white mb-4">Get In Touch</h3>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h3 class="text-white mb-4">Quick Links</h3>
-                        <a class="btn btn-link text-white-50" href="">About Us</a>
-                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                        <a class="btn btn-link text-white-50" href="">Our Services</a>
-                        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h3 class="text-white mb-4">Photo Gallery</h3>
-                        <div class="row g-2 pt-2">
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/classes-1.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/classes-2.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/classes-3.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/classes-4.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/classes-5.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/classes-6.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h3 class="text-white mb-4">Newsletter</h3>
-                        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                        <div class="position-relative mx-auto" style="max-width: 400px;">
-                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="container">
                 <div class="copyright">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                             &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved. 
-							
-							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
 							Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                        </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            <div class="footer-menu">
-                                <a href="">Home</a>
-                                <a href="">Cookies</a>
-                                <a href="">Help</a>
-                                <a href="">FQAs</a>
-                            </div>
+                            <br>Distributed By: <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Footer End -->
-
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
