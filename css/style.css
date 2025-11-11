@@ -391,8 +391,8 @@ h6,
 /*** Team ***/
 .team-item .team-text {
     position: absolute;
-    width: 250px;
-    height: 250px;
+    width: 180px;
+    height: 180px;
     bottom: 0;
     right: 0;
     display: flex;
@@ -400,9 +400,18 @@ h6,
     justify-content: center;
     flex-direction: column;
     background: #FFFFFF;
-    border: 17px solid var(--light);
-    border-radius: 250px;
+    border: 12px solid var(--light);
+    border-radius: 180px;
     transition: .5s;
+}
+
+.team-item .team-text h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.team-item .team-text h6 {
+    font-size: 13px;
 }
 
 .team-item:hover .team-text {
