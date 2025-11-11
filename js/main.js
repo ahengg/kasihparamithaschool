@@ -76,6 +76,46 @@
             }
         }
     });
+
+
+    // Smooth scroll to section with hash in URL
+    $(window).on('load', function() {
+        if (window.location.hash) {
+            setTimeout(function() {
+                var target = $(window.location.hash);
+                if (target.length) {
+                    var offset = 100; // Offset untuk navbar sticky
+                    $('html, body').animate({
+                        scrollTop: target.offset().top - offset
+                    }, 1000, 'easeInOutExpo');
+                }
+            }, 500);
+        }
+    });
+
+
+    // Smooth scroll untuk link dengan hash
+    $('a[href*="#"]').on('click', function(e) {
+        var hash = this.hash;
+        
+        // Cek apakah hash ada dan bukan untuk collapse/dropdown
+        if (hash && !$(this).attr('data-bs-toggle')) {
+            var target = $(hash);
+            
+            if (target.length) {
+                e.preventDefault();
+                var offset = 100; // Offset untuk navbar sticky
+                
+                $('html, body').animate({
+                    scrollTop: target.offset().top - offset
+                }, 1000, 'easeInOutExpo');
+                
+                // Update URL tanpa jump
+                if (history.pushState) {
+                    history.pushState(null, null, hash);
+                }
+            }
+        }
+    });
     
 })(jQuery);
-
