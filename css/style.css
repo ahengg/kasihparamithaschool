@@ -1,8 +1,10 @@
 /********** Template CSS **********/
 :root {
-    --primary: #FE5D37;
-    --light: #FFF5F3;
-    --dark: #103741;
+    --primary: #5B9BD5;
+    --light: #FFF9E3;
+    --dark: #8B7355;
+    --text-color: #8B7355;
+    --accent: #E8D84A;
 }
 
 .back-to-top {
@@ -11,6 +13,52 @@
     right: 45px;
     bottom: 45px;
     z-index: 99;
+    width: 45px;
+    height: 45px;
+    background-color: #5B9BD5;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(91, 155, 213, 0.3);
+}
+
+.back-to-top:hover {
+    background-color: #4A8AC4;
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(91, 155, 213, 0.5);
+}
+
+/* Tambahan untuk mempertahankan warna biru saat diklik */
+.back-to-top:active,
+.back-to-top:focus,
+.back-to-top:focus-visible {
+    background-color: #5B9BD5 !important;
+    color: #FFFFFF !important;
+    outline: none !important;
+    box-shadow: 0 2px 10px rgba(91, 155, 213, 0.3) !important;
+}
+
+.back-to-top i {
+    color: #FFFFFF;
+}
+
+/*** Global Text Color ***/
+body {
+    color: #8B7355;
+    background-color: #FFF9E3 !important;
+}
+
+.container-xxl.bg-white {
+    background-color: #FFFFFF !important;
+}
+
+p, .about-Kasih, b, .facility-text, .facility-text * {
+    color: #8B7355 !important;
 }
 
 
@@ -83,6 +131,7 @@ h4,
 .display-6 {
     font-family: 'Lobster Two', cursive;
     font-weight: 700;
+    color: #8B7355;
 }
 
 h5,
@@ -90,6 +139,7 @@ h6,
 .h5,
 .h6 {
     font-weight: 600;
+    color: #8B7355;
 }
 
 .font-secondary {
@@ -192,6 +242,11 @@ h6,
     }
 }
 
+.dropdown-item:hover {
+    background-color: #5B9BD5 !important;
+    color: #FFFFFF !important;
+}
+
 
 /*** Header ***/
 .header-carousel::before,
@@ -271,7 +326,6 @@ h6,
     border-color: var(--primary);
 }
 
-/* background header tiap page*/
 .page-header {
     background: linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .2)), url(../assetkps/Home/JAV_0096.jpg) center center no-repeat;
     background-size: cover;
@@ -279,6 +333,14 @@ h6,
 
 .breadcrumb-item + .breadcrumb-item::before {
     color: rgba(255, 255, 255, .5);
+}
+
+.breadcrumb-item a {
+    color: #E8D84A !important;
+}
+
+.breadcrumb-item a:hover {
+    color: #F0E060 !important;
 }
 
 
@@ -371,6 +433,8 @@ h6,
 /*** About ***/
 .about-img img {
     transition: .5s;
+    border: 15px solid #FFF9E3;
+    border-radius: 50%;
 }
 
 .about-img img:hover {
@@ -387,6 +451,10 @@ h6,
     margin-top: -10px;
 }
 
+.classes-item .bg-light {
+    background-color: #FFF9E3 !important;
+}
+
 
 /*** Team ***/
 .team-item .team-text {
@@ -400,9 +468,9 @@ h6,
     justify-content: center;
     flex-direction: column;
     background: #FFFFFF;
-    border: 12px solid var(--light);
+    border: 12px solid #FFF9E3 !important;
     border-radius: 180px;
-    transition: .5s;
+    transition: all 0.5s ease;
 }
 
 .team-item .team-text h3 {
@@ -415,7 +483,7 @@ h6,
 }
 
 .team-item:hover .team-text {
-    border-color: var(--primary);
+    border-color: #5B9BD5 !important;
 }
 
 
@@ -433,7 +501,7 @@ h6,
 }
 
 .testimonial-carousel .testimonial-item .border {
-    border: 1px dashed rgba(0, 185, 142, .3) !important;
+    border: 1px dashed rgba(91, 155, 213, .3) !important;
 }
 
 .testimonial-carousel .owl-nav {
@@ -465,7 +533,7 @@ h6,
 
 .testimonial-carousel .owl-nav .owl-prev:hover,
 .testimonial-carousel .owl-nav .owl-next:hover {
-    background: var(--dark);
+    background: var(--accent);
 }
 
 
@@ -520,7 +588,7 @@ h6,
 .footer .copyright {
     padding: 25px 0;
     font-size: 15px;
-    border-top: 1px solid rgba(256, 256, 256, .1);
+    border-top: 1px solid rgba(255, 255, 255, .1);
 }
 
 .footer .copyright a {
@@ -542,4 +610,24 @@ h6,
     margin-right: 0;
     padding-right: 0;
     border-right: none;
+}
+
+/*** Contact Us section ***/
+.container-xxl .bg-light.rounded {
+    background-color: #FFF9E3 !important;
+}
+
+.bg-light.rounded .bg-light.rounded-circle {
+    background-color: #FFF9E3 !important;
+}
+
+.bg-light.rounded .text-primary {
+    color: #E8D84A !important;
+}
+
+.bg-light.rounded i.fa-map-marker-alt,
+.bg-light.rounded i.fa-envelope,
+.bg-light.rounded i.fa-phone-alt,
+.bg-light.rounded i.fa-instagram {
+    color: #E8D84A !important;
 }
