@@ -1,7 +1,7 @@
 /********** Template CSS **********/
 :root {
     --primary: #5B9BD5;
-    --light: #FFF9E3;
+    --light: #FFE94E;
     --dark: #8B7355;
     --text-color: #8B7355;
     --accent: #E8D84A;
@@ -50,7 +50,7 @@
 /*** Global Text Color ***/
 body {
     color: #8B7355;
-    background-color: #FFF9E3 !important;
+    background-color: #FFE94E !important;
 }
 
 .container-xxl.bg-white {
@@ -433,7 +433,7 @@ h6,
 /*** About ***/
 .about-img img {
     transition: .5s;
-    border: 15px solid #FFF9E3;
+    border: 15px solid #FFE94E;
     border-radius: 50%;
 }
 
@@ -452,7 +452,7 @@ h6,
 }
 
 .classes-item .bg-light {
-    background-color: #FFF9E3 !important;
+    background-color: #FFE94E !important;
 }
 
 
@@ -468,7 +468,7 @@ h6,
     justify-content: center;
     flex-direction: column;
     background: #FFFFFF;
-    border: 12px solid #FFF9E3 !important;
+    border: 12px solid #FFE94E !important;
     border-radius: 180px;
     transition: all 0.5s ease;
 }
@@ -614,20 +614,20 @@ h6,
 
 /*** Contact Us section ***/
 .container-xxl .bg-light.rounded {
-    background-color: #FFF9E3 !important;
+    background-color: #FFE94E !important;
 }
 
 .bg-light.rounded .bg-light.rounded-circle {
-    background-color: #FFF9E3 !important;
+    background-color: #FFE94E !important;
 }
 
 .bg-light.rounded .text-primary {
-    color: #E8D84A !important;
+    color: #ffe600 !important;
 }
 
 .bg-light.rounded i.fa-map-marker-alt,
 .bg-light.rounded i.fa-envelope,
 .bg-light.rounded i.fa-phone-alt,
 .bg-light.rounded i.fa-instagram {
-    color: #E8D84A !important;
+    color: #ffffff !important;
 }
