@@ -1,10 +1,10 @@
 /********** Template CSS **********/
 :root {
     --primary: #5B9BD5;
-    --light: #FFE94E;
+    --light: #fcc203;
     --dark: #8B7355;
     --text-color: #8B7355;
-    --accent: #E8D84A;
+    --accent: #FCC203;
 }
 
 .back-to-top {
@@ -50,7 +50,7 @@
 /*** Global Text Color ***/
 body {
     color: #8B7355;
-    background-color: #FFE94E !important;
+    background-color: #FCC203 !important;
 }
 
 .container-xxl.bg-white {
@@ -336,11 +336,11 @@ h6,
 }
 
 .breadcrumb-item a {
-    color: #E8D84A !important;
+    color:#fcc203!important;
 }
 
 .breadcrumb-item a:hover {
-    color: #F0E060 !important;
+    color: #fcc203 !important;
 }
 
 
@@ -452,7 +452,7 @@ h6,
 }
 
 .classes-item .bg-light {
-    background-color: #FFE94E !important;
+    background-color:#fcc203 !important;
 }
 
 
@@ -468,7 +468,7 @@ h6,
     justify-content: center;
     flex-direction: column;
     background: #FFFFFF;
-    border: 12px solid #FFE94E !important;
+    border: 12px solid #fcc203!important;
     border-radius: 180px;
     transition: all 0.5s ease;
 }
@@ -614,15 +614,15 @@ h6,
 
 /*** Contact Us section ***/
 .container-xxl .bg-light.rounded {
-    background-color: #FFE94E !important;
+    background-color: #fcc203!important;
 }
 
 .bg-light.rounded .bg-light.rounded-circle {
-    background-color: #FFE94E !important;
+    background-color: #fcc203 !important;
 }
 
 .bg-light.rounded .text-primary {
-    color: #ffe600 !important;
+    color: #fcc203 !important;
 }
 
 .bg-light.rounded i.fa-map-marker-alt,

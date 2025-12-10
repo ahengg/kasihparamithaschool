@@ -28,13 +28,29 @@
     <link href="css/fonts.css" rel="stylesheet">
 
     <style>
+        /* mematikan smooth scroll - agar instant */
         html {
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
         }
         
-        /* Fixed height buat card biar rata */
+        /* Fixed height buat card biar rata pas scroll */
         .classes-item .bg-light.rounded.p-4 {
             min-height: 280px;
+        }
+
+        /* Scroll offset untuk navbar - INSTANT tanpa smooth */
+        #school-section,
+        #afterschool-section {
+            scroll-margin-top: 80px;
+            padding-top: 0.5rem !important;
+        }
+
+        /* Hilangkan animation hanya untuk heading section(biar langsung keliatan) */
+        #school-section > .container > .text-center.mx-auto,
+        #afterschool-section > .container > .text-center.mx-auto {
+            animation: none !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
     </style>
 </head>
