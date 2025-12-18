@@ -271,6 +271,50 @@ h6,
     background: url(../img/bg-header-bottom.png) center center repeat-x;
 }
 
+/* MODIFIKASI BARU: Memperkecil tinggi carousel untuk desktop */
+.header-carousel .owl-carousel-item {
+    position: relative;
+    min-height: 520px;
+    max-height: 520px;
+    overflow: hidden;
+}
+
+.header-carousel .owl-carousel-item img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Sesuaikan ukuran teks untuk carousel yang lebih kecil */
+.header-carousel .display-2 {
+    font-size: 2.8rem !important;
+}
+
+.header-carousel .fs-5 {
+    font-size: 1rem !important;
+}
+
+.header-carousel .mb-4 {
+    margin-bottom: 1.2rem !important;
+}
+
+/* Untuk tablet */
+@media (max-width: 992px) {
+    .header-carousel .owl-carousel-item {
+        min-height: 450px;
+        max-height: 450px;
+    }
+    
+    .header-carousel .owl-carousel-item img {
+        height: 450px;
+    }
+    
+    .header-carousel .display-2 {
+        font-size: 2.2rem !important;
+    }
+}
+
 @media (max-width: 768px) {
     .header-carousel .owl-carousel-item {
         position: relative;
@@ -435,10 +479,12 @@ h6,
     transition: .5s;
     border: 15px solid #FFE94E;
     border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
 }
 
 .about-img img:hover {
-    background: var(--primary) !important;
+    border-color: #5B9BD5;
 }
 
 

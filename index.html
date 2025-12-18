@@ -27,6 +27,160 @@
     
     <!-- Custom Fonts Stylesheet - IMPORTANT: Load this AFTER style.css -->
     <link href="css/fonts.css" rel="stylesheet">
+
+    <style>
+        .vision-mission-section {
+            padding: 80px 0;
+        }
+
+        .overlay-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 400px;
+        }
+
+        .overlay-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .overlay-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 40%;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.3s ease;
+        }
+
+        .overlay-card:hover .overlay-background {
+            transform: scale(1.05);
+        }
+
+        /* Vision background - ganti dengan gambar Anda */
+        .vision-bg {
+            background-image: url('assetkps/Icon/Icon Map-06.png');
+            background-color: #FFA726; 
+        }
+
+        /* Mission background - ganti dengan gambar Anda */
+        .mission-bg {
+            background-image: url('assetkps/Icon/Icon Map-07.png');
+            background-color: #56CCF2;
+        }
+
+        .overlay-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 30px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #FFFFFF !important;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .overlay-title {
+            color: #FFFFFF !important;
+        }
+
+        .overlay-text {
+            color: #FFFFFF !important;
+        }
+
+        .overlay-card:hover .overlay-content {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .icon-container {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+        }
+
+        .icon-container img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .overlay-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .overlay-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .section-intro {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            text-align: center;
+        }
+
+        .section-intro h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #8B7355;
+        }
+
+        .section-intro p {
+            font-size: 1.1rem;
+            color: #8B7355;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .overlay-card {
+                height: 350px;
+                margin-bottom: 30px;
+            }
+
+            .overlay-title {
+                font-size: 1.5rem;
+            }
+
+            .overlay-text {
+                font-size: 0.9rem;
+            }
+
+            .icon-container {
+                width: 80px;
+                height: 80px;
+            }
+
+            .icon-container img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .overlay-background {
+                background-size: 50%;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -118,44 +272,42 @@
         </div>
         <!--About Kasih Paramitha School end-->
 
-        <!-- Visi Misi Start -->
-        <div class="container-xxl py-5">
+        <!-- Vision & Mission Start -->
+        <div class="vision-mission-section">
             <div class="container">
-                <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                    <h1 class="mb-3">Vision & Mission</h1>
+                <!-- Section Introduction -->
+                <div class="section-intro wow fadeInUp" data-wow-delay="0.1s">
+                    <h1>Vision & Mission</h1>
                     <p><b>We aim to become an outstanding educational institution that shapes student's character, knowledge, and creativity through quality learning and meaningful experiences, preparing them to face the challenges of the future with confidence and integrity.</b></p>
                 </div>
-                <div class="row g-4 justify-content-center">
-                    <div class="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="facility-item">
-                            <div class="facility-icon bg-primary">
-                                <span class="bg-primary"></span>
-                                <i class="fa fa-lightbulb fa-3x text-primary"></i>
-                                <span class="bg-primary"></span>
-                            </div>
-                            <div class="facility-text bg-primary">
-                                <h3 class="text-primary mb-3">Vision</h3>
-                                <b class="mb-0">We value development of every child's personal attribute to have confident, critical, skillful and thoughtful generation in becoming a part of a future global citizenship.</b>
+
+                <!-- Overlay Cards -->
+                <div class="row g-4">
+                    <!-- Card vision -->
+                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="overlay-card">
+                            <div class="overlay-background vision-bg"></div>
+                            <div class="overlay-content">
+                                <h3 class="overlay-title">Vision</h3>
+                                <p class="overlay-text">We value development of every child's personal attribute to have confident, critical, skillful and thoughtful generation in becoming a part of a future global citizenship.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                        <div class="facility-item">
-                            <div class="facility-icon bg-success">
-                                <span class="bg-success"></span>
-                                <i class="fa fa-handshake fa-3x text-success"></i>
-                                <span class="bg-success"></span>
-                            </div>
-                            <div class="facility-text bg-success">
-                                <h3 class="text-success mb-3">Mission</h3>
-                                <b class="mb-0">We will empower every student to develop their fullest potential, critical thinking, character building, equipped with communicative and technology skills by engaging them in a lifelong learning process to face a changing global community.</b>
+
+                    <!-- Card mission -->
+                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="overlay-card">
+                            <div class="overlay-background mission-bg"></div>
+                            <div class="overlay-content">
+                                <h3 class="overlay-title">Mission</h3>
+                                <p class="overlay-text">We will empower every student to develop their fullest potential, critical thinking, character building, equipped with communicative and technology skills by engaging them in a lifelong learning process to face a changing global community.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Visi Misi End -->
+        <!-- Vision & Mission End -->
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
