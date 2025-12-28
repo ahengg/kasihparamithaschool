@@ -52,6 +52,68 @@
             visibility: visible !important;
             opacity: 1 !important;
         }
+
+        /* Title dengan background icon */
+        .section-title-with-bg {
+            position: relative;
+        }
+
+        /* Icon background - kiri */
+        .bg-icon.left {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 0;
+            opacity: 0.25;
+        }
+
+        /* Icon background - kanan */
+        .bg-icon.right {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 0;
+            opacity: 0.25;
+        }
+
+        .bg-icon img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+        }
+
+        .section-title-with-bg h1 {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .bg-icon img {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .bg-icon img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .bg-icon img {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .bg-icon {
+                opacity: 0.1;
+            }
+        }
     </style>
 </head>
     
@@ -114,8 +176,14 @@
         <!-- School Start -->
         <div id="school-section" class="container-xxl py-5">
             <div class="container">
-                <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <div class="text-center mx-auto mb-5 wow fadeInUp section-title-with-bg" data-wow-delay="0.1s" style="max-width: 600px;">
+                    <div class="bg-icon left">
+                        <img src="assetkps/Icon/ICON-16.png" alt="School Icon Left">
+                    </div>
                     <h1 class="mb-3">School Classes</h1>
+                    <div class="bg-icon right">
+                        <img src="assetkps/Icon/ICON-17.png" alt="School Icon Right">
+                    </div>
                     <p><b>Our school variety of fun and interactive classes designed to match every child's age and learning stage. Through engaging activities, creative play, and guided lessons, children develop essential academic and social skills in a joyful and supportive environtment.</b></p>
                 </div>
                 <!-- Baris Pertama - Rata Kiri -->
@@ -199,8 +267,14 @@
         <!-- After School Start -->
         <div id="afterschool-section" class="container-xxl py-5">
             <div class="container">
-                <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <div class="text-center mx-auto mb-5 wow fadeInUp section-title-with-bg" data-wow-delay="0.1s" style="max-width: 600px;">
+                    <div class="bg-icon left">
+                        <img src="assetkps/Icon/New Normal-07.png" alt="After School Icon Left">
+                    </div>
                     <h1 class="mb-3">After School Classes</h1>
+                    <div class="bg-icon right">
+                        <img src="assetkps/Icon/New Normal-08.png" alt="After School Icon Right">
+                    </div>
                     <p><b>Our after-school classes offer children the opportunity to explore their interests and talents beyond regular lessons. These programs help students develop creativity, confidence in a fun and supportive environment.</b></p>
                 </div>
                 <!-- Baris Pertama -->
