@@ -1,684 +1,939 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Kasih Paramitha School - Gallery</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-    
+    <link href="img/favicon.ico" rel="icon" />
+
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
 
     <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-    
+    <link href="css/style.css" rel="stylesheet" />
+
     <!-- Custom Fonts Stylesheet -->
-    <link href="css/fonts.css" rel="stylesheet">
-    
+    <link href="css/fonts.css" rel="stylesheet" />
+
     <style>
-        /* Custom style untuk gallery */
-        .gallery-area {
-            padding: 50px 0;
-        }
+      /* Custom style untuk gallery */
+      .gallery-area {
+        padding: 50px 0;
+      }
 
+      .gallery-area .row {
+        row-gap: 40px;
+      }
+
+      .single-gallery {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-bottom: 0;
+      }
+
+      .single-gallery:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .gallery-img {
+        transition: transform 0.3s ease;
+        position: relative;
+      }
+
+      .single-gallery:hover .gallery-img {
+        transform: scale(1.05);
+      }
+
+      /* Video play icon overlay */
+      .video-play-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        background: rgba(0, 123, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        color: white;
+        transition: all 0.3s ease;
+        z-index: 2;
+      }
+
+      .single-gallery:hover .video-play-icon {
+        background: white;
+        color: #007bff;
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      .thumb-content-box {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        padding: 20px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+      }
+
+      .single-gallery:hover .thumb-content-box {
+        transform: translateY(0);
+      }
+
+      .thumb-content h3 {
+        color: white;
+        margin: 0;
+        font-size: 18px;
+        font-family: "Montserrat", sans-serif !important;
+        font-weight: 600;
+      }
+
+      /* Lightbox Style */
+      .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        animation: fadeIn 0.3s;
+      }
+
+      .lightbox.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .lightbox-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        animation: zoomIn 0.3s;
+      }
+
+      .lightbox-content img {
+        width: 100%;
+        height: auto;
+        max-height: 85vh;
+        object-fit: contain;
+        border-radius: 8px;
+      }
+
+      .lightbox-content video {
+        width: 100%;
+        height: auto;
+        max-height: 85vh;
+        max-width: 100%;
+        border-radius: 8px;
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        color: #fff;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10000;
+        transition: 0.3s;
+      }
+
+      .lightbox-close:hover {
+        color: #ff0000;
+      }
+
+      .lightbox-prev,
+      .lightbox-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        padding: 20px;
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        user-select: none;
+      }
+
+      .lightbox-prev:hover,
+      .lightbox-next:hover {
+        background-color: rgba(0, 123, 255, 0.8);
+      }
+
+      .lightbox-prev {
+        left: 30px;
+      }
+
+      .lightbox-next {
+        right: 30px;
+      }
+
+      .lightbox-caption {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 18px;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-family: "Montserrat", sans-serif !important;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes zoomIn {
+        from {
+          transform: scale(0.8);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+
+      @media (max-width: 768px) {
         .gallery-area .row {
-            row-gap: 40px;
+          row-gap: 30px;
         }
-
-        .single-gallery {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            margin-bottom: 0;
-        }
-        
-        .single-gallery:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        
-        .gallery-img {
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-        
-        .single-gallery:hover .gallery-img {
-            transform: scale(1.05);
-        }
-
-        /* Video play icon overlay */
-        .video-play-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: rgba(0, 123, 255, 0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            color: white;
-            transition: all 0.3s ease;
-            z-index: 2;
-        }
-
-        .single-gallery:hover .video-play-icon {
-            background: white;
-            color: #007bff;
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-        
-        .thumb-content-box {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            padding: 20px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .single-gallery:hover .thumb-content-box {
-            transform: translateY(0);
-        }
-        
-        .thumb-content h3 {
-            color: white;
-            margin: 0;
-            font-size: 18px;
-            font-family: 'Montserrat', sans-serif !important;
-            font-weight: 600;
-        }
-
-        /* Lightbox Style */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            animation: fadeIn 0.3s;
-        }
-
-        .lightbox.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .lightbox-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            animation: zoomIn 0.3s;
-        }
-
-        .lightbox-content img {
-            width: 100%;
-            height: auto;
-            max-height: 85vh;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-
-        .lightbox-content video {
-            width: 100%;
-            height: auto;
-            max-height: 85vh;
-            max-width: 100%;
-            border-radius: 8px;
-        }
-
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 35px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 10000;
-            transition: 0.3s;
-        }
-
-        .lightbox-close:hover {
-            color: #ff0000;
-        }
-
-        .lightbox-prev, .lightbox-next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            padding: 20px;
-            cursor: pointer;
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-            user-select: none;
-        }
-
-        .lightbox-prev:hover, .lightbox-next:hover {
-            background-color: rgba(0, 123, 255, 0.8);
-        }
-
-        .lightbox-prev {
-            left: 30px;
-        }
-
+        .lightbox-prev,
         .lightbox-next {
-            right: 30px;
+          width: 50px;
+          height: 50px;
+          font-size: 30px;
         }
-
-        .lightbox-caption {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: white;
-            font-size: 18px;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-family: 'Montserrat', sans-serif !important;
+        .lightbox-prev {
+          left: 10px;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .lightbox-next {
+          right: 10px;
         }
-
-        @keyframes zoomIn {
-            from { transform: scale(0.8); }
-            to { transform: scale(1); }
+        .lightbox-close {
+          top: 10px;
+          right: 15px;
+          font-size: 35px;
         }
-
-        @media (max-width: 768px) {
-            .gallery-area .row {
-                row-gap: 30px;
-            }
-            .lightbox-prev, .lightbox-next {
-                width: 50px;
-                height: 50px;
-                font-size: 30px;
-            }
-            .lightbox-prev { left: 10px; }
-            .lightbox-next { right: 10px; }
-            .lightbox-close {
-                top: 10px;
-                right: 15px;
-                font-size: 35px;
-            }
-            .video-play-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-            }
+        .video-play-icon {
+          width: 60px;
+          height: 60px;
+          font-size: 24px;
         }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+      <!-- Spinner Start -->
+      <div
+        id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
+      >
+        <div
+          class="spinner-border text-primary"
+          style="width: 3rem; height: 3rem"
+          role="status"
+        >
+          <span class="sr-only">Loading...</span>
         </div>
-        <!-- Spinner End -->
+      </div>
+      <!-- Spinner End -->
 
-        <!-- Navbar Start -->
-        <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
-            <a href="index.html" class="navbar-brand">
-                <div class="logo-container">
-                    <img src="assetkps/Logo/Logo Yayasan.png" alt="Vidya Parahita Foundation">
-                    <img src="assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School">    
+      <!-- Navbar Start -->
+      <nav
+        class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0"
+      >
+        <a href="index.html" class="navbar-brand">
+          <div class="logo-container">
+            <img
+              src="assetkps/Logo/Logo Yayasan.png"
+              alt="Vidya Parahita Foundation"
+            />
+            <img
+              src="assetkps/Logo/LogoKasihParamitha.png"
+              alt="Kasih Paramitha School"
+            />
+          </div>
+        </a>
+        <button
+          type="button"
+          class="navbar-toggler"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+            <a href="about.html" class="nav-item nav-link">About Us</a>
+            <a href="classes.html" class="nav-item nav-link active">Gallery</a>
+            <div class="nav-item dropdown">
+              <a
+                href="facility.html"
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                >Program</a
+              >
+              <div
+                class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
+              >
+                <a href="facility.html#school-section" class="dropdown-item"
+                  >School</a
+                >
+                <a
+                  href="facility.html#afterschool-section"
+                  class="dropdown-item"
+                  >After School</a
+                >
+              </div>
+            </div>
+            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="kalenderakademik.html" class="nav-item nav-link"
+              >Academic Calendar</a
+            >
+            <a href="testimonial.html" class="nav-item nav-link">Testimonies</a>
+          </div>
+        </div>
+      </nav>
+      <!-- Navbar End -->
+
+      <!-- Page Header Start -->
+      <div class="container-xxl py-5 page-header position-relative mb-5">
+        <div class="container py-5">
+          <h1 class="display-2 text-white animated slideInDown mb-4">
+            Gallery
+          </h1>
+          <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Pages</a></li>
+              <li class="breadcrumb-item text-white active" aria-current="page">
+                Gallery
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <!-- Page Header End -->
+
+      <!-- Gallery Start -->
+      <div class="container-xxl py-5">
+        <div class="container">
+          <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+              <h1 class="mb-3">Gallery</h1>
+              <p>
+                <b
+                  >Explore daily life at Kasih Paramitha School through our
+                  photo collection! Discover documentation of various activities
+                  such as field trips, special day celebrations, and exciting
+                  learning activities. Every moment is designed to develop
+                  students character and knowledge holistically.</b
+                >
+              </p>
+            </div>
+            <!-- icon samping gallery -->
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+              <div class="text-center">
+                <img
+                  class="img-fluid kps-illustration"
+                  src="assetkps/Icon/ICON-13.png"
+                  alt="icon KPS gallery"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Gallery End -->
+
+      <!-- Photo Area Start -->
+      <div class="gallery-area">
+        <div class="container">
+          <div class="row">
+            <!-- Video 01 -->
+            <div class="col-lg-8 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(0)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/MothersAndEndYearClb/ThumbnailVideo/MotherandEndYearThumbnail.png');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                >
+                  <div class="video-play-icon">
+                    <i class="fas fa-play"></i>
+                  </div>
                 </div>
-            </a>
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="about.html" class="nav-item nav-link">About Us</a>
-                    <a href="classes.html" class="nav-item nav-link active">Gallery</a>
-                    <div class="nav-item dropdown">
-                        <a href="facility.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Program</a>
-                        <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
-                            <a href="facility.html#school-section" class="dropdown-item">School</a>
-                            <a href="facility.html#afterschool-section" class="dropdown-item">After School</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-                    <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
-                    <a href ="testimonial.html" class="nav-item nav-link">Testimonies</a>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Mothers Day and End Year Celebration</h3>
+                  </div>
                 </div>
+              </div>
             </div>
-        </nav>
-        <!-- Navbar End -->
 
-        <!-- Page Header Start -->
-        <div class="container-xxl py-5 page-header position-relative mb-5">
-            <div class="container py-5">
-                <h1 class="display-2 text-white animated slideInDown mb-4">Gallery</h1>
-                <nav aria-label="breadcrumb animated slideInDown">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page">Gallery</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-        <!-- Page Header End -->
-
-        <!-- Gallery Start -->
-         <div class="container-xxl py-5">
-            <div class="container">
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <h1 class="mb-3">Gallery</h1>
-                        <p><b>Explore daily life at Kasih Paramitha School through our photo collection! Discover documentation of various activities such as field trips, special day celebrations, and exciting learning activities. Every moment is designed to develop students character and knowledge holistically.</b></p>
-                    </div>
-                    <!-- icon samping gallery -->
-                    <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                        <div class="text-center">
-                            <img class="img-fluid" src="assetkps/Icon/ICON-13.png" alt="icon KPS gallery" style="max-width: 400px;">
-                        </div>
-                    </div>
+            <!-- Video 02 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(1)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/MothersAndEndYearClb/ThumbnailVideo/ArtClassThumbnail.png');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                >
+                  <div class="video-play-icon">
+                    <i class="fas fa-play"></i>
+                  </div>
                 </div>
-            </div>
-        </div>
-        <!-- Gallery End -->
-
-        <!-- Photo Area Start -->
-        <div class="gallery-area">
-            <div class="container">
-                <div class="row">
-                    <!-- Video 01 -->
-                    <div class="col-lg-8 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(0)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/MothersAndEndYearClb/ThumbnailVideo/MotherandEndYearThumbnail.png'); min-height: 400px; background-size: cover; background-position: center;">
-                                <div class="video-play-icon">
-                                    <i class="fas fa-play"></i>
-                                </div>
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Mothers Day and End Year Celebration</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Video 02 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(1)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/MothersAndEndYearClb/ThumbnailVideo/ArtClassThumbnail.png'); min-height: 400px; background-size: cover; background-position: center;">
-                                <div class="video-play-icon">
-                                    <i class="fas fa-play"></i>
-                                </div>
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>KPS Art Class with Tarakan Art</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 01 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(2)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Program/AfterSchool/FieldTrip1.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Field Trip</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 02 -->
-                    <div class="col-lg-8 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(3)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/CNY/CNYRame1.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Chinese New Year</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 03 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(4)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/CNY/ChineseNewYear2.jpeg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Chinese New Year</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 04 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(5)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/EndYearCelabration/EndYear2.jpeg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>End Year Celebration</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 05 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(6)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/EndYearCelabration/EndYear1.jpeg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>End Year Celebration</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 06 -->
-                    <div class="col-lg-8 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(7)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/FieldTrip/FieldTripLanud1.jpeg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Field Trip</h3>
-                                </div>
-                            </div>
-                        </div>  
-                    </div>
-
-                    <!-- Image 07 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(8)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/FieldTrip/FieldTripPostOffice.jpeg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Field Trip</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 08 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(9)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/HeroesDay/HeroesDay1.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Heroes Day</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 09 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(10)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/EidAlFitr/EidAlFitr2.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Eid Al Fitr</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 10 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(11)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/EidAlFitr/EidAlFitrRame1.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Eid Al Fitr</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 11 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(12)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/IndependenceDay/IndependenceDay1.jpeg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Independence Day</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 12 -->
-                    <div class="col-lg-8 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(13)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/IndependenceDay/IndependenceDay1Terbaru.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Independence Day</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 13 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(14)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/FieldTrip/FieldTripPizzaHut.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Field Trip</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 14 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(15)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/CharityDay/CharityDay1.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Charity Day</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 15 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(16)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/CookingClass/CookingClass1.png'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Cooking Class</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 16 -->
-                    <div class="col-lg-8 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(17)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/SchoolActivitiesFromDINKES/Dinkes1.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>School Activities from Dinas Kesehatan</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 17-->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(18)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/SenamBersama/SenamBersama1.jpeg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Senam Bersama</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 18 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(19)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/FieldTrip/FieldTripBasarnas.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Field Trip</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 19 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(20)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/MembuatBunga/MembuatBungaPGA.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Membuat Bunga Kelas PG A</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 20 -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(21)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/FingerPrintPGA/FingerPrintKelasPGA.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Finger Print Kelas PG A</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 21 -->
-                    <div class="col-lg-8 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(22)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/HariBatikNasional/HariBatikNasional.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Hari Batik Nasional</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Image 22-->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-gallery" onclick="openLightbox(23)">
-                            <div class="gallery-img" style="background-image: url('assetkps/Gallery/PenyuluhanPuskesmas/PenyuluhanDariPuskesmas.jpg'); min-height: 400px; background-size: cover; background-position: center;">
-                            </div>
-                            <div class="thumb-content-box">
-                                <div class="thumb-content">
-                                    <h3>Penyuluhan Dari Puskesmas</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>KPS Art Class with Tarakan Art</h3>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
-        <!-- Photo Area End -->
 
-        <!-- Lightbox -->
-        <div id="lightbox" class="lightbox">
-            <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-            <span class="lightbox-prev" onclick="changeMedia(-1)">&#10094;</span>
-            <span class="lightbox-next" onclick="changeMedia(1)">&#10095;</span>
-            <div class="lightbox-content" id="lightbox-content-wrapper">
-                <img id="lightbox-img" src="" alt="Gallery Image" style="display: none;">
-                <video id="lightbox-video" controls style="display: none;">
-                    <source id="lightbox-video-source" src="" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <div class="lightbox-caption" id="lightbox-caption"></div>
-            </div>
-        </div>
-
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Kasih Paramitha School</a>, All Right Reserved. 
-                            Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                        </div>
-                    </div>
+            <!-- Image 01 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(2)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Program/AfterSchool/FieldTrip1.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Field Trip</h3>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
-        <!-- Footer End -->
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+            <!-- Image 02 -->
+            <div class="col-lg-8 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(3)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/CNY/CNYRame1.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Chinese New Year</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 03 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(4)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/CNY/ChineseNewYear2.jpeg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Chinese New Year</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 04 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(5)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/EndYearCelabration/EndYear2.jpeg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>End Year Celebration</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 05 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(6)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/EndYearCelabration/EndYear1.jpeg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>End Year Celebration</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 06 -->
+            <div class="col-lg-8 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(7)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/FieldTrip/FieldTripLanud1.jpeg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Field Trip</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 07 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(8)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/FieldTrip/FieldTripPostOffice.jpeg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Field Trip</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 08 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(9)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/HeroesDay/HeroesDay1.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Heroes Day</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 09 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(10)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/EidAlFitr/EidAlFitr2.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Eid Al Fitr</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 10 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(11)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/EidAlFitr/EidAlFitrRame1.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Eid Al Fitr</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 11 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(12)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/IndependenceDay/IndependenceDay1.jpeg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Independence Day</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 12 -->
+            <div class="col-lg-8 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(13)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/IndependenceDay/IndependenceDay1Terbaru.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Independence Day</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 13 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(14)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/FieldTrip/FieldTripPizzaHut.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Field Trip</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 14 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(15)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/CharityDay/CharityDay1.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Charity Day</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 15 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(16)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/CookingClass/CookingClass1.png');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Cooking Class</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 16 -->
+            <div class="col-lg-8 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(17)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/SchoolActivitiesFromDINKES/Dinkes1.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>School Activities from Dinas Kesehatan</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 17-->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(18)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/SenamBersama/SenamBersama1.jpeg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Senam Bersama</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 18 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(19)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/FieldTrip/FieldTripBasarnas.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Field Trip</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 19 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(20)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/MembuatBunga/MembuatBungaPGA.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Membuat Bunga Kelas PG A</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 20 -->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(21)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/FingerPrintPGA/FingerPrintKelasPGA.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Finger Print Kelas PG A</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 21 -->
+            <div class="col-lg-8 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(22)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/HariBatikNasional/HariBatikNasional.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Hari Batik Nasional</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image 22-->
+            <div class="col-lg-4 col-md-6">
+              <div class="single-gallery" onclick="openLightbox(23)">
+                <div
+                  class="gallery-img"
+                  style="
+                    background-image: url('assetkps/Gallery/PenyuluhanPuskesmas/PenyuluhanDariPuskesmas.jpg');
+                    min-height: 400px;
+                    background-size: cover;
+                    background-position: center;
+                  "
+                ></div>
+                <div class="thumb-content-box">
+                  <div class="thumb-content">
+                    <h3>Penyuluhan Dari Puskesmas</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Photo Area End -->
+
+      <!-- Lightbox -->
+      <div id="lightbox" class="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <span class="lightbox-prev" onclick="changeMedia(-1)">&#10094;</span>
+        <span class="lightbox-next" onclick="changeMedia(1)">&#10095;</span>
+        <div class="lightbox-content" id="lightbox-content-wrapper">
+          <img
+            id="lightbox-img"
+            src=""
+            alt="Gallery Image"
+            style="display: none"
+          />
+          <video id="lightbox-video" controls style="display: none">
+            <source id="lightbox-video-source" src="" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+      </div>
+
+      <!-- Footer Start -->
+      <div
+        class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn"
+        data-wow-delay="0.1s"
+      >
+        <div class="container">
+          <div class="copyright">
+            <div class="row">
+              <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                &copy;
+                <a class="border-bottom" href="#">Kasih Paramitha School</a>,
+                All Right Reserved. Designed By
+                <a class="border-bottom" href="https://htmlcodex.com"
+                  >HTML Codex</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer End -->
+
+      <!-- Back to Top -->
+      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"
+        ><i class="bi bi-arrow-up"></i
+      ></a>
     </div>
 
     <!-- JavaScript Libraries -->
@@ -694,123 +949,224 @@
 
     <!-- Lightbox Script -->
     <script>
-        const mediaItems = [
-            { type: 'video', src: 'assetkps/Gallery/MothersAndEndYearClb/MothersandEndYear.mp4', caption: 'Mothers Day and End Year Celebration' },
-            { type: 'video', src: 'assetkps/Gallery/MothersAndEndYearClb/KPSArtClass.mp4', caption: 'KPS Art Class with Tarakan Art' },
-            { type: 'image', src: 'assetkps/Program/AfterSchool/FieldTrip1.jpg', caption: 'Field Trip' },
-            { type: 'image', src: 'assetkps/Gallery/CNY/CNYRame1.jpg', caption: 'Chinese New Year' },
-            { type: 'image', src: 'assetkps/Gallery/CNY/ChineseNewYear2.jpeg', caption: 'Chinese New Year' },
-            { type: 'image', src: 'assetkps/Gallery/EndYearCelabration/EndYear2.jpeg', caption: 'End Year Celebration' },
-            { type: 'image', src: 'assetkps/Gallery/EndYearCelabration/EndYear1.jpeg', caption: 'End Year Celebration' },
-            { type: 'image', src: 'assetkps/Gallery/FieldTrip/FieldTripLanud1.jpeg', caption: 'Field Trip' },
-            { type: 'image', src: 'assetkps/Gallery/FieldTrip/FieldTripPostOffice.jpeg', caption: 'Field Trip' },
-            { type: 'image', src: 'assetkps/Gallery/HeroesDay/HeroesDay1.jpg', caption: 'Heroes Day' },
-            { type: 'image', src: 'assetkps/Gallery/EidAlFitr/EidAlFitr2.jpg', caption: 'Eid Al Fitr' },
-            { type: 'image', src: 'assetkps/Gallery/EidAlFitr/EidAlFitrRame1.jpg', caption: 'Eid Al Fitr' },
-            { type: 'image', src: 'assetkps/Gallery/IndependenceDay/IndependenceDay1.jpeg', caption: 'Independence Day' },
-            { type: 'image', src: 'assetkps/Gallery/IndependenceDay/IndependenceDay1Terbaru.jpg', caption: 'Independence Day' },
-            { type: 'image', src: 'assetkps/Gallery/FieldTrip/FieldTripPizzaHut.jpg', caption: 'Field Trip' },
-            { type: 'image', src: 'assetkps/Gallery/CharityDay/CharityDay1.jpg', caption: 'Charity Day' },
-            { type: 'image', src: 'assetkps/Gallery/CookingClass/CookingClass1.png', caption: 'Cooking Class' },
-            { type: 'image', src: 'assetkps/Gallery/SchoolActivitiesFromDINKES/Dinkes1.jpg', caption: 'School Activities from Dinas Kesehatan' },
-            { type: 'image', src: 'assetkps/Gallery/SenamBersama/SenamBersama1.jpeg', caption: 'Senam Bersama' },
-            { type: 'image', src: 'assetkps/Gallery/FieldTrip/FieldTripBasarnas.jpg', caption: 'Field Trip' },
-            { type: 'image', src: 'assetkps/Gallery/MembuatBunga/MembuatBungaPGA.jpg', caption: 'Membuat Bunga Kelas PG A' },
-            { type: 'image', src: 'assetkps/Gallery/FingerPrintPGA/FingerPrintKelasPGA.jpg', caption: 'Finger Print Kelas PG A' },
-            { type: 'image', src: 'assetkps/Gallery/HariBatikNasional/HariBatikNasional.jpg', caption: 'Hari Batik Nasional' },
-            { type: 'image', src: 'assetkps/Gallery/PenyuluhanPuskesmas/PenyuluhanDariPuskesmas.jpg', caption: 'Penyuluhan Dari Puskesmas' }
-        ];
+      const mediaItems = [
+        {
+          type: "video",
+          src: "assetkps/Gallery/MothersAndEndYearClb/MothersandEndYear.mp4",
+          caption: "Mothers Day and End Year Celebration",
+        },
+        {
+          type: "video",
+          src: "assetkps/Gallery/MothersAndEndYearClb/KPSArtClass.mp4",
+          caption: "KPS Art Class with Tarakan Art",
+        },
+        {
+          type: "image",
+          src: "assetkps/Program/AfterSchool/FieldTrip1.jpg",
+          caption: "Field Trip",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/CNY/CNYRame1.jpg",
+          caption: "Chinese New Year",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/CNY/ChineseNewYear2.jpeg",
+          caption: "Chinese New Year",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/EndYearCelabration/EndYear2.jpeg",
+          caption: "End Year Celebration",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/EndYearCelabration/EndYear1.jpeg",
+          caption: "End Year Celebration",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/FieldTrip/FieldTripLanud1.jpeg",
+          caption: "Field Trip",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/FieldTrip/FieldTripPostOffice.jpeg",
+          caption: "Field Trip",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/HeroesDay/HeroesDay1.jpg",
+          caption: "Heroes Day",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/EidAlFitr/EidAlFitr2.jpg",
+          caption: "Eid Al Fitr",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/EidAlFitr/EidAlFitrRame1.jpg",
+          caption: "Eid Al Fitr",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/IndependenceDay/IndependenceDay1.jpeg",
+          caption: "Independence Day",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/IndependenceDay/IndependenceDay1Terbaru.jpg",
+          caption: "Independence Day",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/FieldTrip/FieldTripPizzaHut.jpg",
+          caption: "Field Trip",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/CharityDay/CharityDay1.jpg",
+          caption: "Charity Day",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/CookingClass/CookingClass1.png",
+          caption: "Cooking Class",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/SchoolActivitiesFromDINKES/Dinkes1.jpg",
+          caption: "School Activities from Dinas Kesehatan",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/SenamBersama/SenamBersama1.jpeg",
+          caption: "Senam Bersama",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/FieldTrip/FieldTripBasarnas.jpg",
+          caption: "Field Trip",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/MembuatBunga/MembuatBungaPGA.jpg",
+          caption: "Membuat Bunga Kelas PG A",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/FingerPrintPGA/FingerPrintKelasPGA.jpg",
+          caption: "Finger Print Kelas PG A",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/HariBatikNasional/HariBatikNasional.jpg",
+          caption: "Hari Batik Nasional",
+        },
+        {
+          type: "image",
+          src: "assetkps/Gallery/PenyuluhanPuskesmas/PenyuluhanDariPuskesmas.jpg",
+          caption: "Penyuluhan Dari Puskesmas",
+        },
+      ];
 
-        let currentIndex = 0;
+      let currentIndex = 0;
 
-        function openLightbox(index) {
-            currentIndex = index;
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightbox-img');
-            const lightboxVideo = document.getElementById('lightbox-video');
-            const lightboxVideoSource = document.getElementById('lightbox-video-source');
-            const lightboxCaption = document.getElementById('lightbox-caption');
-            
-            const currentMedia = mediaItems[currentIndex];
-            
-            if(currentMedia.type === 'video'){
-                lightboxImg.style.display = 'none';
-                lightboxVideo.style.display = 'block';
-                lightboxVideoSource.src = currentMedia.src;
-                lightboxVideo.load();
-                lightboxVideo.play();
-            }else{
-                lightboxVideo.style.display = 'none';
-                lightboxVideo.pause();
-                lightboxImg.style.display = 'block';
-                lightboxImg.src = currentMedia.src;
-            }
-            
-            lightboxCaption.textContent = currentMedia.caption;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
+      function openLightbox(index) {
+        currentIndex = index;
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImg = document.getElementById("lightbox-img");
+        const lightboxVideo = document.getElementById("lightbox-video");
+        const lightboxVideoSource = document.getElementById(
+          "lightbox-video-source"
+        );
+        const lightboxCaption = document.getElementById("lightbox-caption");
+
+        const currentMedia = mediaItems[currentIndex];
+
+        if (currentMedia.type === "video") {
+          lightboxImg.style.display = "none";
+          lightboxVideo.style.display = "block";
+          lightboxVideoSource.src = currentMedia.src;
+          lightboxVideo.load();
+          lightboxVideo.play();
+        } else {
+          lightboxVideo.style.display = "none";
+          lightboxVideo.pause();
+          lightboxImg.style.display = "block";
+          lightboxImg.src = currentMedia.src;
         }
 
-        function closeLightbox(){
-            const lightbox = document.getElementById('lightbox');
-            const lightboxVideo = document.getElementById('lightbox-video');
-            
-            lightboxVideo.pause();
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        lightboxCaption.textContent = currentMedia.caption;
+        lightbox.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        const lightbox = document.getElementById("lightbox");
+        const lightboxVideo = document.getElementById("lightbox-video");
+
+        lightboxVideo.pause();
+        lightbox.classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+
+      function changeMedia(direction) {
+        const lightboxVideo = document.getElementById("lightbox-video");
+        lightboxVideo.pause();
+
+        currentIndex += direction;
+        if (currentIndex >= mediaItems.length) {
+          currentIndex = 0;
+        } else if (currentIndex < 0) {
+          currentIndex = mediaItems.length - 1;
         }
 
-        function changeMedia(direction){
-            const lightboxVideo = document.getElementById('lightbox-video');
-            lightboxVideo.pause();
-            
-            currentIndex += direction;
-            if(currentIndex >= mediaItems.length){
-                currentIndex = 0;
-            }else if(currentIndex < 0) {
-                currentIndex = mediaItems.length - 1;
-            }
-            
-            const lightboxImg = document.getElementById('lightbox-img');
-            const lightboxVideoSource = document.getElementById('lightbox-video-source');
-            const lightboxCaption = document.getElementById('lightbox-caption');
-            
-            const currentMedia = mediaItems[currentIndex];
-            
-            if(currentMedia.type === 'video'){
-                lightboxImg.style.display = 'none';
-                lightboxVideo.style.display = 'block';
-                lightboxVideoSource.src = currentMedia.src;
-                lightboxVideo.load();
-                lightboxVideo.play();
-            }else{
-                lightboxVideo.style.display = 'none';
-                lightboxImg.style.display = 'block';
-                lightboxImg.src = currentMedia.src;
-            }
-            
-            lightboxCaption.textContent = currentMedia.caption;
+        const lightboxImg = document.getElementById("lightbox-img");
+        const lightboxVideoSource = document.getElementById(
+          "lightbox-video-source"
+        );
+        const lightboxCaption = document.getElementById("lightbox-caption");
+
+        const currentMedia = mediaItems[currentIndex];
+
+        if (currentMedia.type === "video") {
+          lightboxImg.style.display = "none";
+          lightboxVideo.style.display = "block";
+          lightboxVideoSource.src = currentMedia.src;
+          lightboxVideo.load();
+          lightboxVideo.play();
+        } else {
+          lightboxVideo.style.display = "none";
+          lightboxImg.style.display = "block";
+          lightboxImg.src = currentMedia.src;
         }
 
-        document.addEventListener('keydown', function(e) {
-            const lightbox = document.getElementById('lightbox');
-            if (lightbox.classList.contains('active')){
-                if(e.key === 'Escape') {
-                    closeLightbox();
-                }else if(e.key === 'ArrowLeft'){
-                    changeMedia(-1);
-                }else if (e.key === 'ArrowRight'){
-                    changeMedia(1);
-                }
-            }
-        });
+        lightboxCaption.textContent = currentMedia.caption;
+      }
 
-        document.getElementById('lightbox').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeLightbox();
-            }
+      document.addEventListener("keydown", function (e) {
+        const lightbox = document.getElementById("lightbox");
+        if (lightbox.classList.contains("active")) {
+          if (e.key === "Escape") {
+            closeLightbox();
+          } else if (e.key === "ArrowLeft") {
+            changeMedia(-1);
+          } else if (e.key === "ArrowRight") {
+            changeMedia(1);
+          }
+        }
+      });
+
+      document
+        .getElementById("lightbox")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeLightbox();
+          }
         });
     </script>
-</body>
-
+  </body>
 </html>
