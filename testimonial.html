@@ -4,55 +4,69 @@
     <meta charset="utf-8" />
     <title>Kasih Paramitha School - Testimonies</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta
-      content="Testimonies, Parent Reviews, Kasih Paramitha School"
-      name="keywords"
-    />
-    <meta
-      content="Read testimonials from parents about their experience at Kasih Paramitha School"
-      name="description"
-    />
+    <meta content="Testimonies, Parent Reviews, Kasih Paramitha School" name="keywords" />
+    <meta content="Read testimonials from parents about their experience at Kasih Paramitha School" name="description" />
 
-    <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon" />
-
-    <!-- Icon Font Stylesheet -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-      rel="stylesheet"
-    />
-
-    <!-- Libraries Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="lib/animate/animate.min.css" rel="stylesheet" />
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet" />
-
-    <!-- Custom Fonts Stylesheet -->
     <link href="css/fonts.css" rel="stylesheet" />
 
     <style>
-      /* Custom Profile Icon Style */
+      /* ===== OVERRIDE style.css ===== */
+
+      /* Mencegah background kuning menimpa card putih */
+      .testimonial-card.bg-white {
+        background-color: #ffffff !important;
+      }
+
+      /* Nama (h5) tetap coklat sesuai tema */
+      .testimonial-card h5 {
+        color: #8b7355 !important;
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      /* Subtitle "Orang tua murid dari..." tetap abu-abu */
+      .profile-info p {
+        color: #6c757d !important;
+        margin: 0;
+        font-size: 14px;
+      }
+
+      /* Teks testimonial tetap coklat */
+      .testimonial-card .testimonial-text p {
+        color: #8b7355 !important;
+      }
+
+      /* ===== PROFILE ICON =====
+         - TIDAK ada border-radius / overflow:hidden
+         - object-fit: contain agar gambar kartun tampil penuh
+      */
       .profile-icon {
-        width: 60px;
-        height: 60px;
+        width: 55px;
+        height: 55px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 60px;
-        color: #6c757d;
         flex-shrink: 0;
       }
 
-      /* Profile Header Style */
+      .profile-icon img {
+        width: auto;
+        height: auto;
+        max-width: 55px;
+        max-height: 55px;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* ===== PROFILE HEADER ===== */
       .profile-header {
         display: flex;
         align-items: center;
@@ -60,20 +74,7 @@
         margin-bottom: 15px;
       }
 
-      .profile-info h5 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 600;
-        color: #333;
-      }
-
-      .profile-info p {
-        margin: 0;
-        font-size: 14px;
-        color: #6c757d;
-      }
-
-      /* Testimonial Text Style */
+      /* ===== TESTIMONIAL TEXT ===== */
       .testimonial-text {
         position: relative;
         line-height: 1.6;
@@ -102,7 +103,7 @@
         text-decoration: underline;
       }
 
-      /* Video Modal Style */
+      /* ===== VIDEO MODAL ===== */
       .video-modal {
         display: none;
         position: fixed;
@@ -151,64 +152,37 @@
       }
 
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        from { opacity: 0; }
+        to   { opacity: 1; }
       }
 
       @keyframes zoomIn {
-        from {
-          transform: scale(0.8);
-        }
-        to {
-          transform: scale(1);
-        }
+        from { transform: scale(0.8); }
+        to   { transform: scale(1);   }
       }
     </style>
   </head>
 
   <body>
     <div class="container-xxl bg-white p-0">
+
       <!-- Spinner Start -->
-      <div
-        id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
-      >
-        <div
-          class="spinner-border text-primary"
-          style="width: 3rem; height: 3rem"
-          role="status"
-        >
+      <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>
       <!-- Spinner End -->
 
       <!-- Navbar Start -->
-      <nav
-        class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0"
-      >
+      <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
         <a href="index.html" class="navbar-brand">
           <div class="logo-container">
-            <img
-              src="assetkps/Logo/Logo Yayasan.png"
-              alt="Vidya Parahita Foundation"
-            />
-            <img
-              src="assetkps/Logo/LogoKasihParamitha.png"
-              alt="Kasih Paramitha School"
-            />
+            <img src="assetkps/Logo/Logo Yayasan.png" alt="Vidya Parahita Foundation" />
+            <img src="assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School" />
           </div>
         </a>
-        <button
-          type="button"
-          class="navbar-toggler"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarCollapse"
-        >
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -217,32 +191,15 @@
             <a href="about.html" class="nav-item nav-link">About Us</a>
             <a href="classes.html" class="nav-item nav-link">Gallery</a>
             <div class="nav-item dropdown">
-              <a
-                href="facility.html"
-                class="nav-link dropdown-toggle"
-                data-bs-toggle="dropdown"
-                >Program</a
-              >
-              <div
-                class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
-              >
-                <a href="facility.html#school-section" class="dropdown-item"
-                  >School</a
-                >
-                <a
-                  href="facility.html#afterschool-section"
-                  class="dropdown-item"
-                  >After-School Programme</a
-                >
+              <a href="facility.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Program</a>
+              <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+                <a href="facility.html#school-section" class="dropdown-item">School</a>
+                <a href="facility.html#afterschool-section" class="dropdown-item">After-School Programme</a>
               </div>
             </div>
             <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-            <a href="kalenderakademik.html" class="nav-item nav-link"
-              >Academic Calendar</a
-            >
-            <a href="testimonial.html" class="nav-item nav-link active"
-              >Testimonies</a
-            >
+            <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="testimonial.html" class="nav-item nav-link active">Testimonies</a>
           </div>
         </div>
       </nav>
@@ -251,16 +208,12 @@
       <!-- Page Header Start -->
       <div class="container-xxl py-5 page-header position-relative mb-5">
         <div class="container py-5">
-          <h1 class="display-2 text-white animated slideInDown mb-4">
-            Testimonies
-          </h1>
+          <h1 class="display-2 text-white animated slideInDown mb-4">Testimonies</h1>
           <nav aria-label="breadcrumb animated slideInDown">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
               <li class="breadcrumb-item"><a href="#">Pages</a></li>
-              <li class="breadcrumb-item text-white active" aria-current="page">
-                Testimonies
-              </li>
+              <li class="breadcrumb-item text-white active" aria-current="page">Testimonies</li>
             </ol>
           </nav>
         </div>
@@ -274,22 +227,15 @@
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
               <h1 class="mb-3">Parent Testimonials</h1>
               <p>
-                <b
-                  >Hear what our parents share about their experience at Kasih
-                  Paramitha School. Their trust and feedback motivate us to
-                  provide quality education, a nurturing environment, and
-                  meaningful learning experiences for every child.</b
-                >
+                <b>Hear what our parents share about their experience at Kasih
+                Paramitha School. Their trust and feedback motivate us to
+                provide quality education, a nurturing environment, and
+                meaningful learning experiences for every child.</b>
               </p>
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
               <div class="text-center">
-                <img
-                  class="img-fluid kps-illustration"
-                  src="assetkps/Icon/ICON-14.png"
-                  alt="Icon KPS Testimonial"
-                  style="max-width: 400px"
-                />
+                <img class="img-fluid kps-illustration" src="assetkps/Icon/ICON-14.png" alt="Icon KPS Testimonial" style="max-width: 400px" />
               </div>
             </div>
           </div>
@@ -300,17 +246,15 @@
       <!-- Testimonial Grid Start -->
       <div class="container-xxl py-5">
         <div class="container">
-          <div
-            class="bg-light rounded p-4 p-md-5 wow fadeInUp"
-            data-wow-delay="0.3s"
-          >
+          <div class="bg-light rounded p-4 p-md-5 wow fadeInUp" data-wow-delay="0.3s">
             <div class="row g-4">
+
               <!-- Testimonial 1 -->
               <div class="col-lg-6 col-md-6">
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <i class="fas fa-user-circle"></i>
+                      <img src="assetkps/Icon/Icon Map Sendiri-sendiri-05.png" alt="Sharon's mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Sharon's mom</h5>
@@ -333,20 +277,16 @@
                       their never ending efforts. Keep up the good work miss!
                     </p>
                   </div>
-                  <button
-                    class="view-more-btn"
-                    onclick="toggleTestimonial('testimonial1', this)"
-                  >
-                    View More
-                  </button>
+                  <button class="view-more-btn" onclick="toggleTestimonial('testimonial1', this)">View More</button>
                 </div>
               </div>
+
               <!-- Testimonial 2 -->
               <div class="col-lg-6 col-md-6">
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <i class="fas fa-user-circle"></i>
+                      <img src="assetkps/Icon/Icon Map Sendiri-sendiri-06.png" alt="Chrisvin's mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Chrisvin's mom</h5>
@@ -374,12 +314,7 @@
                       school to anyone. Thankyou KPS!
                     </p>
                   </div>
-                  <button
-                    class="view-more-btn"
-                    onclick="toggleTestimonial('testimonial2', this)"
-                  >
-                    View More
-                  </button>
+                  <button class="view-more-btn" onclick="toggleTestimonial('testimonial2', this)">View More</button>
                 </div>
               </div>
 
@@ -388,7 +323,7 @@
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <i class="fas fa-user-circle"></i>
+                      <img src="assetkps/Icon/Icon Map Sendiri-sendiri-07.png" alt="Jillian's mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Jillian's mom</h5>
@@ -409,12 +344,7 @@
                       seluruh guru dan staff di KPS.
                     </p>
                   </div>
-                  <button
-                    class="view-more-btn"
-                    onclick="toggleTestimonial('testimonial3', this)"
-                  >
-                    View More
-                  </button>
+                  <button class="view-more-btn" onclick="toggleTestimonial('testimonial3', this)">View More</button>
                 </div>
               </div>
 
@@ -423,7 +353,7 @@
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <i class="fas fa-user-circle"></i>
+                      <img src="assetkps/Icon/New Normal-05.png" alt="Klaviera's mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Klaviera's mom</h5>
@@ -448,12 +378,7 @@
                       her.
                     </p>
                   </div>
-                  <button
-                    class="view-more-btn"
-                    onclick="toggleTestimonial('testimonial4', this)"
-                  >
-                    View More
-                  </button>
+                  <button class="view-more-btn" onclick="toggleTestimonial('testimonial4', this)">View More</button>
                 </div>
               </div>
 
@@ -462,7 +387,7 @@
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <i class="fas fa-user-circle"></i>
+                      <img src="assetkps/Icon/Icon Map-06.png" alt="Arkhana's mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Arkhana's mom</h5>
@@ -475,15 +400,10 @@
                       Saya membawa Arkhana, iya Arkhana nama anak saya. Setelah sharing dan menemukan kecocokan Arkhana dengan salah satu Miss di KPS, akhirnya Arkhana untuk sementara masuk di kelas Aruna sambil menunggu tahun ajaran baru. Setelah beberapa bulan, official juga Arkhana memakai seragam di KPS dan menjadi siswa PG B.
                       Perkembangan Arkhana yang menurut saya sangat pesat selama di KPS. Yang sebelumnya Arkhana agak terkendala di komunikasinya, konsentrasinya, dan sensorik motoriknya pada usianya saat itu. Tetapi setelah dibimbing oleh Miss-Miss yang super telaten di KPS, Arkhana alhamdulillah sekarang sudah berkembang seperti anak seusianya. Bahkan semenjak di sana, Arkhana mengerti daily activity di rumah yang sebelumnya selalu dilayani, tetapi sekarang sudah self service untuk dirinya sendiri.
                       Dan yang terpenting, di KPS walaupun mayoritas peserta didiknya non-Muslim, tetapi toleransi beragamanya sangat baik. Sesama umat beragama tanpa membedakan satu sama lainnya. Karena di KPS bukan saja ilmu yang diajarkan, tetapi adab-adab dan kebiasaan baik sehari-hari yang ditanamkan kepada peserta didiknya. Itu yang saya rasakan sebagai orang tua murid.
-                      Masih 2 tingkat lagi Arkhana di KPS. Harapannya semoga KPS bisa memiliki jenjang pendidikan formal selanjutnya. Dan tidak lupa, saya berterima kasih kepada Ibu Leader Yayasan dan Miss-Miss KPS yang sudah menyediakan sarana dan membimbing Arkhana. Semoga menjadi ladang pahala dan amal jariyah yang mengalir terus-menerus. Aamiin.  
+                      Masih 2 tingkat lagi Arkhana di KPS. Harapannya semoga KPS bisa memiliki jenjang pendidikan formal selanjutnya. Dan tidak lupa, saya berterima kasih kepada Ibu Leader Yayasan dan Miss-Miss KPS yang sudah menyediakan sarana dan membimbing Arkhana. Semoga menjadi ladang pahala dan amal jariyah yang mengalir terus-menerus. Aamiin.
                     </p>
                   </div>
-                  <button
-                    class="view-more-btn"
-                    onclick="toggleTestimonial('testimonial5', this)"
-                  >
-                    View More
-                  </button>
+                  <button class="view-more-btn" onclick="toggleTestimonial('testimonial5', this)">View More</button>
                 </div>
               </div>
 
@@ -492,7 +412,7 @@
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <i class="fas fa-user-circle"></i>
+                      <img src="assetkps/Icon/Icon-04.png" alt="Shaqueena's mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Shaqueena's mom</h5>
@@ -506,12 +426,7 @@
                       Terima kasih untuk seluruh guru-guru maupun staf KPS.🙏
                     </p>
                   </div>
-                  <button
-                    class="view-more-btn"
-                    onclick="toggleTestimonial('testimonial6', this)"
-                  >
-                    View More
-                  </button>
+                  <button class="view-more-btn" onclick="toggleTestimonial('testimonial6', this)">View More</button>
                 </div>
               </div>
 
@@ -520,7 +435,7 @@
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <i class="fas fa-user-circle"></i>
+                      <img src="assetkps/Icon/New Normal-07.png" alt="Gemma's mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Gemma's mom</h5>
@@ -532,36 +447,28 @@
                       Dear Miss-Miss Kasih Paramitha School, terutama wali kelas Gemma di KG A (Miss Tiara), KG B (Miss Lena) dan Miss calistung Gemma (Miss Siti). Saya mau menyampaikan terima kasih banyak atas bimbingan, pengajaran, kesabaran, dedikasi dan hari-hari yang menyenangkan selama Gemma di KPS. KPS adalah sekolah paket komplit dengan tidak hanya pendidikan formal yang diajarkan, tetapi dari segi perilaku, sikap, kebersihan diri, kesehatan, ketangkasan, permainan dan banyak lagi lainnya. Setelah bersekolah di KPS selama hampir 2 tahun ini, Gemma sudah banyak sekali peningkatan pengetahuan, perilaku, semakin lancar membaca, berhitung dan banyak hal yang diceritakan sepulang sekolah. Tak lupa juga saya ingin menyampaikan mohon maaf bila Gemma dan kami selaku orangtua banyak merepotkan selama sekolah. Tidak ada kritik selain doa semoga KPS semakin sukses lagi, semakin berkembang ke depannya bahkan bisa melanjutkan membuka SD SMP SMA dan tetap menjadi sekolah terbaik di Tarakan. Terimakasih Kasih Paramitha School 💛
                     </p>
                   </div>
-                  <button
-                    class="view-more-btn"
-                    onclick="toggleTestimonial('testimonial7', this)"
-                  >
-                    View More
-                  </button>
+                  <button class="view-more-btn" onclick="toggleTestimonial('testimonial7', this)">View More</button>
                 </div>
               </div>
 
+              <!-- Testimonial 8 - Video -->
               <div class="col-lg-6 col-md-6">
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <i class="fas fa-user-circle"></i>
+                      <img src="assetkps/Icon/Icon Map-07.png " alt="Shanum's Mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Shanum's Mom</h5>
                       <p>Orang tua murid dari Shanum</p>
                     </div>
                   </div>
-                  <button
-                    class="btn btn-primary btn-sm"
-                    onclick="openVideoModal()"
-                    style="background-color: #007bff; border-color: #007bff"
-                  >
-                    <i class="fas fa-play-circle me-2"></i>Play Video
-                    Testimonial
+                  <button class="btn btn-primary btn-sm" onclick="openVideoModal()" style="background-color: #007bff; border-color: #007bff">
+                    <i class="fas fa-play-circle me-2"></i>Play Video Testimonial
                   </button>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -573,29 +480,20 @@
         <span class="modal-close" onclick="closeVideoModal()">&times;</span>
         <div class="video-modal-content">
           <video id="testimonialVideo" controls>
-            <source
-              src="assetkps/VideoTestimonial/Testimonial1.mp4"
-              type="video/mp4"
-            />
+            <source src="assetkps/VideoTestimonial/Testimonial1.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
 
       <!-- Footer Start -->
-      <div
-        class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn"
-        data-wow-delay="0.1s"
-      >
+      <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container">
           <div class="copyright">
             <div class="row">
               <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                &copy;
-                <a class="border-bottom" href="#">Kasih Paramitha School</a>,
+                &copy; <a class="border-bottom" href="#">Kasih Paramitha School</a>,
                 All Right Reserved. Designed By
-                <a class="border-bottom" href="https://htmlcodex.com"
-                  >HTML Codex</a
-                >
+                <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
               </div>
             </div>
           </div>
@@ -603,29 +501,22 @@
       </div>
       <!-- Footer End -->
 
-      <!-- Back to Top -->
-      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"
-        ><i class="bi bi-arrow-up"></i
-      ></a>
+      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top">
+        <i class="bi bi-arrow-up"></i>
+      </a>
     </div>
 
-    <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
-    <!-- Modal Script -->
     <script>
-      //  TESTIMONIAL FOTO FUNCTION
       function toggleTestimonial(id, button) {
         const testimonialText = document.getElementById(id);
-
         if (testimonialText.classList.contains("collapsed")) {
           testimonialText.classList.remove("collapsed");
           button.textContent = "View Less";
@@ -635,11 +526,9 @@
         }
       }
 
-      // ========== VIDEO MODAL FUNCTIONS ==========
       function openVideoModal() {
         const modal = document.getElementById("videoModal");
         const video = document.getElementById("testimonialVideo");
-
         modal.classList.add("active");
         video.play();
         document.body.style.overflow = "hidden";
@@ -648,32 +537,22 @@
       function closeVideoModal() {
         const modal = document.getElementById("videoModal");
         const video = document.getElementById("testimonialVideo");
-
         modal.classList.remove("active");
         video.pause();
         video.currentTime = 0;
         document.body.style.overflow = "auto";
       }
 
-      // ========== KEYBOARD NAVIGATION ==========
       document.addEventListener("keydown", function (e) {
-        const videoModal = document.getElementById("videoModal");
-
         if (e.key === "Escape") {
-          if (videoModal.classList.contains("active")) {
-            closeVideoModal();
-          }
+          const videoModal = document.getElementById("videoModal");
+          if (videoModal.classList.contains("active")) closeVideoModal();
         }
       });
 
-      // ========== CLOSE ON CLICK OUTSIDE ==========
-      document
-        .getElementById("videoModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) {
-            closeVideoModal();
-          }
-        });
+      document.getElementById("videoModal").addEventListener("click", function (e) {
+        if (e.target === this) closeVideoModal();
+      });
     </script>
   </body>
 </html>
