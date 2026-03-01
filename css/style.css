@@ -33,7 +33,6 @@
   box-shadow: 0 4px 15px rgba(91, 155, 213, 0.5);
 }
 
-/* Tambahan untuk mempertahankan warna biru saat diklik */
 .back-to-top:active,
 .back-to-top:focus,
 .back-to-top:focus-visible {
@@ -269,7 +268,6 @@ h6,
   background: url(../img/bg-header-bottom.png) center center repeat-x;
 }
 
-/* MODIFIKASI BARU: Memperkecil tinggi carousel untuk desktop */
 .header-carousel .owl-carousel-item {
   position: relative;
   min-height: 520px;
@@ -284,7 +282,6 @@ h6,
   object-position: center;
 }
 
-/* Sesuaikan ukuran teks untuk carousel yang lebih kecil */
 .header-carousel .display-2 {
   font-size: 2.8rem !important;
 }
@@ -297,7 +294,6 @@ h6,
   margin-bottom: 1.2rem !important;
 }
 
-/* Untuk tablet */
 @media (max-width: 992px) {
   .header-carousel .owl-carousel-item {
     min-height: 450px;
@@ -576,6 +572,22 @@ h6,
   background: var(--accent);
 }
 
+/* Testimonial Page - Card Overrides/
+/* Mencegah background kuning menimpa card putih */
+.testimonial-card.bg-white {
+  background-color: #ffffff !important;
+}
+
+/* Subtitle tetap abu-abu */
+.testimonial-card .profile-info p {
+  color: #6c757d !important;
+}
+
+/* Teks testimonial tetap coklat */
+.testimonial-card .testimonial-text p {
+  color: #8b7355 !important;
+}
+
 /*** Footer ***/
 .footer .btn.btn-social {
   margin-right: 5px;
@@ -673,20 +685,18 @@ h6,
 
 .kps-illustration {
   display: block;
-  max-width: 400px; /* desktop default */
+  max-width: 400px;
   width: 100%;
   height: auto;
   margin: 0 auto;
 }
 
-/* Tablet */
 @media (max-width: 992px) {
   .kps-illustration {
     max-width: 300px;
   }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
   .kps-illustration {
     max-width: 220px;
