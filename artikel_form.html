@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Painting Class - Kasih Paramitha School</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="keywords" />
+    <meta content="" name="description" />
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon" />
+
+    <!-- Icon Font Stylesheet -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link href="css/fonts.css" rel="stylesheet" />
+
+    <style>
+      body {
+        background: #f4bc00;
+      }
+      
+      .login-btn {
+        background: #9a7b55;
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .login-btn:hover {
+        color: #fff;
+        background: #7f6546;
+      }
+
+      .artikel-hero img {
+        width: 100%;
+        height: 430px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .artikel-detail-section {
+        padding: 40px 50px 50px;
+        background: #ffffff;
+      }
+
+      .artikel-title {
+        font-size: 48px;
+        font-weight: 700;
+        color: #9a7b55;
+        margin-bottom: 28px;
+      }
+
+      .artikel-content {
+        max-width: 760px;
+        color: #333;
+        font-size: 15px;
+        line-height: 1.9;
+      }
+
+      .artikel-content p {
+        margin-bottom: 18px;
+      }
+
+      .recommendation-box {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+        border: 1px solid #d9d9d9;
+        padding: 28px 22px 36px;
+        margin-top: 55px;
+      }
+
+      .recommendation-title {
+        text-align: center;
+        font-size: 40px;
+        font-weight: 700;
+        color: #9a7b55;
+        margin-bottom: 25px;
+      }
+
+      .recommend-card {
+        border: 1px solid #bcbcbc;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        height: 100%;
+      }
+
+      .recommend-card img {
+        width: 100%;
+        height: 165px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .recommend-card-body {
+        padding: 10px 12px 12px;
+      }
+
+      .recommend-card-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #000;
+        margin-bottom: 4px;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .recommend-card-title:hover {
+        color: #9a7b55;
+      }
+
+      .recommend-card-desc {
+        font-size: 11px;
+        color: #222;
+        line-height: 1.4;
+        margin-bottom: 0;
+      }
+
+      .footer-space {
+        height: 40px;
+      }
+
+      @media (max-width: 991.98px) {
+        .artikel-detail-section {
+          padding: 30px 25px 40px;
+        }
+
+        .artikel-title {
+          font-size: 36px;
+        }
+
+        .recommendation-title {
+          font-size: 32px;
+        }
+
+        .artikel-hero img {
+          height: 300px;
+        }
+      }
+
+      @media (max-width: 767.98px) {
+        .artikel-title {
+          font-size: 30px;
+        }
+
+        .recommendation-title {
+          font-size: 28px;
+        }
+
+        .artikel-content {
+          font-size: 14px;
+        }
+
+        .artikel-hero img {
+          height: 240px;
+        }
+      }
+      
+      .notif-link,
+      .notif-link i,
+      .notif-link::after {
+        color: #9a7b55 !important;
+      }
+
+      .notif-link:hover,
+      .notif-link:hover i,
+      .notif-link:hover::after,
+      .notif-link:focus,
+      .notif-link:focus i,
+      .notif-link:focus::after {
+        color: #5b9bd5 !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-xxl bg-white p-0">
+      <!-- Navbar Start -->
+      <nav
+        class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0"
+      >
+        <a href="index.html" class="navbar-brand">
+          <div class="logo-container">
+            <img
+              src="assetkps/Logo/Logo Yayasan.png"
+              alt="Vidya Parahita Foundation"
+            />
+            <img
+              src="assetkps/Logo/LogoKasihParamitha.png"
+              alt="Kasih Paramitha School"
+            />
+          </div>
+        </a>
+
+        <div class="nav-item dropdown">
+          <a
+            href="#"
+            class="nav-link dropdown-toggle notif-link"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="artikel.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="navbar-toggler"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+            <a href="about.html" class="nav-item nav-link">About Us</a>
+            <a href="classes.html" class="nav-item nav-link">Gallery</a>
+
+            <div class="nav-item dropdown">
+              <a
+                href="facility.html"
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+              >
+                Program
+              </a>
+              <div
+                class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
+              >
+                <a href="facility.html#school-section" class="dropdown-item">
+                  School
+                </a>
+                <a
+                  href="facility.html#afterschool-section"
+                  class="dropdown-item"
+                >
+                  After-School Programme
+                </a>
+              </div>
+            </div>
+
+            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="kalenderakademik.html" class="nav-item nav-link">
+              Academic Calendar
+            </a>
+            <a href="testimonial.html" class="nav-item nav-link">
+              Testimonies
+            </a>
+          </div>
+
+          <a href="login/login.html" class="login-btn">Login</a>
+        </div>
+      </nav>
+      <!-- Navbar End -->
+
+      <!-- Hero Image -->
+      <section class="artikel-hero">
+        <img src="img/artikel.jpg" alt="Painting Class" />
+      </section>
+
+      <!-- Article Detail -->
+      <section class="artikel-detail-section">
+        <div class="container-fluid p-0">
+          <h1 class="artikel-title">Painting Class</h1>
+
+          <div class="artikel-content">
+            <p>
+              Our children had a wonderful time joining the painting class at
+              school. This activity was designed to help them explore colors,
+              shapes, and ideas in a fun and enjoyable way. With brushes, paint,
+              and paper in their hands, the children were free to express their
+              imagination and create their own unique artwork.
+            </p>
+
+            <p>
+              Through the painting class, the children learned more than just
+              how to paint. They also practiced focus, patience, and confidence
+              while developing their fine motor skills. Each child was
+              encouraged to be creative, try new color combinations, and proudly
+              share their work with teachers and friends.
+            </p>
+
+            <p>
+              Painting class is one of the meaningful learning activities in our
+              kindergarten and preschool program because it supports both
+              creativity and early childhood development. We are happy to see
+              the children so excited, engaged, and proud of their creations.
+              Activities like this help make learning more joyful, colorful, and
+              memorable for every child.
+            </p>
+          </div>
+
+          <!-- Recommendation -->
+          <div class="recommendation-box">
+            <h2 class="recommendation-title">Recommendation</h2>
+
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="recommend-card">
+                  <img src="img/artikel.jpg" alt="Painting class" />
+                  <div class="recommend-card-body">
+                    <a href="artikel_form.html?id=1" class="recommend-card-title">
+                      Painting class
+                    </a>
+                    <p class="recommend-card-desc">
+                      Watch as blank canvases transform into worlds of wonder
+                      through the laughter and bright imagination of our young
+                      artists.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="recommend-card">
+                  <img src="img/artikel.jpg" alt="Painting class" />
+                  <div class="recommend-card-body">
+                    <a href="artikel_form.html?id=2" class="recommend-card-title">
+                      Painting class
+                    </a>
+                    <p class="recommend-card-desc">
+                      Watch as blank canvases transform into worlds of wonder
+                      through the laughter and bright imagination of our young
+                      artists.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="recommend-card">
+                  <img src="img/artikel.jpg" alt="Painting class" />
+                  <div class="recommend-card-body">
+                    <a href="artikel_form.html?id=3" class="recommend-card-title">
+                      Painting class
+                    </a>
+                    <p class="recommend-card-desc">
+                      Watch as blank canvases transform into worlds of wonder
+                      through the laughter and bright imagination of our young
+                      artists.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-space"></div>
+        </div>
+      </section>
+
+      <!-- Back to Top -->
+      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top">
+        <i class="bi bi-arrow-up"></i>
+      </a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+  </body>
+</html>

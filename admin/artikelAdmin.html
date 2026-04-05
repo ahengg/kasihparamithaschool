@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kasih Paramitha School - Artikel</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <!-- Favicon -->
+    <link href="../img/favicon.ico" rel="icon" />
+
+    <!-- Icon Font Stylesheet -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Libraries Stylesheet -->
+    <link href="../lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Template Stylesheet -->
+    <link href="../css/style.css" rel="stylesheet" />
+
+    <!-- Custom Fonts Stylesheet - IMPORTANT: Load this AFTER style.css -->
+    <link href="../css/fonts.css" rel="stylesheet" />
+
+    <style>
+      .login-btn {
+        background: #9a7b55;
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .login-btn:hover {
+        color: #fff;
+        background: #7f6546;
+      }
+      
+      .artikel-page-section {
+        padding: 50px 0 80px;
+        background: #ffffff;
+      }
+
+      .artikel-list-wrapper {
+        max-width: 980px;
+        margin: 0 auto;
+      }
+
+      .artikel-header {
+        position: relative;
+        margin-bottom: 30px;
+      }
+
+      .artikel-page-title {
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 700;
+        color: #9a7b55;
+        margin: 0;
+      }
+
+      .artikel-add-btn {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #8b7355;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 18px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.25s ease;
+      }
+
+      .artikel-add-btn:hover {
+        background-color: #6f5c46;
+        color: #fff;
+      }
+
+      .artikel-item {
+        position: relative;
+        background: #ffffff;
+        border: 1px solid #d3d3d3;
+        border-radius: 6px;
+        padding: 14px;
+        margin-bottom: 28px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        cursor: pointer;
+      }
+
+      .artikel-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+      }
+
+      .artikel-thumb-wrap {
+        position: relative;
+      }
+
+      .artikel-thumb {
+        width: 100%;
+        height: 360px;
+        object-fit: cover;
+        display: block;
+        border: 1px solid #d9d9d9;
+        border-radius: 2px;
+      }
+
+      .artikel-edit-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.92);
+        color: #8b7355;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        transition: 0.2s ease;
+        z-index: 2;
+      }
+
+      .artikel-edit-btn:hover {
+        background: #8b7355;
+        color: #fff;
+      }
+
+      .artikel-content {
+        padding: 14px 8px 4px;
+      }
+
+      .artikel-content h5 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: #111;
+      }
+
+      .artikel-content p {
+        margin-bottom: 0;
+        font-size: 0.92rem;
+        line-height: 1.35;
+        color: #333;
+      }
+
+      .custom-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .pagination-btn {
+        min-width: 28px;
+        height: 28px;
+        border: none;
+        border-radius: 4px;
+        background-color: #9a7b55;
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .pagination-btn:hover {
+        background-color: #7f6546;
+      }
+
+      .pagination-btn.active {
+        background-color: #6c5338;
+      }
+
+      .pagination-btn.disabled {
+        opacity: 0.45;
+        pointer-events: none;
+      }
+
+      @media (max-width: 768px) {
+        .artikel-header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+        }
+
+        .artikel-page-title {
+          font-size: 2.2rem;
+        }
+
+        .artikel-add-btn {
+          position: static;
+          transform: none;
+        }
+
+        .artikel-thumb {
+          height: 220px;
+        }
+
+        .artikel-content h5 {
+          font-size: 1rem;
+        }
+
+        .artikel-content p {
+          font-size: 0.88rem;
+        }
+      }
+      
+      .notif-link,
+      .notif-link i,
+      .notif-link::after {
+        color: #9a7b55 !important;
+      }
+
+      .notif-link:hover,
+      .notif-link:hover i,
+      .notif-link:hover::after,
+      .notif-link:focus,
+      .notif-link:focus i,
+      .notif-link:focus::after {
+        color: #5b9bd5 !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-xxl bg-white p-0">
+      <!-- Navbar -->
+      <nav
+        class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0"
+      >
+        <a href="indexAdmin.html" class="navbar-brand">
+          <div class="logo-container">
+            <img
+              src="../assetkps/Logo/Logo Yayasan.png"
+              alt="Vidya Parahita Foundation"
+            />
+            <img
+              src="../assetkps/Logo/LogoKasihParamitha.png"
+              alt="Kasih Paramitha School"
+            />
+          </div>
+        </a>
+
+        <div class="nav-item dropdown">
+          <a
+            href="#"
+            class="nav-link dropdown-toggle notif-link"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="../artikel.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="navbar-toggler"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <a href="indexAdmin.html" class="nav-item nav-link">Home</a>
+            <a href="../about.html" class="nav-item nav-link">About Us</a>
+            <a href="../classes.html" class="nav-item nav-link">Gallery</a>
+            <div class="nav-item dropdown">
+              <a
+                href="facility.html"
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                >Program</a
+              >
+              <div
+                class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
+              >
+                <a href="facility.html#school-section" class="dropdown-item"
+                  >School</a
+                >
+                <a
+                  href="facility.html#afterschool-section"
+                  class="dropdown-item"
+                  >After-School Programme</a
+                >
+              </div>
+            </div>  
+            <a href="../contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="../kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="../testimonial.html" class="nav-item nav-link">Testimonies</a>
+          </div>
+          <a href="login/login.html" class="login-btn">Login</a>
+        </div>
+      </nav>
+
+      <!-- Artikel Page -->
+      <div class="container artikel-page-section">
+        <div class="artikel-list-wrapper">
+          <div class="artikel-header">
+            <h1 class="artikel-page-title">Our Event!</h1>
+            <a href="add_article.html" class="artikel-add-btn">Add Article</a>
+          </div>
+
+          <div id="artikelContainer"></div>
+          <div id="pagination" class="custom-pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const articles = [
+        {
+          id: 1,
+          title: "Painting class",
+          description:
+            "Watch as blank canvases transform into worlds of wonder through the laughter and bright imagination of our young artists.",
+          image: "../img/artikel.jpg",
+          detailLink: "article-detail.html?id=1",
+          editLink: "edit-artikel.html?id=1"
+        },
+        {
+          id: 2,
+          title: "Art Exploration Day",
+          description:
+            "Children explore creativity through guided painting activities and fun collaborative projects.",
+          image: "../img/artikel.jpg",
+          detailLink: "article-detail.html?id=2",
+          editLink: "edit-artikel.html?id=2"
+        },
+        {
+          id: 3,
+          title: "Creative Canvas Session",
+          description:
+            "A joyful event where students express ideas and emotions through colors, shapes, and imagination.",
+          image: "../img/artikel.jpg",
+          detailLink: "article-detail.html?id=3",
+          editLink: "edit-artikel.html?id=3"
+        },
+        {
+          id: 4,
+          title: "Little Artist Workshop",
+          description:
+            "Encouraging confidence, focus, and creativity through hands-on artistic activities.",
+          image: "../img/artikel.jpg",
+          detailLink: "article-detail.html?id=4",
+          editLink: "edit-artikel.html?id=4"
+        },
+        {
+          id: 5,
+          title: "Fun With Colors",
+          description:
+            "Students learn basic color theory and composition in a playful classroom atmosphere.",
+          image: "../img/artikel.jpg",
+          detailLink: "article-detail.html?id=5",
+          editLink: "edit-artikel.html?id=5"
+        },
+        {
+          id: 6,
+          title: "Young Painter Showcase",
+          description:
+            "A class event featuring the children's artwork and their unique visual storytelling.",
+          image: "../img/artikel.jpg",
+          detailLink: "article-detail.html?id=6",
+          editLink: "edit-artikel.html?id=6"
+        },
+        {
+          id: 7,
+          title: "School Art Celebration",
+          description:
+            "Celebrating creativity and collaboration through school-wide art appreciation activities.",
+          image: "../img/artikel.jpg",
+          detailLink: "article-detail.html?id=7",
+          editLink: "edit-artikel.html?id=7"
+        }
+      ];
+
+      const itemsPerPage = 6;
+      let currentPage = 1;
+
+      function goToDetail(link) {
+        window.location.href = link;
+      }
+
+      function goToEdit(event, link) {
+        event.stopPropagation();
+        window.location.href = link;
+      }
+
+      function renderArticles() {
+        const artikelContainer = document.getElementById("artikelContainer");
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedArticles = articles.slice(start, end);
+
+        artikelContainer.innerHTML = paginatedArticles.map(article => `
+          <div class="artikel-item" onclick="goToDetail('${article.detailLink}')">
+            <div class="artikel-thumb-wrap">
+              <img src="${article.image}" alt="${article.title}" class="artikel-thumb" />
+              <button
+                type="button"
+                class="artikel-edit-btn"
+                onclick="goToEdit(event, '${article.editLink}')"
+                title="Edit article"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
+            </div>
+
+            <div class="artikel-content">
+              <h5>${article.title}</h5>
+              <p>${article.description}</p>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      function renderPagination() {
+        const pagination = document.getElementById("pagination");
+        const totalPages = Math.ceil(articles.length / itemsPerPage);
+
+        let buttons = "";
+
+        buttons += `
+          <button class="pagination-btn ${currentPage === 1 ? "disabled" : ""}" onclick="changePage(${currentPage - 1})">
+            &lt;
+          </button>
+        `;
+
+        for (let i = 1; i <= totalPages; i++) {
+          buttons += `
+            <button class="pagination-btn ${currentPage === i ? "active" : ""}" onclick="changePage(${i})">
+              ${i}
+            </button>
+          `;
+        }
+
+        buttons += `
+          <button class="pagination-btn ${currentPage === totalPages ? "disabled" : ""}" onclick="changePage(${currentPage + 1})">
+            &gt;
+          </button>
+        `;
+
+        pagination.innerHTML = buttons;
+      }
+
+      function changePage(page) {
+        const totalPages = Math.ceil(articles.length / itemsPerPage);
+        if (page < 1 || page > totalPages) return;
+
+        currentPage = page;
+        renderArticles();
+        renderPagination();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      renderArticles();
+      renderPagination();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

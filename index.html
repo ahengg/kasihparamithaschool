@@ -120,6 +120,21 @@
         backdrop-filter: blur(10px);
       }
 
+      .login-btn {
+        background: #9a7b55;
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .login-btn:hover {
+        color: #fff;
+        background: #7f6546;
+      }
+      
       .icon-container img {
         width: 60px;
         height: 60px;
@@ -186,6 +201,111 @@
         .overlay-background {
           background-size: 50%;
         }
+
+        .artikel-card img {
+          height: 180px;
+        }
+
+        .artikel-title-main {
+          font-size: 1.6rem;
+        }
+      }
+
+      .artikel-section {
+        padding: 40px 0 80px;
+      }
+
+      .artikel-wrapper {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e0e0e0;
+      }
+
+      .artikel-title-main {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8b7355;
+        margin-bottom: 30px;
+      }
+
+      .artikel-card {
+        background: #ffffff;
+        border: 1px solid #d9d9d9;
+        border-radius: 8px;
+        overflow: hidden;
+        height: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .artikel-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+      }
+
+      .artikel-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+      }
+
+      .artikel-card-body {
+        padding: 15px;
+      }
+
+      .artikel-card-body h5 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #333;
+      }
+
+      .artikel-card-body p {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0;
+        line-height: 1.5;
+      }
+
+      .artikel-btn-wrap {
+        text-align: center;
+        margin-top: 25px;
+      }
+
+      .artikel-btn {
+        background-color: #8b7355;
+        color: #fff;
+        border: none;
+        padding: 8px 22px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s ease;
+        display: inline-block;
+      }
+
+      .artikel-btn:hover {
+        background-color: #6f5c46;
+        color: #fff;
+      }
+      
+      .notif-link,
+      .notif-link i,
+      .notif-link::after {
+        color: #9a7b55 !important;
+      }
+
+      .notif-link:hover,
+      .notif-link:hover i,
+      .notif-link:hover::after,
+      .notif-link:focus,
+      .notif-link:focus i,
+      .notif-link:focus::after {
+        color: #5b9bd5 !important;
       }
     </style>
   </head>
@@ -223,6 +343,19 @@
             />
           </div>
         </a>
+        <div class="nav-item dropdown">
+          <a
+            href="#"
+            class="nav-link dropdown-toggle notif-link"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="artikel.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>  
         <button
           type="button"
           class="navbar-toggler"
@@ -262,6 +395,7 @@
             >
             <a href="testimonial.html" class="nav-item nav-link">Testimonies</a>
           </div>
+          <a href="login/login.html" class="login-btn">Login</a>
         </div>
       </nav>
       <!-- Navbar End -->
@@ -409,6 +543,51 @@
         </div>
       </div>
       <!-- Vision & Mission End -->
+
+      <!-- Our Event Start -->
+      <div class="artikel-section">
+        <div class="container">
+          <div class="artikel-wrapper">
+            <h2 class="artikel-title-main">Our Event!</h2>
+
+            <div class="row g-4">
+              <!-- artikel 1 -->
+              <div class="col-md-6">
+                <div class="artikel-card">
+                  <img src="img/artikel.jpg" alt="Painting class" />
+                  <div class="artikel-card-body">
+                    
+                    <a href="artikel_form.html?id=1"><h5>Painting class</h5></a>
+                    <p>
+                      Kids will express themselves in color and create through the
+                      guidance and joyful atmosphere of our art class.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- artikel 2 -->
+              <div class="col-md-6">
+                <div class="artikel-card">
+                  <img src="img/artikel.jpg" alt="Painting class" />
+                  <div class="artikel-card-body">
+                    <a href="artikel_form.html?id=2"><h5>Painting class</h5></a>
+                    <p>
+                      Kids will express themselves in color and create through the
+                      guidance and joyful atmosphere of our art class.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="artikel-btn-wrap">
+              <a href="artikel.html" class="artikel-btn">Show all</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Our Event End -->
 
       <!-- Footer Start -->
       <div
