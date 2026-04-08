@@ -32,6 +32,21 @@
     <link href="css/fonts.css" rel="stylesheet" />
 
     <style>
+      .login-btn {
+        background: #9a7b55;
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .login-btn:hover {
+        color: #fff;
+        background: #7f6546;
+      }
+      
       .gallery-area {
         padding: 50px 0;
       }
@@ -234,6 +249,21 @@
         .lightbox-close { top: 10px; right: 15px; font-size: 35px; }
         .video-play-icon { width: 60px; height: 60px; font-size: 24px; }
       }
+      
+      .notif-link,
+      .notif-link i,
+      .notif-link::after {
+        color: #9a7b55 !important;
+      }
+
+      .notif-link:hover,
+      .notif-link:hover i,
+      .notif-link:hover::after,
+      .notif-link:focus,
+      .notif-link:focus i,
+      .notif-link:focus::after {
+        color: #5b9bd5 !important;
+      }
     </style>
   </head>
 
@@ -264,6 +294,19 @@
             <img src="assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School" />
           </div>
         </a>
+        <div class="nav-item dropdown">
+          <a
+            href="#"
+            class="nav-link dropdown-toggle notif-link"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="artikel.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -283,6 +326,7 @@
             <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
             <a href="testimonial.html" class="nav-item nav-link">Testimonies</a>
           </div>
+          <a href="login/login.html" class="login-btn">Login</a>
         </div>
       </nav>
       <!-- Navbar End -->
