@@ -1,0 +1,19 @@
+# Claude Code local settings (contains tokens/credentials)
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if ever used)
+node_modules/
+.env
+.env.local
+.env.*.local

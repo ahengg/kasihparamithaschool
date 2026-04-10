@@ -12,20 +12,78 @@
       rel="stylesheet"
     />
 
+    <!-- Icon Font Stylesheet -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Template Stylesheet -->
+    <link href="../css/style.css" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link href="../css/fonts.css" rel="stylesheet" />
+
     <style>
-      * {
+      body {
+        background: #f5f5f5;
         margin: 0;
         padding: 0;
+      }
+
+      /* ── Navbar overrides ── */
+      .navbar.sticky-top {
+        top: 0 !important;
+        transition: none !important;
+      }
+
+      .notif-link,
+      .notif-link i,
+      .notif-link::after {
+        color: #9a7b55 !important;
+      }
+
+      .notif-link:hover,
+      .notif-link:hover i,
+      .notif-link:hover::after,
+      .notif-link:focus,
+      .notif-link:focus i,
+      .notif-link:focus::after {
+        color: #5b9bd5 !important;
+      }
+
+      /* ── Login button ── */
+      .login-btn {
+        background: #9a7b55;
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .login-btn:hover {
+        color: #fff;
+        background: #7f6546;
+      }
+
+      /* ── Login form only ── */
+      .login-card,
+      .login-card * {
         box-sizing: border-box;
         font-family: "Poppins", sans-serif;
       }
 
-      body {
-        background: #1f1f1f;
-      }
-
-      .page-wrapper {
-        min-height: 100vh;
+      /* ── Page body ── */
+      .login-page-body {
+        min-height: calc(100vh - 95px);
         background: linear-gradient(
           to right,
           #f6bf00 0,
@@ -38,13 +96,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 40px 20px;
+        padding: 60px 20px;
       }
 
+      /* ── Card ── */
       .login-card {
         width: 100%;
         max-width: 430px;
-        min-height: 540px;
         background: #ffffff;
         border-radius: 12px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
@@ -56,9 +114,8 @@
         justify-content: center;
         align-items: center;
         gap: 14px;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
       }
-
       .logo-wrap img {
         max-height: 34px;
         object-fit: contain;
@@ -76,7 +133,7 @@
         font-weight: 500;
       }
 
-      .form-control {
+      .form-control-login {
         width: 100%;
         height: 42px;
         border: 1px solid #c9b8a0;
@@ -88,8 +145,7 @@
         transition: 0.2s ease;
         background: #fff;
       }
-
-      .form-control:focus {
+      .form-control-login:focus {
         border-color: #9a7b55;
         box-shadow: 0 0 0 3px rgba(154, 123, 85, 0.12);
       }
@@ -102,12 +158,11 @@
         color: #f0a22e;
         text-decoration: none;
       }
-
       .forgot-link:hover {
         text-decoration: underline;
       }
 
-      .login-btn {
+      .login-submit-btn {
         width: 100%;
         height: 42px;
         border: none;
@@ -118,49 +173,156 @@
         font-weight: 500;
         cursor: pointer;
         transition: 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
       }
-
-      .login-btn:hover {
+      .login-submit-btn:hover:not(:disabled) {
         background: #846748;
       }
+      .login-submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
 
-      .bottom-text {
-        text-align: center;
-        margin-top: 28px;
+      /* Alerts */
+      .alert-box {
+        border-radius: 4px;
+        padding: 10px 14px;
         font-size: 12px;
-        color: #8f8f8f;
+        margin-bottom: 16px;
+        display: none;
+      }
+      .alert-box.show {
+        display: block;
+      }
+      .alert-box.error {
+        background: #fdecea;
+        border: 1px solid #f5c6c6;
+        color: #c62828;
+      }
+      .alert-box.success {
+        background: #e8f5e9;
+        border: 1px solid #c8e6c9;
+        color: #2e7d32;
       }
 
-      .bottom-text a {
-        color: #f0a22e;
-        text-decoration: none;
-        font-weight: 500;
+      /* Spinner */
+      .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
       }
-
-      .bottom-text a:hover {
-        text-decoration: underline;
+      .spinner.show {
+        display: block;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       @media (max-width: 576px) {
-        .page-wrapper {
+        .login-page-body {
           background: #f5f5f5;
-          padding: 20px 16px;
+          padding: 30px 16px;
         }
-
         .login-card {
           padding: 32px 22px;
-          min-height: auto;
         }
-
         .logo-wrap {
           flex-wrap: wrap;
-          margin-bottom: 36px;
+          margin-bottom: 28px;
         }
       }
     </style>
   </head>
+
   <body>
-    <div class="page-wrapper">
+    <!-- Navbar Start -->
+    <nav
+      class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0"
+    >
+      <a href="../index.html" class="navbar-brand">
+        <div class="logo-container">
+          <img
+            src="../assetkps/Logo/Logo Yayasan.png"
+            alt="Vidya Parahita Foundation"
+          />
+          <img
+            src="../assetkps/Logo/LogoKasihParamitha.png"
+            alt="Kasih Paramitha School"
+          />
+        </div>
+      </a>
+      <div class="nav-item dropdown">
+        <a
+          href="#"
+          class="nav-link dropdown-toggle notif-link"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="bi bi-bell"></i>
+        </a>
+        <div
+          class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
+        >
+          <a href="../artikel.html" class="dropdown-item">Pengumuman</a>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="navbar-toggler"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav mx-auto">
+          <a href="../index.html" class="nav-item nav-link active">Home</a>
+          <a href="../about.html" class="nav-item nav-link">About Us</a>
+          <a href="../classes.html" class="nav-item nav-link">Gallery</a>
+          <div class="nav-item dropdown">
+            <a
+              href="../facility.html"
+              class="nav-link dropdown-toggle"
+              data-bs-toggle="dropdown"
+              >Program</a
+            >
+            <div
+              class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
+            >
+              <a href="../facility.html#school-section" class="dropdown-item"
+                >School</a
+              >
+              <a
+                href="../facility.html#afterschool-section"
+                class="dropdown-item"
+                >After-School Programme</a
+              >
+            </div>
+          </div>
+          <a href="../contact.html" class="nav-item nav-link">Contact Us</a>
+          <a href="../kalenderakademik.html" class="nav-item nav-link"
+            >Academic Calendar</a
+          >
+          <a href="../testimonial.html" class="nav-item nav-link"
+            >Testimonies</a
+          >
+        </div>
+          <a href="../login/login.html" class="login-btn">Login</a>
+        </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Login Body -->
+    <div class="login-page-body">
       <div class="login-card">
         <div class="logo-wrap">
           <img
@@ -173,14 +335,17 @@
           />
         </div>
 
-        <form>
+        <div class="alert-box error" id="alertError"></div>
+        <div class="alert-box success" id="alertSuccess"></div>
+
+        <form id="loginForm" novalidate>
           <div class="form-group">
-            <label class="form-label" for="email">Email</label>
+            <label class="form-label" for="username">Username</label>
             <input
-              type="email"
-              id="email"
-              class="form-control"
-              placeholder=""
+              type="text"
+              id="username"
+              class="form-control-login"
+              autocomplete="username"
             />
           </div>
 
@@ -189,17 +354,158 @@
             <input
               type="password"
               id="password"
-              class="form-control"
-              placeholder=""
+              class="form-control-login"
+              autocomplete="current-password"
             />
           </div>
 
           <a href="#" class="forgot-link">Forgot password?</a>
 
-          <button type="submit" class="login-btn">Login</button>
-
+          <button type="submit" class="login-submit-btn" id="loginBtn">
+            <span id="btnText">Login</span>
+            <div class="spinner" id="btnSpinner"></div>
+          </button>
         </form>
       </div>
     </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../lib/wow/wow.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/notif-bell.js"></script>
+
+    <script>
+      const SUPABASE_URL = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      const form = document.getElementById("loginForm");
+      const usernameInput = document.getElementById("username");
+      const passInput = document.getElementById("password");
+      const loginBtn = document.getElementById("loginBtn");
+      const btnText = document.getElementById("btnText");
+      const btnSpinner = document.getElementById("btnSpinner");
+      const alertError = document.getElementById("alertError");
+      const alertSuccess = document.getElementById("alertSuccess");
+
+      function showError(msg) {
+        alertError.textContent = msg;
+        alertError.classList.add("show");
+        alertSuccess.classList.remove("show");
+      }
+
+      function showSuccess(msg) {
+        alertSuccess.textContent = msg;
+        alertSuccess.classList.add("show");
+        alertError.classList.remove("show");
+      }
+
+      function hideAlerts() {
+        alertError.classList.remove("show");
+        alertSuccess.classList.remove("show");
+      }
+
+      function setLoading(loading) {
+        loginBtn.disabled = loading;
+        btnText.textContent = loading ? "Logging in..." : "Login";
+        loading
+          ? btnSpinner.classList.add("show")
+          : btnSpinner.classList.remove("show");
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        hideAlerts();
+
+        const username = usernameInput.value.trim();
+        const password = passInput.value;
+
+        if (!username) {
+          showError("Username tidak boleh kosong.");
+          usernameInput.focus();
+          return;
+        }
+        if (!password) {
+          showError("Password tidak boleh kosong.");
+          passInput.focus();
+          return;
+        }
+
+        setLoading(true);
+
+        try {
+          const res = await fetch(
+            `${SUPABASE_URL}/functions/v1/CRUD/auth/login`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${SUPABASE_ANON}`,
+              },
+              body: JSON.stringify({ username, password }),
+            },
+          );
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            showError(data.error || "Login gagal. Coba lagi.");
+            setLoading(false);
+            return;
+          }
+
+          // Simpan ke localStorage
+          localStorage.setItem("access_token", data.access_token);
+          localStorage.setItem("refresh_token", data.refresh_token);
+          localStorage.setItem("expires_at", String(data.expires_at));
+          localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("username", username);
+
+          // Ambil role dari tabel users → roles via Supabase REST API (join)
+          let userRole = "user"; // default
+          try {
+            const userId = data.user?.id;
+            if (userId) {
+              // Supabase REST API join: users + roles table via FK role_id
+              // Join users + roles via FK role_id → roles.id
+              const roleRes = await fetch(
+                `${SUPABASE_URL}/rest/v1/users?id=eq.${userId}&select=role_id,roles!role_id(role_name)`,
+                {
+                  headers: {
+                    "apikey": SUPABASE_ANON,
+                    "Authorization": `Bearer ${data.access_token}`,
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+              if (roleRes.ok) {
+                const roleData = await roleRes.json();
+                console.log("User role data:", roleData); // debug
+                const row = roleData?.[0];
+                if (row?.roles?.role_name) {
+                  userRole = row.roles.role_name;
+                }
+              }
+            }
+          } catch (roleErr) {
+            console.warn("Gagal ambil role:", roleErr);
+          }
+
+          localStorage.setItem("role", userRole);
+
+          showSuccess("Login berhasil! Mengalihkan...");
+
+          setTimeout(() => {
+            window.location.href = "../home_user.html";
+          }, 1000);
+        } catch (err) {
+          showError("Terjadi kesalahan. Periksa koneksi internet kamu.");
+          console.error("Login error:", err);
+          setLoading(false);
+        }
+      });
+    </script>
   </body>
 </html>

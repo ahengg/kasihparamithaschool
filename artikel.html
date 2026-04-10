@@ -28,7 +28,7 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet" />
 
-    <!-- Custom Fonts Stylesheet - IMPORTANT: Load this AFTER style.css -->
+    <!-- Custom Fonts Stylesheet -->
     <link href="css/fonts.css" rel="stylesheet" />
 
     <style>
@@ -41,12 +41,11 @@
         font-size: 12px;
         font-weight: 600;
       }
-
       .login-btn:hover {
         color: #fff;
         background: #7f6546;
       }
-      
+
       .artikel-page-section {
         padding: 60px 0 80px;
       }
@@ -69,7 +68,6 @@
         text-decoration: none;
         color: inherit;
       }
-
       .artikel-link:hover {
         text-decoration: none;
         color: inherit;
@@ -82,10 +80,11 @@
         padding: 14px;
         margin-bottom: 24px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
         cursor: pointer;
       }
-
       .artikel-item:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
@@ -98,18 +97,29 @@
         display: block;
         border: 1px solid #d9d9d9;
       }
+      .artikel-thumb-placeholder {
+        width: 100%;
+        height: 360px;
+        background: linear-gradient(135deg, #ffa726 0%, #56ccf2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #d9d9d9;
+      }
+      .artikel-thumb-placeholder i {
+        font-size: 4rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
 
       .artikel-content {
         padding: 12px 6px 4px;
       }
-
       .artikel-content h5 {
         font-size: 1.1rem;
         font-weight: 700;
         margin-bottom: 8px;
         color: #111;
       }
-
       .artikel-content p {
         margin-bottom: 0;
         font-size: 0.95rem;
@@ -117,6 +127,7 @@
         color: #8b6d4f;
       }
 
+      /* Pagination */
       .custom-pagination {
         display: flex;
         justify-content: center;
@@ -125,7 +136,6 @@
         margin-top: 28px;
         flex-wrap: wrap;
       }
-
       .pagination-btn {
         min-width: 28px;
         height: 28px;
@@ -142,44 +152,57 @@
         cursor: pointer;
         transition: 0.2s ease;
       }
-
       .pagination-btn:hover {
         background-color: #7f6546;
       }
-
       .pagination-btn.active {
         background-color: #6c5338;
       }
-
       .pagination-btn.disabled {
         opacity: 0.45;
         pointer-events: none;
       }
 
-      @media (max-width: 768px) {
-        .artikel-page-title {
-          font-size: 2.2rem;
+      /* Skeleton */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 4px;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
         }
-
-        .artikel-thumb {
-          height: 220px;
-        }
-
-        .artikel-content h5 {
-          font-size: 1rem;
-        }
-
-        .artikel-content p {
-          font-size: 0.88rem;
+        100% {
+          background-position: -200% 0;
         }
       }
-      
+      .skeleton-thumb {
+        width: 100%;
+        height: 360px;
+        border-radius: 0;
+        display: block;
+      }
+      .skeleton-line {
+        height: 14px;
+        margin-bottom: 8px;
+        border-radius: 4px;
+      }
+      .skeleton-short {
+        width: 55%;
+      }
+
       .notif-link,
       .notif-link i,
       .notif-link::after {
         color: #9a7b55 !important;
       }
-
       .notif-link:hover,
       .notif-link:hover i,
       .notif-link:hover::after,
@@ -187,6 +210,23 @@
       .notif-link:focus i,
       .notif-link:focus::after {
         color: #5b9bd5 !important;
+      }
+
+      @media (max-width: 768px) {
+        .artikel-page-title {
+          font-size: 2.2rem;
+        }
+        .artikel-thumb,
+        .artikel-thumb-placeholder,
+        .skeleton-thumb {
+          height: 220px;
+        }
+        .artikel-content h5 {
+          font-size: 1rem;
+        }
+        .artikel-content p {
+          font-size: 0.88rem;
+        }
       }
     </style>
   </head>
@@ -209,7 +249,6 @@
             />
           </div>
         </a>
-
         <div class="nav-item dropdown">
           <a
             href="#"
@@ -219,11 +258,12 @@
           >
             <i class="bi bi-bell"></i>
           </a>
-          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+          <div
+            class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
+          >
             <a href="artikel.html" class="dropdown-item">Article</a>
           </div>
         </div>
-
         <button
           type="button"
           class="navbar-toggler"
@@ -232,7 +272,6 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <div class="navbar-nav mx-auto">
             <a href="index.html" class="nav-item nav-link">Home</a>
@@ -259,7 +298,9 @@
               </div>
             </div>
             <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-            <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="kalenderakademik.html" class="nav-item nav-link"
+              >Academic Calendar</a
+            >
             <a href="testimonial.html" class="nav-item nav-link">Testimonies</a>
           </div>
           <a href="login/login.html" class="login-btn">Login</a>
@@ -267,147 +308,184 @@
       </nav>
       <!-- Navbar End -->
 
-      <!-- Artikel Page Start -->
+      <!-- Artikel Page -->
       <div class="container artikel-page-section">
         <div class="artikel-list-wrapper">
           <h1 class="artikel-page-title">Our Event!</h1>
 
-          <div id="artikelContainer"></div>
+          <!-- List injected by JS -->
+          <div id="artikelContainer">
+            <!-- Skeleton while loading -->
+            <div class="artikel-item">
+              <div class="skeleton skeleton-thumb"></div>
+              <div class="artikel-content">
+                <div class="skeleton skeleton-line skeleton-short"></div>
+                <div class="skeleton skeleton-line"></div>
+              </div>
+            </div>
+            <div class="artikel-item">
+              <div class="skeleton skeleton-thumb"></div>
+              <div class="artikel-content">
+                <div class="skeleton skeleton-line skeleton-short"></div>
+                <div class="skeleton skeleton-line"></div>
+              </div>
+            </div>
+            <div class="artikel-item">
+              <div class="skeleton skeleton-thumb"></div>
+              <div class="artikel-content">
+                <div class="skeleton skeleton-line skeleton-short"></div>
+                <div class="skeleton skeleton-line"></div>
+              </div>
+            </div>
+          </div>
+
           <div id="pagination" class="custom-pagination"></div>
         </div>
       </div>
       <!-- Artikel Page End -->
     </div>
 
-    <script>
-      const articles = [
-        {
-          title: "Painting class",
-          description:
-            "Helping kids learn colors, textures, and worlds of wonder through the laughter and bright imagination of our young artists.",
-          image: "img/artikel.jpg",
-          link: "artikel_form.html?id=1"
-        },
-        {
-          title: "Art Exploration Day",
-          description:
-            "Children explore creativity through guided painting activities and fun collaborative projects.",
-          image: "img/artikel.jpg",
-          link: "artikel_form.html?id=2"
-        },
-        {
-          title: "Creative Canvas Session",
-          description:
-            "A joyful event where students express ideas and emotions through colors, shapes, and imagination.",
-          image: "img/artikel.jpg",
-          link: "artikel_form.html?id=3"
-        },
-        {
-          title: "Little Artist Workshop",
-          description:
-            "Encouraging confidence, focus, and creativity through hands-on artistic activities.",
-          image: "img/artikel.jpg",
-          link: "artikel_form.html?id=4"
-        },
-        {
-          title: "Fun With Colors",
-          description:
-            "Students learn basic color theory and composition in a playful classroom atmosphere.",
-          image: "img/artikel.jpg",
-          link: "artikel_form.html?id=5"
-        },
-        {
-          title: "Young Painter Showcase",
-          description:
-            "A class event featuring the children's artwork and their unique visual storytelling.",
-          image: "img/artikel.jpg",
-          link: "artikel_form.html?id=6"
-        },
-        {
-          title: "School Art Celebration",
-          description:
-            "Celebrating creativity and collaboration through school-wide art appreciation activities.",
-          image: "img/artikel.jpg",
-          link: "artikel_form.html?id=7"
-        },
-        {
-          title: "Outdoor Sketch Activity",
-          description:
-            "Students observe the environment and turn their ideas into beautiful sketches and paintings.",
-          image: "img/artikel.jpg",
-          link: "artikel_form.html?id=8"
-        }
-      ];
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth-navbar.js"></script>
+    <script src="js/notif-bell.js"></script>
 
-      const itemsPerPage = 6;
+    <script>
+      const SUPABASE_URL = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      const ITEMS_PER_PAGE = 6;
       let currentPage = 1;
+      let allArticles = [];
+
+      function truncate(text, max) {
+        const plain = text.replace(/<[^>]*>/g, "");
+        return plain.length > max ? plain.substring(0, max) + "..." : plain;
+      }
 
       function renderArticles() {
-        const artikelContainer = document.getElementById("artikelContainer");
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const paginatedArticles = articles.slice(start, end);
+        const container = document.getElementById("artikelContainer");
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const page = allArticles.slice(start, end);
 
-        artikelContainer.innerHTML = paginatedArticles
-          .map(
-            (article) => `
-              <a href="${article.link}" class="artikel-link">
-                <div class="artikel-item">
-                  <img src="${article.image}" alt="${article.title}" class="artikel-thumb" />
-                  <div class="artikel-content">
-                    <h5>${article.title}</h5>
-                    <p>${article.description}</p>
-                  </div>
+        if (page.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-journal-x" style="font-size:3rem;display:block;margin-bottom:12px;"></i>
+              <p>Belum ada event. Pantau terus!</p>
+            </div>`;
+          return;
+        }
+
+        const userRole = localStorage.getItem("role") || "";
+        const canEdit = userRole === "editor" || userRole === "admin";
+
+        container.innerHTML = page
+          .map((article) => {
+            const title = escapeHtml(article.title || "Untitled");
+            const content = article.content || "";
+            const excerpt = escapeHtml(truncate(content, 160));
+            const image = article.image_link || "";
+            const id = article.id || "";
+
+            const imgSrc = escapeHtml(image || "assetkps/Home/JAV_9935.jpg");
+            const imgHtml = `<img src="${imgSrc}" alt="${title}" class="artikel-thumb" onerror="this.src='assetkps/Home/JAV_9935.jpg'" />`;
+
+            const editBtn = canEdit
+              ? `<a href="admin/edit_article.html?id=${id}"
+                   onclick="event.stopPropagation();"
+                   style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#fff;background:#9a7b55;padding:5px 12px;border-radius:5px;text-decoration:none;">
+                   <i class="bi bi-pencil-fill"></i> Edit
+                 </a>`
+              : "";
+
+            return `
+            <div class="artikel-item" style="cursor:pointer;">
+              <a href="artikel_form.html?id=${id}" class="artikel-link">
+                ${imgHtml}
+                <div class="artikel-content">
+                  <h5>${title}</h5>
+                  <p>${excerpt}</p>
                 </div>
               </a>
-            `
-          )
+              ${canEdit ? `<div style="padding:8px 6px 4px;display:flex;justify-content:flex-end;">${editBtn}</div>` : ""}
+            </div>`;
+          })
           .join("");
       }
 
       function renderPagination() {
         const pagination = document.getElementById("pagination");
-        const totalPages = Math.ceil(articles.length / itemsPerPage);
+        const totalPages = Math.ceil(allArticles.length / ITEMS_PER_PAGE);
 
-        let buttons = "";
+        if (totalPages <= 1) {
+          pagination.innerHTML = "";
+          return;
+        }
 
-        buttons += `
-          <button class="pagination-btn ${currentPage === 1 ? "disabled" : ""}" onclick="changePage(${currentPage - 1})">
-            &lt;
-          </button>
-        `;
+        let buttons = `
+          <button class="pagination-btn ${currentPage === 1 ? "disabled" : ""}"
+            onclick="changePage(${currentPage - 1})">&lt;</button>`;
 
         for (let i = 1; i <= totalPages; i++) {
           buttons += `
-            <button class="pagination-btn ${currentPage === i ? "active" : ""}" onclick="changePage(${i})">
-              ${i}
-            </button>
-          `;
+            <button class="pagination-btn ${currentPage === i ? "active" : ""}"
+              onclick="changePage(${i})">${i}</button>`;
         }
 
         buttons += `
-          <button class="pagination-btn ${currentPage === totalPages ? "disabled" : ""}" onclick="changePage(${currentPage + 1})">
-            &gt;
-          </button>
-        `;
+          <button class="pagination-btn ${currentPage === totalPages ? "disabled" : ""}"
+            onclick="changePage(${currentPage + 1})">&gt;</button>`;
 
         pagination.innerHTML = buttons;
       }
 
       function changePage(page) {
-        const totalPages = Math.ceil(articles.length / itemsPerPage);
+        const totalPages = Math.ceil(allArticles.length / ITEMS_PER_PAGE);
         if (page < 1 || page > totalPages) return;
-
         currentPage = page;
         renderArticles();
         renderPagination();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      renderArticles();
-      renderPagination();
-    </script>
+      async function loadArticles() {
+        try {
+          const res = await fetch(
+            `${SUPABASE_URL}/functions/v1/CRUD/articles`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${SUPABASE_ANON}`,
+              },
+            },
+          );
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+          const json = await res.json();
+          allArticles = json.data || [];
+          renderArticles();
+          renderPagination();
+        } catch (err) {
+          document.getElementById("artikelContainer").innerHTML = `
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-exclamation-circle" style="font-size:3rem;display:block;margin-bottom:12px;"></i>
+              <p>Gagal memuat artikel. Coba lagi nanti.</p>
+            </div>`;
+          console.error("Fetch error:", err);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadArticles);
+    </script>
   </body>
 </html>

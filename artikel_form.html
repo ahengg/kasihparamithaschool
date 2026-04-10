@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Painting Class - Kasih Paramitha School</title>
+    <title>Artikel - Kasih Paramitha School</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -37,7 +37,7 @@
       body {
         background: #f4bc00;
       }
-      
+
       .login-btn {
         background: #9a7b55;
         color: #fff;
@@ -58,6 +58,17 @@
         height: 430px;
         object-fit: cover;
         display: block;
+      }
+
+      .artikel-hero-placeholder {
+        width: 100%;
+        height: 430px;
+        background: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: #aaa;
       }
 
       .artikel-detail-section {
@@ -107,6 +118,9 @@
         overflow: hidden;
         background: #fff;
         height: 100%;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
       }
 
       .recommend-card img {
@@ -114,6 +128,17 @@
         height: 165px;
         object-fit: cover;
         display: block;
+      }
+
+      .recommend-card-placeholder {
+        width: 100%;
+        height: 165px;
+        background: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #aaa;
       }
 
       .recommend-card-body {
@@ -125,11 +150,10 @@
         font-weight: 700;
         color: #000;
         margin-bottom: 4px;
-        text-decoration: none;
         display: inline-block;
       }
 
-      .recommend-card-title:hover {
+      .recommend-card:hover .recommend-card-title {
         color: #9a7b55;
       }
 
@@ -144,20 +168,36 @@
         height: 40px;
       }
 
+      /* Loading skeleton */
+      .skeleton {
+        background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+        border-radius: 4px;
+      }
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      .error-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: #c62828;
+      }
+
       @media (max-width: 991.98px) {
         .artikel-detail-section {
           padding: 30px 25px 40px;
         }
-
         .artikel-title {
           font-size: 36px;
         }
-
         .recommendation-title {
           font-size: 32px;
         }
-
-        .artikel-hero img {
+        .artikel-hero img,
+        .artikel-hero-placeholder {
           height: 300px;
         }
       }
@@ -166,20 +206,18 @@
         .artikel-title {
           font-size: 30px;
         }
-
         .recommendation-title {
           font-size: 28px;
         }
-
         .artikel-content {
           font-size: 14px;
         }
-
-        .artikel-hero img {
+        .artikel-hero img,
+        .artikel-hero-placeholder {
           height: 240px;
         }
       }
-      
+
       .notif-link,
       .notif-link i,
       .notif-link::after {
@@ -256,25 +294,14 @@
               <div
                 class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
               >
-                <a href="facility.html#school-section" class="dropdown-item">
-                  School
-                </a>
-                <a
-                  href="facility.html#afterschool-section"
-                  class="dropdown-item"
-                >
-                  After-School Programme
-                </a>
+                <a href="facility.html#school-section" class="dropdown-item">School</a>
+                <a href="facility.html#afterschool-section" class="dropdown-item">After-School Programme</a>
               </div>
             </div>
 
             <a href="contact.html" class="nav-item nav-link">Contact Us</a>
-            <a href="kalenderakademik.html" class="nav-item nav-link">
-              Academic Calendar
-            </a>
-            <a href="testimonial.html" class="nav-item nav-link">
-              Testimonies
-            </a>
+            <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="testimonial.html" class="nav-item nav-link">Testimonies</a>
           </div>
 
           <a href="login/login.html" class="login-btn">Login</a>
@@ -283,94 +310,26 @@
       <!-- Navbar End -->
 
       <!-- Hero Image -->
-      <section class="artikel-hero">
-        <img src="img/artikel.jpg" alt="Painting Class" />
+      <section class="artikel-hero" id="artikelHero">
+        <div class="artikel-hero-placeholder skeleton"></div>
       </section>
 
       <!-- Article Detail -->
       <section class="artikel-detail-section">
         <div class="container-fluid p-0">
-          <h1 class="artikel-title">Painting Class</h1>
+          <h1 class="artikel-title skeleton" id="artikelTitle" style="min-height:60px;max-width:600px;">&nbsp;</h1>
 
-          <div class="artikel-content">
-            <p>
-              Our children had a wonderful time joining the painting class at
-              school. This activity was designed to help them explore colors,
-              shapes, and ideas in a fun and enjoyable way. With brushes, paint,
-              and paper in their hands, the children were free to express their
-              imagination and create their own unique artwork.
-            </p>
-
-            <p>
-              Through the painting class, the children learned more than just
-              how to paint. They also practiced focus, patience, and confidence
-              while developing their fine motor skills. Each child was
-              encouraged to be creative, try new color combinations, and proudly
-              share their work with teachers and friends.
-            </p>
-
-            <p>
-              Painting class is one of the meaningful learning activities in our
-              kindergarten and preschool program because it supports both
-              creativity and early childhood development. We are happy to see
-              the children so excited, engaged, and proud of their creations.
-              Activities like this help make learning more joyful, colorful, and
-              memorable for every child.
-            </p>
+          <div class="artikel-content" id="artikelContent">
+            <p class="skeleton" style="height:18px;margin-bottom:10px;">&nbsp;</p>
+            <p class="skeleton" style="height:18px;margin-bottom:10px;max-width:80%;">&nbsp;</p>
+            <p class="skeleton" style="height:18px;max-width:60%;">&nbsp;</p>
           </div>
 
           <!-- Recommendation -->
           <div class="recommendation-box">
             <h2 class="recommendation-title">Recommendation</h2>
-
-            <div class="row g-4">
-              <div class="col-md-4">
-                <div class="recommend-card">
-                  <img src="img/artikel.jpg" alt="Painting class" />
-                  <div class="recommend-card-body">
-                    <a href="artikel_form.html?id=1" class="recommend-card-title">
-                      Painting class
-                    </a>
-                    <p class="recommend-card-desc">
-                      Watch as blank canvases transform into worlds of wonder
-                      through the laughter and bright imagination of our young
-                      artists.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="recommend-card">
-                  <img src="img/artikel.jpg" alt="Painting class" />
-                  <div class="recommend-card-body">
-                    <a href="artikel_form.html?id=2" class="recommend-card-title">
-                      Painting class
-                    </a>
-                    <p class="recommend-card-desc">
-                      Watch as blank canvases transform into worlds of wonder
-                      through the laughter and bright imagination of our young
-                      artists.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="recommend-card">
-                  <img src="img/artikel.jpg" alt="Painting class" />
-                  <div class="recommend-card-body">
-                    <a href="artikel_form.html?id=3" class="recommend-card-title">
-                      Painting class
-                    </a>
-                    <p class="recommend-card-desc">
-                      Watch as blank canvases transform into worlds of wonder
-                      through the laughter and bright imagination of our young
-                      artists.
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div class="row g-4" id="recommendContainer">
+              <!-- filled by JS -->
             </div>
           </div>
 
@@ -391,8 +350,129 @@
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth-navbar.js"></script>
+    <script src="js/notif-bell.js"></script>
+
+    <script>
+      const SUPABASE_URL = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      function truncate(text, max) {
+        const plain = text.replace(/<[^>]*>/g, "");
+        return plain.length > max ? plain.substring(0, max) + "..." : plain;
+      }
+
+      function renderHero(imageUrl, title) {
+        const hero = document.getElementById("artikelHero");
+        const src = escapeHtml(imageUrl || "assetkps/Home/JAV_9935.jpg");
+        hero.innerHTML = `<img src="${src}" alt="${escapeHtml(title)}" onerror="this.src='assetkps/Home/JAV_9935.jpg'" />`;
+      }
+
+      function renderArticle(article) {
+        const title = article.title || "Untitled";
+        const content = article.content || "<p>Tidak ada konten.</p>";
+
+        document.title = `${title} - Kasih Paramitha School`;
+
+        const titleEl = document.getElementById("artikelTitle");
+        titleEl.classList.remove("skeleton");
+        titleEl.style.minHeight = "";
+        titleEl.style.maxWidth = "";
+        titleEl.textContent = title;
+
+        const contentEl = document.getElementById("artikelContent");
+        contentEl.classList.remove("skeleton");
+        // Render as HTML if content has tags, otherwise wrap in <p>
+        if (/<[a-z][\s\S]*>/i.test(content)) {
+          contentEl.innerHTML = content;
+        } else {
+          contentEl.innerHTML = content
+            .split(/\n\n+/)
+            .map((p) => `<p>${p.trim()}</p>`)
+            .join("");
+        }
+
+        renderHero(article.image_link || "", title);
+      }
+
+      function renderRecommendations(articles, currentId) {
+        const container = document.getElementById("recommendContainer");
+        const others = articles
+          .filter((a) => String(a.id) !== String(currentId))
+          .slice(0, 3);
+
+        if (others.length === 0) {
+          container.innerHTML = `<div class="col-12 text-center text-muted py-3"><p>Tidak ada artikel lain.</p></div>`;
+          return;
+        }
+
+        container.innerHTML = others
+          .map((a) => {
+            const title = a.title || "Untitled";
+            const desc = truncate(a.content || "", 120);
+            const recSrc = a.image_link || "assetkps/Home/JAV_9935.jpg";
+            const img = `<img src="${recSrc}" alt="${title}" onerror="this.src='assetkps/Home/JAV_9935.jpg'" />`;
+
+            return `
+              <div class="col-md-4">
+                <a href="artikel_form.html?id=${a.id}" class="recommend-card">
+                  ${img}
+                  <div class="recommend-card-body">
+                    <span class="recommend-card-title">${title}</span>
+                    <p class="recommend-card-desc">${desc}</p>
+                  </div>
+                </a>
+              </div>`;
+          })
+          .join("");
+      }
+
+      async function loadPage() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+
+        if (!id) {
+          document.getElementById("artikelTitle").textContent = "Artikel tidak ditemukan.";
+          document.getElementById("artikelContent").innerHTML = `<p>Tidak ada ID artikel yang diberikan. <a href="artikel.html">Kembali ke daftar artikel</a>.</p>`;
+          document.getElementById("artikelHero").innerHTML = `<div class="artikel-hero-placeholder"><i class="bi bi-exclamation-circle"></i></div>`;
+          return;
+        }
+
+        try {
+          // Fetch all articles (to get current + recommendations in one request)
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${SUPABASE_ANON}`,
+            },
+          });
+
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+          const json = await res.json();
+          const allArticles = json.data || [];
+
+          const article = allArticles.find((a) => String(a.id) === String(id));
+
+          if (!article) {
+            document.getElementById("artikelTitle").textContent = "Artikel tidak ditemukan.";
+            document.getElementById("artikelContent").innerHTML = `<p>Artikel dengan ID ini tidak ada. <a href="artikel.html">Kembali ke daftar artikel</a>.</p>`;
+            document.getElementById("artikelHero").innerHTML = `<div class="artikel-hero-placeholder"><i class="bi bi-exclamation-circle"></i></div>`;
+            return;
+          }
+
+          renderArticle(article);
+          renderRecommendations(allArticles, id);
+        } catch (err) {
+          document.getElementById("artikelTitle").textContent = "Gagal memuat artikel.";
+          document.getElementById("artikelContent").innerHTML = `<p>Terjadi kesalahan. Coba lagi nanti.</p>`;
+          console.error("Load error:", err);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadPage);
+    </script>
   </body>
 </html>

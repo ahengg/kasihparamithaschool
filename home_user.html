@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Home - Kasih Paramitha School</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <!-- Icon Font Stylesheet -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link href="css/fonts.css" rel="stylesheet" />
+
+    <style>
+      :root {
+        --gold: #f6bf00;
+        --brown: #9a7b55;
+        --brown-dark: #7f6546;
+        --blue: #5b9bd5;
+        --text: #3d3d3d;
+        --bg: #f7f4ef;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg) !important;
+        font-family: "Montserrat", sans-serif;
+        color: var(--text);
+      }
+
+      .main-content {
+        background: var(--bg) !important;
+      }
+
+      /* ── Standard Navbar overrides ── */
+      .navbar.sticky-top {
+        top: 0 !important;
+        transition: none !important;
+      }
+
+      .notif-link,
+      .notif-link i,
+      .notif-link::after {
+        color: #9a7b55 !important;
+      }
+
+      .notif-link:hover,
+      .notif-link:hover i,
+      .notif-link:hover::after,
+      .notif-link:focus,
+      .notif-link:focus i,
+      .notif-link:focus::after {
+        color: #5b9bd5 !important;
+      }
+
+
+
+      .login-btn {
+        background: #9a7b55;
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .login-btn:hover {
+        color: #fff;
+        background: #7f6546;
+      }
+
+      .logout-btn {
+        background: transparent;
+        border: 1.5px solid var(--brown);
+        color: var(--brown);
+        padding: 5px 16px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .logout-btn:hover {
+        background: var(--brown);
+        color: #fff;
+      }
+
+      /* ── Hero Banner ── */
+      .hero-banner {
+        background: linear-gradient(120deg, #fff 0%, #fff 55%, #fdf3cc 55%, #fdf3cc 100%);
+        border-bottom: 4px solid var(--gold);
+        padding: 44px 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-text {
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-text .greeting {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--brown);
+        margin-bottom: 8px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .hero-text h1 {
+        font-size: 38px;
+        font-weight: 700;
+        color: var(--brown-dark);
+        margin: 0 0 10px;
+        line-height: 1.2;
+      }
+
+      .hero-text h1 span {
+        color: var(--brown);
+        border-bottom: 3px solid var(--gold);
+        padding-bottom: 2px;
+      }
+
+      .hero-text p {
+        font-size: 14px;
+        color: #888;
+        margin: 0;
+      }
+
+      .hero-logo {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .hero-logo img {
+        height: 72px;
+        width: auto;
+        filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+      }
+
+      /* ── Main content ── */
+      .main-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 36px 24px 60px;
+      }
+
+      /* ── Section header ── */
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 22px;
+      }
+
+      .section-header h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--brown);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section-header h2 i {
+        color: var(--gold);
+        font-size: 20px;
+      }
+
+      .section-header a {
+        font-size: 13px;
+        color: var(--blue);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .section-header a:hover {
+        text-decoration: underline;
+      }
+
+      /* ── Announcement cards ── */
+      .announcement-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .ann-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1.5px solid transparent;
+      }
+
+      .ann-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        border-color: var(--gold);
+        color: inherit;
+      }
+
+      .ann-card-img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+        background: #f0e8d8;
+      }
+
+      .ann-card-img-placeholder {
+        width: 100%;
+        height: 180px;
+        background: linear-gradient(135deg, #f0e8d8, #ffe9b0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: var(--gold);
+      }
+
+      .ann-card-body {
+        padding: 16px 18px 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .ann-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--brown);
+        background: #f5ece0;
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        width: fit-content;
+      }
+
+      .ann-card-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 8px;
+        line-height: 1.4;
+        flex: 1;
+      }
+
+      .ann-card-desc {
+        font-size: 12px;
+        color: #777;
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .ann-card-footer {
+        padding: 10px 18px;
+        border-top: 1px solid #f0ece6;
+        font-size: 11px;
+        color: var(--blue);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* ── New badge for latest ── */
+      .ann-card.is-new {
+        border-color: var(--gold);
+      }
+
+      .new-pill {
+        background: var(--gold);
+        color: var(--brown-dark);
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      /* ── Materi section ── */
+      .materi-section { margin-top: 48px; }
+
+      .materi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 16px;
+      }
+
+      .materi-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+        color: inherit;
+        border: 1.5px solid transparent;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      }
+      .materi-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+        border-color: var(--blue);
+        color: inherit;
+      }
+
+      .materi-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .materi-icon.pdf  { background: linear-gradient(135deg, #e53935, #c62828); }
+      .materi-icon.doc  { background: linear-gradient(135deg, #1e88e5, #1565c0); }
+      .materi-icon.ppt  { background: linear-gradient(135deg, #fb8c00, #e65100); }
+      .materi-icon.xls  { background: linear-gradient(135deg, #43a047, #2e7d32); }
+      .materi-icon.file { background: linear-gradient(135deg, #78909c, #546e7a); }
+
+      .materi-info { flex: 1; min-width: 0; }
+      .materi-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+      }
+      .materi-meta { font-size: 11px; color: #888; }
+
+      .materi-download-icon {
+        color: var(--blue);
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      /* ── Empty / error state ── */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #aaa;
+        background: #fff;
+        border-radius: 12px;
+        grid-column: 1/-1;
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      /* ── Skeleton ── */
+      .skeleton {
+        background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+        border-radius: 8px;
+      }
+
+      @keyframes shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      .skeleton-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      }
+
+      .skeleton-img {
+        width: 100%;
+        height: 180px;
+      }
+
+      .skeleton-body {
+        padding: 16px 18px;
+      }
+
+      .skeleton-line {
+        height: 14px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+      }
+
+      /* ── Action button group ── */
+      .action-btn-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      /* Admin action buttons */
+      .admin-action-btn {
+        display: none;
+        align-items: center;
+        gap: 6px;
+        color: #fff !important;
+        text-decoration: none;
+        padding: 7px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: 0.2s;
+      }
+      .admin-action-btn:hover { opacity: 0.88; color: #fff !important; }
+      .admin-action-btn.btn-red    { background: #e53935; }
+      .admin-action-btn.btn-brown  { background: #9a7b55; }
+      .admin-action-btn.btn-blue   { background: #5b9bd5; }
+
+      @media (max-width: 768px) {
+        .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .action-btn-group { width: 100%; }
+        .announcement-grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      @media (max-width: 520px) {
+        .hero-banner { padding: 28px 20px 24px; background: linear-gradient(180deg, #fff 0%, #fdf3cc 100%); }
+        .hero-text h1 { font-size: 26px; }
+        .hero-logo { display: none; }
+        .main-content { padding: 20px 14px 48px; }
+        .admin-action-btn { font-size: 11px; padding: 6px 10px; flex: 1; justify-content: center; }
+        .action-btn-group { gap: 6px; }
+        .announcement-grid { grid-template-columns: 1fr; }
+        .materi-grid { grid-template-columns: 1fr; }
+        .section-header h2 { font-size: 18px; }
+        /* Improve readability on small screens */
+        .ann-card-title { font-size: 14px; }
+        .ann-card-desc { font-size: 13px; color: #666; }
+        .materi-title { font-size: 13px; white-space: normal; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar Start -->
+    <div class="w-100 bg-white p-0">
+      <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+        <a href="index.html" class="navbar-brand">
+          <div class="logo-container">
+            <img src="assetkps/Logo/Logo Yayasan.png" alt="Vidya Parahita Foundation" />
+            <img src="assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School" />
+          </div>
+        </a>
+
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle notif-link" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="artikel.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>
+
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <a href="home_user.html" class="nav-item nav-link active">Home</a>
+            <a href="about.html" class="nav-item nav-link">About Us</a>
+            <a href="classes.html" class="nav-item nav-link">Gallery</a>
+            <div class="nav-item dropdown">
+              <a href="facility.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Program</a>
+              <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+                <a href="facility.html#school-section" class="dropdown-item">School</a>
+                <a href="facility.html#afterschool-section" class="dropdown-item">After-School Programme</a>
+              </div>
+            </div>
+            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="testimonial.html" class="nav-item nav-link">Testimonies</a>
+          </div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </div>
+      </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-text">
+        <p class="greeting"><i class="bi bi-stars me-1"></i>Selamat Datang</p>
+        <h1>Hello, <span id="usernameDisplay">...</span>!</h1>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+          <span id="roleBadge" style="display:inline-block;color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:0.05em;text-transform:uppercase;"></span>
+          <p style="margin:0;font-size:14px;color:#888;">Kasih Paramitha School</p>
+        </div>
+      </div>
+      <div class="hero-logo">
+        <img src="assetkps/Logo/Logo Yayasan.png" alt="" />
+        <img src="assetkps/Logo/LogoKasihParamitha.png" alt="" />
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="section-header">
+        <h2><i class="bi bi-bell-fill"></i> Pengumuman Terbaru</h2>
+        <div class="action-btn-group">
+          <a id="addUserBtn" href="admin/manage_users.html" class="admin-action-btn btn-red">
+            <i class="bi bi-people-fill"></i> Manage Users
+          </a>
+          <a id="addArticleBtn" href="admin/add_article.html" class="admin-action-btn btn-brown">
+            <i class="bi bi-plus-circle-fill"></i> Add Article
+          </a>
+          <a id="uploadMateriBtn" href="admin/upload_materi.html" class="admin-action-btn btn-blue">
+            <i class="bi bi-cloud-arrow-up-fill"></i> Upload Materi
+          </a>
+          <a href="artikel.html" style="font-size:13px;color:#5b9bd5;text-decoration:none;font-weight:500;white-space:nowrap;">
+            Lihat semua <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div id="announcementGrid" class="announcement-grid">
+        <!-- Skeletons while loading -->
+        <div class="skeleton-card">
+          <div class="skeleton skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton skeleton-line" style="width:40%;"></div>
+            <div class="skeleton skeleton-line" style="width:90%;"></div>
+            <div class="skeleton skeleton-line" style="width:70%;"></div>
+          </div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton skeleton-line" style="width:40%;"></div>
+            <div class="skeleton skeleton-line" style="width:90%;"></div>
+            <div class="skeleton skeleton-line" style="width:70%;"></div>
+          </div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton skeleton-img"></div>
+          <div class="skeleton-body">
+            <div class="skeleton skeleton-line" style="width:40%;"></div>
+            <div class="skeleton skeleton-line" style="width:90%;"></div>
+            <div class="skeleton skeleton-line" style="width:70%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Materi Sekolah Section -->
+      <div class="materi-section">
+        <div class="section-header">
+          <h2><i class="bi bi-folder2-open"></i> Materi Sekolah</h2>
+          <a href="materi.html" style="font-size:13px;color:#5b9bd5;text-decoration:none;font-weight:500;">
+            Lihat semua <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+        <div class="materi-grid" id="materiGrid">
+          <div class="skeleton-card" style="padding:18px 20px;">
+            <div style="display:flex;gap:14px;align-items:center;">
+              <div class="skeleton" style="width:46px;height:46px;border-radius:10px;flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div class="skeleton skeleton-line" style="width:80%;height:12px;"></div>
+                <div class="skeleton skeleton-line" style="width:50%;height:10px;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="skeleton-card" style="padding:18px 20px;">
+            <div style="display:flex;gap:14px;align-items:center;">
+              <div class="skeleton" style="width:46px;height:46px;border-radius:10px;flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div class="skeleton skeleton-line" style="width:80%;height:12px;"></div>
+                <div class="skeleton skeleton-line" style="width:50%;height:10px;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="skeleton-card" style="padding:18px 20px;">
+            <div style="display:flex;gap:14px;align-items:center;">
+              <div class="skeleton" style="width:46px;height:46px;border-radius:10px;flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div class="skeleton skeleton-line" style="width:80%;height:12px;"></div>
+                <div class="skeleton skeleton-line" style="width:50%;height:10px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/notif-bell.js"></script>
+
+    <script>
+      const SUPABASE_URL = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      // ── Auth guard ──
+      const token = localStorage.getItem("access_token");
+      const username = localStorage.getItem("username");
+      const userRole = localStorage.getItem("role") || "parents";
+
+      if (!token || !username) {
+        window.location.href = "login/login.html";
+      }
+
+      document.getElementById("usernameDisplay").textContent = username;
+
+      // Show role badge
+      const roleBadge = document.getElementById("roleBadge");
+      const roleConfig = {
+        editor: { label: "Editor",  bg: "#5b9bd5" },
+        admin:  { label: "Admin",   bg: "#e53935" },
+        user:   { label: "User",    bg: "#9a7b55" },
+      };
+      const cfg = roleConfig[userRole] || { label: userRole, bg: "#aaa" };
+      roleBadge.textContent = cfg.label;
+      roleBadge.style.background = cfg.bg;
+
+      // Show Add Article button for editor & admin
+      if (userRole === "editor" || userRole === "admin") {
+        document.getElementById("addArticleBtn").style.display = "inline-flex";
+      }
+
+      // Show Upload Materi button for admin only
+      if (userRole === "admin" || userRole === "editor") {
+        document.getElementById("uploadMateriBtn").style.display = "inline-flex";
+      }
+
+      // Show Add User button for admin only
+      if (userRole === "admin") {
+        document.getElementById("addUserBtn").style.display = "inline-flex";
+      }
+
+      function logout() {
+        ["access_token","refresh_token","expires_at","user","username","role"]
+          .forEach(k => localStorage.removeItem(k));
+        window.location.href = "login/login.html";
+      }
+
+      // ── Token helpers ──
+      function isTokenExpired(token) {
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          return payload.exp * 1000 < Date.now() + 30000; // 30s buffer
+        } catch { return true; }
+      }
+
+      async function ensureValidToken() {
+        let tok = localStorage.getItem("access_token");
+        if (!tok || isTokenExpired(tok)) {
+          const refreshToken = localStorage.getItem("refresh_token");
+          if (!refreshToken) { logout(); return null; }
+
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/auth/refresh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+            body: JSON.stringify({ refresh_token: refreshToken }),
+          });
+
+          if (!res.ok) { logout(); return null; }
+
+          const data = await res.json();
+          localStorage.setItem("access_token", data.access_token);
+          localStorage.setItem("refresh_token", data.refresh_token);
+          localStorage.setItem("expires_at", String(data.expires_at));
+          tok = data.access_token;
+        }
+        return tok;
+      }
+
+      function truncate(text, max) {
+        const plain = text.replace(/<[^>]*>/g, "");
+        return plain.length > max ? plain.substring(0, max) + "..." : plain;
+      }
+
+      function renderAnnouncements(articles) {
+        const grid = document.getElementById("announcementGrid");
+
+        if (!articles || articles.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <i class="bi bi-journal-x"></i>
+              <p>Belum ada pengumuman. Pantau terus!</p>
+            </div>`;
+          return;
+        }
+
+        const canEdit = userRole === "editor" || userRole === "admin";
+
+        grid.innerHTML = articles
+          .map((a, index) => {
+            const title = escapeHtml(a.title || "Untitled");
+            const desc = escapeHtml(truncate(a.content || "", 130));
+            const isNew = index < 2;
+
+            const imgSrc = escapeHtml(a.image_link || "assetkps/Home/JAV_9935.jpg");
+            const imgHtml = `<img class="ann-card-img" src="${imgSrc}" alt="${title}"
+                onerror="this.src='assetkps/Home/JAV_9935.jpg'" />`;
+
+            const editBtn = canEdit
+              ? `<a href="admin/edit_article.html?id=${a.id}"
+                   onclick="event.stopPropagation();event.preventDefault();window.location.href='admin/edit_article.html?id=${a.id}'"
+                   style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#9a7b55;background:#f5ece0;border:1px solid #e0d4c0;padding:4px 10px;border-radius:5px;text-decoration:none;">
+                   <i class="bi bi-pencil-fill"></i> Edit
+                 </a>`
+              : "";
+
+            return `
+              <div class="ann-card ${isNew ? "is-new" : ""}" style="cursor:pointer;">
+                <a href="artikel_form.html?id=${a.id}" style="text-decoration:none;color:inherit;display:block;">
+                  ${imgHtml}
+                  <div class="ann-card-body">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                      <div class="ann-badge" style="margin-bottom:0;">
+                        <i class="bi bi-megaphone-fill"></i> Pengumuman
+                        ${isNew ? `<span class="new-pill ms-1">Baru</span>` : ""}
+                      </div>
+                      ${editBtn}
+                    </div>
+                    <div class="ann-card-title">${title}</div>
+                    <p class="ann-card-desc">${desc}</p>
+                  </div>
+                  <div class="ann-card-footer">
+                    <i class="bi bi-arrow-right-circle-fill"></i> Baca selengkapnya
+                  </div>
+                </a>
+              </div>`;
+          })
+          .join("");
+      }
+
+      async function loadAnnouncements() {
+        try {
+          // getArticles adalah public endpoint — pakai anon key, tidak perlu user JWT
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles`, {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${SUPABASE_ANON}`,
+              "apikey": SUPABASE_ANON,
+            },
+          });
+
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+          const json = await res.json();
+          renderAnnouncements(json.data || []);
+        } catch (err) {
+          document.getElementById("announcementGrid").innerHTML = `
+            <div class="empty-state">
+              <i class="bi bi-exclamation-circle" style="color:#c62828;"></i>
+              <p style="color:#c62828;">Gagal memuat pengumuman. Coba lagi nanti.</p>
+            </div>`;
+          console.error("Fetch error:", err);
+        }
+      }
+
+      // ── Materi Sekolah ──
+      function getFileIconClass(filename) {
+        if (!filename) return "file";
+        const ext = filename.split(".").pop().toLowerCase();
+        if (ext === "pdf") return "pdf";
+        if (["doc","docx"].includes(ext)) return "doc";
+        if (["ppt","pptx"].includes(ext)) return "ppt";
+        if (["xls","xlsx"].includes(ext)) return "xls";
+        return "file";
+      }
+
+      function getFileLabel(filename) {
+        if (!filename) return "FILE";
+        return filename.split(".").pop().toUpperCase();
+      }
+
+      async function loadMateri() {
+        try {
+          // For "user" role: fetch their category_id then filter materials
+          let categoryFilter = "";
+          if (userRole === "user") {
+            try {
+              const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
+              if (userId) {
+                const uRes = await fetch(
+                  `${SUPABASE_URL}/rest/v1/users?id=eq.${userId}&select=category_id`,
+                  { headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${SUPABASE_ANON}` } }
+                );
+                if (uRes.ok) {
+                  const rows = await uRes.json();
+                  const catId = rows[0]?.category_id;
+                  if (catId) {
+                    // Show materials from their class + uncategorized
+                    categoryFilter = `&or=(category_id.eq.${catId},category_id.is.null)`;
+                  }
+                }
+              }
+            } catch (_) {}
+          }
+
+          const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/materials?select=*,categories!category_id(name)&status=eq.published${categoryFilter}&order=created_at.desc&limit=6`,
+            { headers: { "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON } }
+          );
+
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const materials = await res.json();
+          const grid = document.getElementById("materiGrid");
+
+          if (!materials || materials.length === 0) {
+            grid.innerHTML = `
+              <div class="empty-state" style="grid-column:1/-1;">
+                <i class="bi bi-folder-x"></i>
+                <p>Belum ada materi untuk kelas Anda.</p>
+              </div>`;
+            return;
+          }
+
+          grid.innerHTML = materials.map(m => {
+            const iconCls   = getFileIconClass(m.file_name);
+            const iconLabel = getFileLabel(m.file_name);
+            const catName   = m.categories?.name || "";
+            return `
+              <a href="materi.html" class="materi-card">
+                <div class="materi-icon ${iconCls}">${iconLabel}</div>
+                <div class="materi-info">
+                  <div class="materi-title">${escapeHtml(m.title)}</div>
+                  ${catName ? `<div class="materi-meta">${escapeHtml(catName)}</div>` : ""}
+                </div>
+                <i class="bi bi-download materi-download-icon"></i>
+              </a>`;
+          }).join("");
+
+        } catch (err) {
+          document.getElementById("materiGrid").innerHTML = `
+            <div class="empty-state" style="grid-column:1/-1;">
+              <i class="bi bi-exclamation-circle" style="color:#c62828;"></i>
+              <p style="color:#c62828;">Gagal memuat materi.</p>
+            </div>`;
+          console.error("Materi fetch error:", err);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadAnnouncements);
+      document.addEventListener("DOMContentLoaded", loadMateri);
+    </script>
+  </body>
+</html>

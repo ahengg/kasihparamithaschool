@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Materi Sekolah - Kasih Paramitha School</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/fonts.css" rel="stylesheet" />
+
+    <style>
+      :root {
+        --brown: #9a7b55;
+        --brown-dark: #7f6546;
+        --blue: #5b9bd5;
+        --gold: #f6bf00;
+        --bg: #f5f2ee;
+        --text: #3d3d3d;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--bg) !important;
+        font-family: "Montserrat", sans-serif;
+        color: var(--text);
+      }
+
+      .navbar.sticky-top { top: 0 !important; transition: none !important; }
+
+      .notif-link, .notif-link i, .notif-link::after { color: var(--brown) !important; }
+      .notif-link:hover, .notif-link:hover i, .notif-link:hover::after,
+      .notif-link:focus, .notif-link:focus i, .notif-link:focus::after { color: var(--blue) !important; }
+
+      .login-btn {
+        background: var(--brown);
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .login-btn:hover { color: #fff; background: var(--brown-dark); }
+
+      /* ── Page banner ── */
+      .page-banner {
+        background: linear-gradient(120deg, #fff 0%, #fff 55%, #e8f4ff 55%, #e8f4ff 100%);
+        border-bottom: 4px solid var(--blue);
+        padding: 36px 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .banner-text h1 {
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--brown-dark);
+        margin: 0 0 6px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .banner-text h1 i { color: var(--blue); font-size: 26px; }
+      .banner-text p { font-size: 14px; color: #888; margin: 0; }
+
+      .btn-upload-materi {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        background: var(--blue);
+        color: #fff;
+        text-decoration: none;
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.2s;
+      }
+      .btn-upload-materi:hover { background: #4a8ac4; color: #fff; }
+
+      /* ── Main content ── */
+      .main-content {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 36px 24px 60px;
+      }
+
+      /* ── Search bar ── */
+      .search-bar {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        margin-bottom: 28px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .search-input {
+        flex: 1;
+        min-width: 200px;
+        height: 42px;
+        border: 1.5px solid #e0d8cf;
+        border-radius: 8px;
+        padding: 0 14px 0 40px;
+        font-size: 13px;
+        color: #333;
+        background: #faf8f5 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 16 16'%3E%3Cpath fill='%23aaa' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.868-3.833zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") no-repeat 14px center;
+        outline: none;
+        transition: 0.2s;
+        font-family: inherit;
+      }
+      .search-input:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px rgba(91,155,213,0.12);
+        background-color: #fff;
+      }
+
+      .search-count {
+        font-size: 12px;
+        color: #888;
+        white-space: nowrap;
+      }
+
+      /* ── Material grid ── */
+      .material-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      /* ── Material card ── */
+      .mat-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        border: 1.5px solid transparent;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      }
+      .mat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.11);
+        border-color: var(--blue);
+      }
+
+      .mat-card-header {
+        padding: 20px 20px 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        flex: 1;
+      }
+
+      .mat-file-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+        letter-spacing: 0.02em;
+      }
+      .mat-file-icon.pdf  { background: linear-gradient(135deg, #e53935, #c62828); }
+      .mat-file-icon.doc  { background: linear-gradient(135deg, #1e88e5, #1565c0); }
+      .mat-file-icon.ppt  { background: linear-gradient(135deg, #fb8c00, #e65100); }
+      .mat-file-icon.xls  { background: linear-gradient(135deg, #43a047, #2e7d32); }
+      .mat-file-icon.file { background: linear-gradient(135deg, #78909c, #546e7a); }
+
+      .mat-card-body { flex: 1; }
+
+      .mat-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.4;
+        margin-bottom: 6px;
+      }
+
+      .mat-desc {
+        font-size: 12px;
+        color: #888;
+        line-height: 1.6;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .mat-card-footer {
+        padding: 12px 20px;
+        border-top: 1px solid #f0ece6;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .mat-meta {
+        font-size: 11px;
+        color: #888;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .btn-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--blue);
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        padding: 7px 16px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.2s;
+        font-family: inherit;
+        white-space: nowrap;
+      }
+      .btn-download:hover { background: #4a8ac4; color: #fff; }
+
+      .btn-delete-mat, .btn-edit-mat {
+        display: none;
+        align-items: center;
+        gap: 5px;
+        background: transparent;
+        color: #ccc;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: 0.2s;
+      }
+      .btn-delete-mat.visible, .btn-edit-mat.visible { display: inline-flex; }
+      .btn-delete-mat:hover { background: #fdecea; color: #e53935; }
+      .btn-edit-mat:hover { background: #e8f0fb; color: #5b9bd5; }
+
+      /* ── Edit modal ── */
+      .edit-overlay {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.45); z-index: 9999;
+        align-items: center; justify-content: center; padding: 20px;
+      }
+      .edit-overlay.show { display: flex; }
+      .edit-box {
+        background: #fff; border-radius: 14px; width: 100%; max-width: 480px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15); overflow: hidden;
+      }
+      .edit-header {
+        padding: 18px 24px 14px; border-bottom: 1px solid #f0ece6;
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .edit-header h3 { font-size: 16px; font-weight: 700; color: #333; margin: 0; }
+      .edit-close { background: none; border: none; font-size: 20px; color: #aaa; cursor: pointer; line-height: 1; padding: 0; }
+      .edit-close:hover { color: #333; }
+      .edit-body { padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; }
+      .edit-footer { padding: 14px 24px; border-top: 1px solid #f0ece6; display: flex; justify-content: flex-end; gap: 10px; }
+      .edit-label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 6px; }
+      .edit-label span { color: #e53935; }
+      .edit-input, .edit-select, .edit-textarea {
+        width: 100%; border: 1.5px solid #ddd; border-radius: 8px;
+        padding: 9px 12px; font-size: 13px; color: #333; outline: none;
+        font-family: inherit; background: #fafafa; transition: 0.2s;
+      }
+      .edit-input:focus, .edit-select:focus, .edit-textarea:focus {
+        border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,155,213,0.12); background: #fff;
+      }
+      .edit-textarea { resize: vertical; min-height: 80px; }
+      .edit-select {
+        appearance: none; cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+      }
+      .edit-btn-cancel {
+        padding: 8px 18px; border: 1.5px solid #ddd; border-radius: 8px;
+        background: #fff; color: #888; font-size: 13px; font-weight: 600;
+        cursor: pointer; font-family: inherit; transition: 0.2s;
+      }
+      .edit-btn-cancel:hover { border-color: #aaa; color: #555; }
+      .edit-btn-save {
+        padding: 8px 22px; border: none; border-radius: 8px;
+        background: var(--blue); color: #fff; font-size: 13px; font-weight: 700;
+        cursor: pointer; font-family: inherit; transition: 0.2s;
+        display: inline-flex; align-items: center; gap: 6px;
+      }
+      .edit-btn-save:hover:not(:disabled) { background: #4a8ac4; }
+      .edit-btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+      /* ── Category pills ── */
+      .cat-pills-wrap {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px 20px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        margin-bottom: 20px;
+        overflow-x: auto;
+      }
+      .cat-pills {
+        display: flex;
+        gap: 8px;
+        flex-wrap: nowrap;
+        min-width: max-content;
+      }
+      .cat-pill {
+        padding: 6px 18px;
+        border: 1.5px solid #e0d8cf;
+        border-radius: 20px;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        color: #888;
+        cursor: pointer;
+        transition: 0.15s;
+        font-family: inherit;
+        white-space: nowrap;
+      }
+      .cat-pill:hover { border-color: var(--blue); color: var(--blue); }
+      .cat-pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+      /* ── Category badge on card ── */
+      .mat-cat-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 3px 9px;
+        border-radius: 20px;
+        background: #e8f0fc;
+        color: var(--blue);
+        margin-bottom: 8px;
+        width: fit-content;
+      }
+
+      /* ── Empty / loading ── */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #aaa;
+        background: #fff;
+        border-radius: 12px;
+        grid-column: 1/-1;
+      }
+      .empty-state i { font-size: 3rem; display: block; margin-bottom: 12px; }
+
+      .skeleton {
+        background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+        border-radius: 8px;
+      }
+      @keyframes shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      .skeleton-card {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        padding: 20px;
+      }
+      .skeleton-line { height: 14px; border-radius: 4px; margin-bottom: 10px; }
+
+      /* ── Toast ── */
+      .toast-msg {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #2e7d32;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 9999;
+        transform: translateY(80px);
+        opacity: 0;
+        transition: transform 0.3s, opacity 0.3s;
+      }
+      .toast-msg.show { transform: translateY(0); opacity: 1; }
+
+      /* ── Enrollment banner ── */
+      .enrollment-banner {
+        background: #e8f4fd; border: 1.5px solid #bbdefb;
+        border-radius: 10px; padding: 12px 18px;
+        margin-bottom: 16px;
+        display: flex; align-items: center; gap: 10px;
+        font-size: 13px; color: #1565c0; font-weight: 500;
+      }
+      .enrollment-banner i { font-size: 16px; flex-shrink: 0; }
+      .enrollment-banner-clear {
+        margin-left: auto; background: none;
+        border: 1.5px solid #1565c0; border-radius: 6px;
+        color: #1565c0; font-size: 11px; font-weight: 700;
+        padding: 4px 12px; cursor: pointer; font-family: inherit;
+        white-space: nowrap; transition: 0.15s;
+      }
+      .enrollment-banner-clear:hover { background: #1565c0; color: #fff; }
+
+      @media (max-width: 768px) {
+        .material-grid { grid-template-columns: 1fr 1fr; }
+        .page-banner { padding: 28px 24px; }
+      }
+
+      @media (max-width: 520px) {
+        .page-banner { padding: 22px 16px; flex-direction: column; align-items: flex-start; gap: 14px; }
+        .page-banner { background: linear-gradient(180deg, #fff 0%, #e8f4ff 100%); }
+        .banner-text h1 { font-size: 22px; }
+        .btn-upload-materi { width: 100%; justify-content: center; }
+        .main-content { padding: 18px 14px 48px; }
+        .material-grid { grid-template-columns: 1fr; }
+        .cat-pills-wrap { padding: 12px 14px; }
+        .search-bar { padding: 12px 16px; }
+        /* Edit modal full-screen on mobile */
+        .edit-box { max-width: 100%; border-radius: 14px 14px 0 0; }
+        .edit-overlay { align-items: flex-end; padding: 0; }
+        .enrollment-banner { flex-wrap: wrap; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <div class="w-100 bg-white p-0">
+      <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+        <a href="index.html" class="navbar-brand">
+          <div class="logo-container">
+            <img src="assetkps/Logo/Logo Yayasan.png" alt="Vidya Parahita Foundation" />
+            <img src="assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School" />
+          </div>
+        </a>
+
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle notif-link" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="artikel.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>
+
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+            <a href="about.html" class="nav-item nav-link">About Us</a>
+            <a href="classes.html" class="nav-item nav-link">Gallery</a>
+            <div class="nav-item dropdown">
+              <a href="facility.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Program</a>
+              <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+                <a href="facility.html#school-section" class="dropdown-item">School</a>
+                <a href="facility.html#afterschool-section" class="dropdown-item">After-School Programme</a>
+              </div>
+            </div>
+            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="testimonial.html" class="nav-item nav-link">Testimonies</a>
+          </div>
+          <a href="login/login.html" class="login-btn">
+            <i class="bi bi-person-circle"></i> Login
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Page Banner -->
+    <div class="page-banner">
+      <div class="banner-text">
+        <h1><i class="bi bi-folder2-open"></i> Materi Sekolah</h1>
+        <p>Unduh materi pelajaran, soal latihan, dan bahan ajar dari guru.</p>
+      </div>
+      <a id="uploadMateriBtn" href="admin/upload_materi.html" class="btn-upload-materi">
+        <i class="bi bi-cloud-arrow-up-fill"></i> Upload Materi
+      </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+      <!-- Enrollment banner (shown for "user" role with class assignments) -->
+      <div class="enrollment-banner" id="enrollmentBanner" style="display:none;">
+        <i class="bi bi-bookmark-star-fill"></i>
+        <span id="enrollmentBannerText">Menampilkan materi untuk kelas Anda</span>
+        <button class="enrollment-banner-clear" onclick="clearEnrollmentFilter()">Tampilkan Semua</button>
+      </div>
+
+      <!-- Category pills -->
+      <div class="cat-pills-wrap">
+        <div class="cat-pills" id="catPills">
+          <button class="cat-pill active" data-id="" onclick="selectCategory(this, '')">Semua</button>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Cari judul materi..." />
+        <span class="search-count" id="searchCount"></span>
+      </div>
+
+      <!-- Grid -->
+      <div class="material-grid" id="materialGrid">
+        <div class="skeleton-card">
+          <div style="display:flex;gap:14px;margin-bottom:14px;">
+            <div class="skeleton" style="width:50px;height:50px;border-radius:10px;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div class="skeleton skeleton-line" style="width:70%;"></div>
+              <div class="skeleton skeleton-line" style="width:45%;"></div>
+            </div>
+          </div>
+          <div class="skeleton skeleton-line" style="width:90%;"></div>
+          <div class="skeleton skeleton-line" style="width:60%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div style="display:flex;gap:14px;margin-bottom:14px;">
+            <div class="skeleton" style="width:50px;height:50px;border-radius:10px;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div class="skeleton skeleton-line" style="width:70%;"></div>
+              <div class="skeleton skeleton-line" style="width:45%;"></div>
+            </div>
+          </div>
+          <div class="skeleton skeleton-line" style="width:90%;"></div>
+          <div class="skeleton skeleton-line" style="width:60%;"></div>
+        </div>
+        <div class="skeleton-card">
+          <div style="display:flex;gap:14px;margin-bottom:14px;">
+            <div class="skeleton" style="width:50px;height:50px;border-radius:10px;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div class="skeleton skeleton-line" style="width:70%;"></div>
+              <div class="skeleton skeleton-line" style="width:45%;"></div>
+            </div>
+          </div>
+          <div class="skeleton skeleton-line" style="width:90%;"></div>
+          <div class="skeleton skeleton-line" style="width:60%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Material Modal -->
+    <div class="edit-overlay" id="editOverlay">
+      <div class="edit-box">
+        <div class="edit-header">
+          <h3><i class="bi bi-pencil-fill" style="color:var(--blue);margin-right:6px;"></i>Edit Materi</h3>
+          <button class="edit-close" onclick="closeEditModal()">×</button>
+        </div>
+        <div class="edit-body">
+          <div>
+            <label class="edit-label" for="editTitle">Judul <span>*</span></label>
+            <input type="text" id="editTitle" class="edit-input" placeholder="Judul materi" />
+          </div>
+          <div>
+            <label class="edit-label" for="editCategory">Kategori / Kelas</label>
+            <select id="editCategory" class="edit-select">
+              <option value="">-- Tidak ada kategori --</option>
+            </select>
+          </div>
+          <div>
+            <label class="edit-label" for="editDesc">Deskripsi</label>
+            <textarea id="editDesc" class="edit-textarea" placeholder="Deskripsi singkat (opsional)"></textarea>
+          </div>
+          <div>
+            <label class="edit-label">File Materi</label>
+            <!-- Current file chip -->
+            <div id="editCurrentFile" style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f5f2ee;border-radius:8px;font-size:12px;color:#555;margin-bottom:8px;">
+              <i class="bi bi-file-earmark-fill" style="color:var(--blue);"></i>
+              <span id="editCurrentFileName" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+            </div>
+            <!-- New file drop zone -->
+            <div id="editDropZone"
+              style="border:2px dashed #d9d0c7;border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:0.2s;background:#fafaf8;"
+              onclick="document.getElementById('editFileInput').click()"
+              ondragover="event.preventDefault();this.style.borderColor='var(--blue)'"
+              ondragleave="this.style.borderColor='#d9d0c7'"
+              ondrop="handleEditDrop(event)">
+              <i class="bi bi-arrow-repeat" style="font-size:1.4rem;color:#bbb;display:block;margin-bottom:4px;"></i>
+              <span style="font-size:12px;color:#aaa;">Klik atau seret file baru untuk mengganti</span>
+              <div style="font-size:10px;color:#ccc;margin-top:2px;">PDF, Word, PowerPoint, Excel — maks. 20 MB</div>
+            </div>
+            <input type="file" id="editFileInput" style="display:none;"
+              accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx"
+              onchange="handleEditFileSelect(this.files[0])" />
+            <!-- Selected new file preview -->
+            <div id="editNewFilePreview" style="display:none;margin-top:8px;padding:8px 12px;background:#e8f4fd;border-radius:8px;font-size:12px;color:#1565c0;display:none;align-items:center;gap:8px;">
+              <i class="bi bi-file-earmark-check-fill"></i>
+              <span id="editNewFileName" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+              <button onclick="clearEditFile()" style="background:none;border:none;cursor:pointer;color:#1565c0;font-size:14px;padding:0;"><i class="bi bi-x"></i></button>
+            </div>
+            <!-- Upload progress -->
+            <div id="editProgressWrap" style="display:none;margin-top:8px;">
+              <div style="height:6px;background:#eee;border-radius:3px;overflow:hidden;">
+                <div id="editProgressFill" style="height:100%;width:0%;background:var(--blue);transition:width 0.2s;border-radius:3px;"></div>
+              </div>
+              <div id="editProgressLabel" style="font-size:11px;color:#888;margin-top:4px;">Mengupload...</div>
+            </div>
+          </div>
+        </div>
+        <div class="edit-footer">
+          <button class="edit-btn-cancel" onclick="closeEditModal()">Batal</button>
+          <button class="edit-btn-save" id="editSaveBtn" onclick="submitEditMaterial()">
+            <i class="bi bi-check-lg"></i> <span id="editSaveText">Simpan</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-msg" id="toastMsg">
+      <i class="bi bi-check-circle-fill"></i>
+      <span id="toastText">Download dimulai!</span>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth-navbar.js"></script>
+    <script src="js/notif-bell.js"></script>
+
+    <script>
+      const SUPABASE_URL  = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      const userRole = localStorage.getItem("role") || "";
+      const isAdmin    = userRole === "admin";
+      const canUpload  = userRole === "admin" || userRole === "editor";
+
+      // Show upload button for admin + editor
+      if (canUpload) {
+        document.getElementById("uploadMateriBtn").style.display = "inline-flex";
+      }
+
+      // ── Token helpers (for enrolled users) ──
+      function isTokenValid(tok) {
+        try {
+          const p = tok.split(".");
+          if (p.length !== 3) return false;
+          const pl = JSON.parse(atob(p[1].replace(/-/g,"+").replace(/_/g,"/")));
+          return pl.exp * 1000 > Date.now() + 30000;
+        } catch { return false; }
+      }
+      async function getValidToken() {
+        const tok = localStorage.getItem("access_token");
+        if (!tok) return null;
+        if (isTokenValid(tok)) return tok;
+        const rt = localStorage.getItem("refresh_token");
+        if (!rt) return null;
+        try {
+          const r = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/auth/refresh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+            body: JSON.stringify({ refresh_token: rt }),
+          });
+          if (!r.ok) return null;
+          const d = await r.json();
+          if (!d.access_token) return null;
+          localStorage.setItem("access_token", d.access_token);
+          localStorage.setItem("refresh_token", d.refresh_token);
+          localStorage.setItem("expires_at", String(d.expires_at));
+          return d.access_token;
+        } catch { return null; }
+      }
+
+      // ── Data ──
+      let allMaterials         = [];
+      let activeCategoryId     = "";
+      let enrollmentAutoFilter = true;  // true = auto-filter by user's class
+      let userCategoryId       = null;  // number or null
+      let userCategoryName     = "";
+
+      function getFileIconClass(filename) {
+        if (!filename) return "file";
+        const ext = filename.split(".").pop().toLowerCase();
+        if (ext === "pdf") return "pdf";
+        if (["doc","docx"].includes(ext)) return "doc";
+        if (["ppt","pptx"].includes(ext)) return "ppt";
+        if (["xls","xlsx"].includes(ext)) return "xls";
+        return "file";
+      }
+
+      function getFileLabel(filename) {
+        if (!filename) return "FILE";
+        return filename.split(".").pop().toUpperCase().slice(0, 5);
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes) return "";
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+      }
+
+      function formatDate(isoString) {
+        if (!isoString) return "";
+        return new Date(isoString).toLocaleDateString("id-ID", {
+          day: "numeric", month: "short", year: "numeric"
+        });
+      }
+
+      // ── Enrollment banner ──
+      function updateEnrollmentBanner() {
+        const banner = document.getElementById("enrollmentBanner");
+        if (userRole === "user" && userCategoryId) {
+          document.getElementById("enrollmentBannerText").textContent =
+            userCategoryName ? `Materi untuk kelas: ${userCategoryName}` : "Materi untuk kelas Anda";
+          // "user" role can't bypass the filter — hide the button
+          banner.querySelector(".enrollment-banner-clear").style.display = "none";
+          banner.style.display = "flex";
+        } else {
+          banner.style.display = "none";
+        }
+      }
+
+      function clearEnrollmentFilter() {
+        // Only non-user roles can clear the filter
+        if (userRole === "user" && userCategoryId) return;
+        enrollmentAutoFilter = false;
+        updateEnrollmentBanner();
+        applySearch();
+      }
+
+      // ── Category pill click ──
+      function selectCategory(el, id) {
+        document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+        el.classList.add("active");
+        activeCategoryId = id;
+        applySearch();
+      }
+
+      function renderMaterials(list) {
+        const grid = document.getElementById("materialGrid");
+        document.getElementById("searchCount").textContent =
+          list.length ? `${list.length} materi ditemukan` : "";
+
+        if (!list.length) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <i class="bi bi-folder-x"></i>
+              <p>${document.getElementById("searchInput").value
+                ? "Tidak ada materi yang cocok dengan pencarian."
+                : "Belum ada materi yang diupload."}</p>
+            </div>`;
+          return;
+        }
+
+        grid.innerHTML = list.map(m => {
+          const iconCls   = getFileIconClass(m.file_name);
+          const iconLabel = getFileLabel(m.file_name);
+          const sizeStr   = formatBytes(m.file_size);
+          const dateStr   = formatDate(m.created_at);
+
+          return `
+            <div class="mat-card" id="mat-${m.id}">
+              <div class="mat-card-header">
+                <div class="mat-file-icon ${iconCls}">${iconLabel}</div>
+                <div class="mat-card-body">
+                  ${m.categories?.name
+                    ? `<div class="mat-cat-badge"><i class="bi bi-tag-fill"></i> ${escapeHtml(m.categories.name)}</div>`
+                    : ""}
+                  <div class="mat-title">${escapeHtml(m.title)}</div>
+                  ${m.description ? `<p class="mat-desc">${escapeHtml(m.description)}</p>` : ""}
+                </div>
+              </div>
+              <div class="mat-card-footer">
+                <div class="mat-meta">
+                  <i class="bi bi-calendar3"></i> ${dateStr}
+                  ${sizeStr ? `<span><i class="bi bi-hdd"></i> ${sizeStr}</span>` : ""}
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <button class="btn-edit-mat${canUpload ? " visible" : ""}"
+                    title="Edit" onclick="openEditModal('${m.id}')">
+                    <i class="bi bi-pencil-fill"></i>
+                  </button>
+                  <button class="btn-delete-mat${isAdmin ? " visible" : ""}"
+                    title="Hapus" onclick="deleteMaterial('${m.id}', event)">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                  <a href="${escapeHtml(m.file_url)}" target="_blank" download="${escapeHtml(m.file_name || 'materi')}"
+                     class="btn-download" onclick="showToast('Download dimulai!')">
+                    <i class="bi bi-download"></i> Unduh
+                  </a>
+                </div>
+              </div>
+            </div>`;
+        }).join("");
+      }
+
+      async function loadMaterials() {
+        try {
+          const res = await fetch(
+            `${SUPABASE_URL}/functions/v1/CRUD/materials`,
+            {
+              headers: {
+                "Authorization": `Bearer ${SUPABASE_ANON}`,
+                "apikey": SUPABASE_ANON,
+              },
+            }
+          );
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const json = await res.json();
+          allMaterials = json.data || [];
+          applySearch();
+        } catch (err) {
+          document.getElementById("materialGrid").innerHTML = `
+            <div class="empty-state">
+              <i class="bi bi-exclamation-circle" style="color:#c62828;"></i>
+              <p style="color:#c62828;">Gagal memuat materi. Coba lagi nanti.</p>
+            </div>`;
+          console.error("Fetch error:", err);
+        }
+      }
+
+      function applySearch() {
+        const q = document.getElementById("searchInput").value.toLowerCase().trim();
+        const filtered = allMaterials.filter(m => {
+          const matchSearch = !q || m.title.toLowerCase().includes(q);
+
+          let matchCategory;
+          if (activeCategoryId !== "") {
+            matchCategory = String(m.category_id) === String(activeCategoryId);
+          } else {
+            matchCategory = true;
+          }
+
+          // "user" role is ALWAYS restricted to their class + uncategorized — pill clicks cannot bypass this
+          if (userRole === "user" && userCategoryId) {
+            matchCategory = matchCategory && (!m.category_id || m.category_id === userCategoryId);
+          }
+
+          return matchSearch && matchCategory;
+        });
+        renderMaterials(filtered);
+      }
+
+      document.getElementById("searchInput").addEventListener("input", applySearch);
+
+      // ── Delete (admin only) ──
+      async function deleteMaterial(id, event) {
+        event.preventDefault();
+        if (!confirm("Hapus materi ini?")) return;
+
+        const token = localStorage.getItem("access_token");
+        if (!token) return;
+
+        try {
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/materials/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${SUPABASE_ANON}`,
+              "apikey": SUPABASE_ANON,
+              "x-access-token": token,
+            },
+          });
+
+          if (res.ok || res.status === 204) {
+            document.getElementById(`mat-${id}`)?.remove();
+            allMaterials = allMaterials.filter(m => m.id !== id);
+            applySearch();
+            showToast("Materi dihapus.", true);
+          } else {
+            alert("Gagal menghapus materi.");
+          }
+        } catch (err) {
+          console.error("Delete error:", err);
+          alert("Terjadi kesalahan saat menghapus.");
+        }
+      }
+
+      // ── Edit modal ──
+      let editTargetId      = null;
+      let editNewFile       = null; // File object if user picked a new file
+      let allCategoriesForEdit = [];
+
+      function openEditModal(id) {
+        const mat = allMaterials.find(m => m.id === id);
+        if (!mat) return;
+        editTargetId = id;
+        editNewFile  = null;
+
+        document.getElementById("editTitle").value = mat.title || "";
+        document.getElementById("editDesc").value  = mat.description || "";
+
+        // Current file chip
+        document.getElementById("editCurrentFileName").textContent = mat.file_name || "—";
+
+        // Reset new file state
+        document.getElementById("editNewFilePreview").style.display = "none";
+        document.getElementById("editProgressWrap").style.display   = "none";
+        document.getElementById("editProgressFill").style.width     = "0%";
+        document.getElementById("editFileInput").value = "";
+
+        // Populate category dropdown
+        const sel = document.getElementById("editCategory");
+        sel.innerHTML = `<option value="">-- Tidak ada kategori --</option>` +
+          allCategoriesForEdit.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+        sel.value = mat.category_id ? String(mat.category_id) : "";
+
+        document.getElementById("editOverlay").classList.add("show");
+      }
+
+      function closeEditModal() {
+        document.getElementById("editOverlay").classList.remove("show");
+        editTargetId = null;
+        editNewFile  = null;
+      }
+
+      function handleEditFileSelect(file) {
+        if (!file) return;
+        const maxMB = 20;
+        if (file.size > maxMB * 1024 * 1024) {
+          alert(`File terlalu besar. Maks ${maxMB} MB.`); return;
+        }
+        editNewFile = file;
+        document.getElementById("editNewFileName").textContent = file.name;
+        document.getElementById("editNewFilePreview").style.display = "flex";
+      }
+
+      function handleEditDrop(e) {
+        e.preventDefault();
+        document.getElementById("editDropZone").style.borderColor = "#d9d0c7";
+        const file = e.dataTransfer.files[0];
+        if (file) handleEditFileSelect(file);
+      }
+
+      function clearEditFile() {
+        editNewFile = null;
+        document.getElementById("editNewFilePreview").style.display = "none";
+        document.getElementById("editFileInput").value = "";
+      }
+
+      async function uploadEditFile(file, tok) {
+        const ext      = file.name.split(".").pop().toLowerCase();
+        const fileName = `material_${Date.now()}.${ext}`;
+
+        document.getElementById("editProgressWrap").style.display = "block";
+        document.getElementById("editProgressLabel").textContent  = "Mengupload file...";
+
+        let pct = 0;
+        const iv = setInterval(() => {
+          pct = Math.min(pct + 8, 85);
+          document.getElementById("editProgressFill").style.width = pct + "%";
+        }, 200);
+
+        const res = await fetch(`${SUPABASE_URL}/storage/v1/object/materials/${fileName}`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${tok}`,
+            "apikey": SUPABASE_ANON,
+            "Content-Type": file.type,
+            "x-upsert": "true",
+          },
+          body: file,
+        });
+
+        clearInterval(iv);
+        if (!res.ok) { const t = await res.text(); throw new Error("Gagal upload file: " + t); }
+
+        document.getElementById("editProgressFill").style.width    = "100%";
+        document.getElementById("editProgressLabel").textContent   = "Upload selesai!";
+
+        return {
+          url:  `${SUPABASE_URL}/storage/v1/object/public/materials/${fileName}`,
+          name: file.name,
+          size: file.size,
+        };
+      }
+
+      async function submitEditMaterial() {
+        const title = document.getElementById("editTitle").value.trim();
+        if (!title) { document.getElementById("editTitle").focus(); return; }
+
+        const catVal = document.getElementById("editCategory").value;
+        const desc   = document.getElementById("editDesc").value.trim();
+
+        const btn = document.getElementById("editSaveBtn");
+        btn.disabled = true;
+        document.getElementById("editSaveText").textContent = "Menyimpan...";
+
+        try {
+          const tok = await getValidToken();
+          if (!tok) { alert("Sesi berakhir, silakan login kembali."); return; }
+
+          const body = {
+            title,
+            description: desc || null,
+            category_id: catVal ? parseInt(catVal) : null,
+          };
+
+          // Upload new file first if selected
+          if (editNewFile) {
+            const fileResult = await uploadEditFile(editNewFile, tok);
+            body.file_url  = fileResult.url;
+            body.file_name = fileResult.name;
+            body.file_size = fileResult.size;
+          }
+
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/materials/${editTargetId}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${SUPABASE_ANON}`,
+              "apikey": SUPABASE_ANON,
+              "x-access-token": tok,
+            },
+            body: JSON.stringify(body),
+          });
+
+          if (!res.ok) { const e = await res.json(); throw new Error(e.error || "Gagal update"); }
+          const { data: updated } = await res.json();
+
+          // Update local state
+          const idx = allMaterials.findIndex(m => m.id === editTargetId);
+          if (idx !== -1) allMaterials[idx] = updated;
+
+          closeEditModal();
+          applySearch();
+          showToast("Materi berhasil diperbarui.");
+        } catch (err) {
+          alert(err.message || "Terjadi kesalahan.");
+          document.getElementById("editProgressWrap").style.display = "none";
+        } finally {
+          btn.disabled = false;
+          document.getElementById("editSaveText").textContent = "Simpan";
+        }
+      }
+
+      // Close modal on backdrop click
+      document.getElementById("editOverlay").addEventListener("click", function(e) {
+        if (e.target === this) closeEditModal();
+      });
+
+      // ── Toast ──
+      let toastTimer;
+      function showToast(msg, isDelete = false) {
+        const toast = document.getElementById("toastMsg");
+        document.getElementById("toastText").textContent = msg;
+        toast.style.background = isDelete ? "#c62828" : "#2e7d32";
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+      }
+
+      // ── Load user's class category (user role only) ──
+      async function loadUserCategory() {
+        if (userRole !== "user") return;
+        try {
+          const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
+          if (!userId) return;
+          const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/users?id=eq.${userId}&select=category_id,categories!category_id(id,name)`,
+            { headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${SUPABASE_ANON}` } }
+          );
+          if (!res.ok) return;
+          const rows = await res.json();
+          const u = rows[0];
+          if (u?.category_id) {
+            userCategoryId   = u.category_id;
+            userCategoryName = u.categories?.name || "";
+          }
+        } catch {}
+      }
+
+      // ── Load category pills ──
+      async function loadCategories() {
+        try {
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/categories`, {
+            headers: { "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+          });
+          if (!res.ok) return;
+          const json = await res.json();
+          allCategoriesForEdit = json.data || []; // store for edit modal dropdown
+          const pills = document.getElementById("catPills");
+          (json.data || []).forEach(cat => {
+            // "user" role only sees their own class pill
+            if (userRole === "user" && userCategoryId && cat.id !== userCategoryId) return;
+            const btn = document.createElement("button");
+            btn.className = "cat-pill";
+            btn.dataset.id = cat.id;
+            btn.textContent = cat.name;
+            btn.onclick = () => selectCategory(btn, cat.id);
+            pills.appendChild(btn);
+          });
+        } catch (_) { /* tidak kritikal */ }
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        await loadUserCategory();   // must run first — pills depend on userCategoryId
+        await loadCategories();
+        updateEnrollmentBanner();
+        await loadMaterials();
+      });
+    </script>
+  </body>
+</html>

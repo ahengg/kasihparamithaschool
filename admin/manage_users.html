@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Manage Users - Kasih Paramitha School</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/fonts.css" rel="stylesheet" />
+
+    <style>
+      :root {
+        --brown: #9a7b55;
+        --brown-dark: #7f6546;
+        --blue: #5b9bd5;
+        --gold: #f6bf00;
+        --red: #e53935;
+        --bg: #f5f2ee;
+      }
+
+      * { box-sizing: border-box; }
+
+      body { margin: 0; background: var(--bg) !important; font-family: "Montserrat", sans-serif; color: #333; }
+
+      .navbar.sticky-top { top: 0 !important; transition: none !important; }
+      .notif-link, .notif-link i, .notif-link::after { color: var(--brown) !important; }
+      .notif-link:hover, .notif-link:hover i, .notif-link:hover::after,
+      .notif-link:focus, .notif-link:focus i, .notif-link:focus::after { color: var(--blue) !important; }
+
+      .logout-btn {
+        background: transparent; border: 1.5px solid var(--brown); color: var(--brown);
+        padding: 5px 16px; border-radius: 6px; font-size: 12px; font-weight: 600;
+        cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px;
+      }
+      .logout-btn:hover { background: var(--brown); color: #fff; }
+
+      /* ── Page ── */
+      .page-wrapper { max-width: 1000px; margin: 0 auto; padding: 40px 20px 80px; }
+
+      .manage-page-header {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+        position: relative; z-index: 1;
+      }
+      .manage-page-header h1 {
+        font-size: 24px; font-weight: 700; color: var(--red); margin: 0;
+        display: flex; align-items: center; gap: 10px;
+      }
+      .manage-page-header h1 i { color: var(--gold); }
+
+      .back-link {
+        font-size: 13px; color: var(--blue); text-decoration: none;
+        display: flex; align-items: center; gap: 5px; font-weight: 500;
+      }
+      .back-link:hover { text-decoration: underline; }
+
+      /* ── Alert ── */
+      .alert-box {
+        display: none; align-items: flex-start; gap: 10px;
+        padding: 12px 16px; border-radius: 8px; font-size: 13px; margin-bottom: 20px;
+      }
+      .alert-box.show { display: flex; }
+      .alert-box.error { background: #fdecea; border: 1px solid #f5c6c6; color: #c62828; }
+      .alert-box.success { background: #e8f5e9; border: 1px solid #c8e6c9; color: #2e7d32; }
+
+      /* ── Top bar ── */
+      .top-bar {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 16px; gap: 12px; flex-wrap: wrap;
+      }
+
+      .search-input {
+        height: 38px; border: 1.5px solid #ddd; border-radius: 8px;
+        padding: 0 14px 0 36px; font-size: 13px; outline: none;
+        font-family: inherit; width: 240px; background: #fff;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 16 16'%3E%3Cpath fill='%23aaa' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.868-3.833zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: 12px center;
+        transition: border-color 0.2s;
+      }
+      .search-input:focus { border-color: var(--brown); }
+
+      .btn-add {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: var(--red); color: #fff; border: none; border-radius: 8px;
+        padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
+        transition: 0.2s; font-family: inherit;
+      }
+      .btn-add:hover { background: #c62828; }
+
+      /* ── Table card ── */
+      .table-card {
+        background: #fff; border-radius: 14px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.07); overflow: hidden;
+      }
+
+      .user-table { width: 100%; border-collapse: collapse; }
+      .user-table thead tr { background: #faf8f5; border-bottom: 2px solid #f0ece6; }
+      .user-table th {
+        padding: 13px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.07em; color: #999; text-align: left; white-space: nowrap;
+      }
+      .user-table td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid #f5f0eb; vertical-align: middle; }
+      .user-table tbody tr:last-child td { border-bottom: none; }
+      .user-table tbody tr:hover td { background: #fdf9f5; }
+
+      .avatar {
+        width: 34px; height: 34px; border-radius: 50%;
+        background: var(--brown); color: #fff;
+        display: inline-flex; align-items: center; justify-content: center;
+        font-size: 13px; font-weight: 700; flex-shrink: 0;
+      }
+
+      .user-name-cell { display: flex; align-items: center; gap: 10px; }
+      .user-name { font-weight: 600; color: #222; }
+      .user-username { font-size: 11px; color: #777; }
+
+      .role-badge {
+        display: inline-block; font-size: 10px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.05em;
+        padding: 3px 10px; border-radius: 20px; color: #fff;
+      }
+
+      .action-btn {
+        width: 30px; height: 30px; border: none; border-radius: 6px;
+        cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+        font-size: 13px; transition: 0.15s;
+      }
+      .action-btn.edit { background: #e8f0fb; color: var(--blue); }
+      .action-btn.edit:hover { background: var(--blue); color: #fff; }
+      .action-btn.del { background: #fdecea; color: var(--red); }
+      .action-btn.del:hover { background: var(--red); color: #fff; }
+
+      /* Empty / loading */
+      .table-empty {
+        text-align: center; padding: 60px 20px; color: #888;
+      }
+      .table-empty i { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+
+      .skeleton {
+        background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite; border-radius: 4px;
+      }
+      @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+      /* ── Modal ── */
+      .modal-overlay {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.45); z-index: 9999;
+        align-items: center; justify-content: center; padding: 20px;
+      }
+      .modal-overlay.show { display: flex; }
+
+      .modal-box {
+        background: #fff; border-radius: 14px; width: 100%; max-width: 460px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15); overflow: hidden;
+      }
+
+      .modal-header {
+        padding: 20px 24px 16px; border-bottom: 1px solid #f0ece6;
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .modal-header h3 { font-size: 17px; font-weight: 700; color: #333; margin: 0; }
+      .modal-close {
+        background: none; border: none; font-size: 20px; color: #888;
+        cursor: pointer; line-height: 1; padding: 0;
+      }
+      .modal-close:hover { color: #333; }
+
+      .modal-body { padding: 24px; }
+      .modal-footer {
+        padding: 16px 24px; border-top: 1px solid #f0ece6;
+        display: flex; justify-content: flex-end; gap: 10px;
+      }
+
+      .field-group { margin-bottom: 18px; }
+      .field-group:last-child { margin-bottom: 0; }
+      .field-label {
+        display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 7px;
+      }
+      .field-label span { color: var(--red); }
+      .field-input {
+        width: 100%; height: 40px; border: 1.5px solid #ddd; border-radius: 8px;
+        padding: 0 12px; font-size: 13px; color: #333; outline: none;
+        font-family: inherit; background: #fafafa; transition: 0.2s;
+      }
+      .field-input:focus { border-color: var(--brown); box-shadow: 0 0 0 3px rgba(154,123,85,0.10); background: #fff; }
+      .field-input.is-error { border-color: var(--red); }
+
+      .password-wrap { position: relative; }
+      .password-wrap .field-input { padding-right: 40px; }
+      .pass-toggle {
+        position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+        background: none; border: none; cursor: pointer; color: #888; padding: 0; font-size: 15px;
+      }
+      .pass-toggle:hover { color: var(--brown); }
+
+      select.field-input {
+        appearance: none; cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+      }
+
+      .btn-cancel-sm {
+        padding: 8px 18px; border: 1.5px solid #ddd; border-radius: 8px;
+        background: #fff; color: #888; font-size: 13px; font-weight: 600;
+        cursor: pointer; font-family: inherit; transition: 0.2s;
+      }
+      .btn-cancel-sm:hover { border-color: #aaa; color: #555; }
+
+      .btn-primary-sm {
+        padding: 8px 20px; border: none; border-radius: 8px;
+        background: var(--brown); color: #fff; font-size: 13px; font-weight: 700;
+        cursor: pointer; font-family: inherit; transition: 0.2s;
+        display: inline-flex; align-items: center; gap: 6px; min-width: 110px; justify-content: center;
+      }
+      .btn-primary-sm:hover:not(:disabled) { background: var(--brown-dark); }
+      .btn-primary-sm:disabled { opacity: 0.65; cursor: not-allowed; }
+
+      .btn-danger-sm {
+        padding: 8px 20px; border: none; border-radius: 8px;
+        background: var(--red); color: #fff; font-size: 13px; font-weight: 700;
+        cursor: pointer; font-family: inherit; transition: 0.2s;
+        display: inline-flex; align-items: center; gap: 6px; min-width: 110px; justify-content: center;
+      }
+      .btn-danger-sm:hover:not(:disabled) { background: #c62828; }
+      .btn-danger-sm:disabled { opacity: 0.65; cursor: not-allowed; }
+
+      .spinner-sm {
+        width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4);
+        border-top-color: #fff; border-radius: 50%;
+        animation: spin 0.7s linear infinite; display: none;
+      }
+      .spinner-sm.show { display: block; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .delete-confirm-body { text-align: center; padding: 8px 0 4px; }
+      .delete-confirm-body i { font-size: 2.5rem; color: var(--red); display: block; margin-bottom: 12px; }
+      .delete-confirm-body p { font-size: 13px; color: #666; margin: 0; }
+      .delete-confirm-body strong { color: #333; }
+
+      /* ── Class badge ── */
+      .class-badge {
+        display: inline-block; font-size: 10px; font-weight: 600;
+        padding: 2px 8px; border-radius: 20px;
+        background: #e8f4fd; color: #1565c0; margin-top: 4px;
+      }
+
+      @media (max-width: 768px) {
+        .user-table th:nth-child(3), .user-table td:nth-child(3) { display: none; }
+        .modal-box { max-width: 96vw; }
+      }
+
+      @media (max-width: 520px) {
+        .page-wrapper { padding: 18px 12px 60px; }
+        .manage-page-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        .search-input { width: 100%; }
+        .top-bar { flex-direction: column; align-items: stretch; }
+        .btn-add { justify-content: center; }
+        /* Horizontal scroll for table on small screens */
+        .table-card { overflow-x: auto; }
+        .user-table { min-width: 480px; }
+        /* Modal slides up from bottom */
+        .modal-overlay { align-items: flex-end; padding: 0; }
+        .modal-box { max-width: 100%; border-radius: 16px 16px 0 0; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <div class="w-100 bg-white p-0">
+      <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+        <a href="../index.html" class="navbar-brand">
+          <div class="logo-container">
+            <img src="../assetkps/Logo/Logo Yayasan.png" alt="Vidya Parahita Foundation" />
+            <img src="../assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School" />
+          </div>
+        </a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle notif-link" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="../artikel.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <a href="../home_user.html" class="nav-item nav-link">Home</a>
+            <a href="../about.html" class="nav-item nav-link">About Us</a>
+            <a href="../classes.html" class="nav-item nav-link">Gallery</a>
+            <div class="nav-item dropdown">
+              <a href="../facility.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Program</a>
+              <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+                <a href="../facility.html#school-section" class="dropdown-item">School</a>
+                <a href="../facility.html#afterschool-section" class="dropdown-item">After-School Programme</a>
+              </div>
+            </div>
+            <a href="../contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="../kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="../testimonial.html" class="nav-item nav-link">Testimonies</a>
+          </div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Page -->
+    <div class="page-wrapper">
+      <div class="manage-page-header">
+        <h1><i class="bi bi-people-fill"></i> Manage Users</h1>
+        <a href="../home_user.html" class="back-link"><i class="bi bi-arrow-left"></i> Back to Home</a>
+      </div>
+
+      <div class="alert-box error" id="alertError"><i class="bi bi-exclamation-circle-fill"></i><span id="alertErrorMsg"></span></div>
+      <div class="alert-box success" id="alertSuccess"><i class="bi bi-check-circle-fill"></i><span id="alertSuccessMsg"></span></div>
+
+      <div class="top-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Cari nama atau username..." oninput="filterUsers()" />
+        <button class="btn-add" onclick="openAddModal()">
+          <i class="bi bi-person-plus-fill"></i> Tambah User
+        </button>
+      </div>
+
+      <div class="table-card">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role</th>
+              <th>Bergabung</th>
+              <th style="text-align:right;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+            <!-- skeleton rows -->
+            <tr><td colspan="4"><div class="skeleton" style="height:40px;border-radius:8px;margin:4px 0;"></div></td></tr>
+            <tr><td colspan="4"><div class="skeleton" style="height:40px;border-radius:8px;margin:4px 0;"></div></td></tr>
+            <tr><td colspan="4"><div class="skeleton" style="height:40px;border-radius:8px;margin:4px 0;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Add/Edit Modal ── -->
+    <div class="modal-overlay" id="userModal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 id="modalTitle">Tambah User</h3>
+          <button class="modal-close" onclick="closeUserModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="field-group">
+            <label class="field-label" for="mName">Nama Lengkap <span>*</span></label>
+            <input type="text" id="mName" class="field-input" placeholder="e.g. Budi Santoso" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="mUsername">Username <span>*</span></label>
+            <input type="text" id="mUsername" class="field-input" placeholder="e.g. budisantoso" />
+          </div>
+          <div class="field-group" id="mPasswordGroup">
+            <label class="field-label" for="mPassword">Password <span>*</span></label>
+            <div class="password-wrap">
+              <input type="password" id="mPassword" class="field-input" placeholder="Minimal 8 karakter" />
+              <button type="button" class="pass-toggle" onclick="togglePass('mPassword',this)"><i class="bi bi-eye"></i></button>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="mRole">Role <span>*</span></label>
+            <select id="mRole" class="field-input" onchange="onRoleChange(this)">
+              <option value="">-- Pilih Role --</option>
+            </select>
+          </div>
+          <div class="field-group" id="mCategoryGroup" style="display:none;">
+            <label class="field-label" for="mCategory"><i class="bi bi-mortarboard-fill" style="color:var(--brown);margin-right:4px;"></i> Kelas</label>
+            <select id="mCategory" class="field-input">
+              <option value="">-- Tidak ada kelas --</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel-sm" onclick="closeUserModal()">Batal</button>
+          <button class="btn-primary-sm" id="modalSubmitBtn" onclick="submitUserModal()">
+            <span id="modalSubmitText">Simpan</span>
+            <div class="spinner-sm" id="modalSpinner"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Delete Confirm Modal ── -->
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3>Hapus User</h3>
+          <button class="modal-close" onclick="closeDeleteModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="delete-confirm-body">
+            <i class="bi bi-person-x-fill"></i>
+            <p>Hapus user <strong id="deleteTargetName"></strong>?<br>Tindakan ini tidak bisa dibatalkan.</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel-sm" onclick="closeDeleteModal()">Batal</button>
+          <button class="btn-danger-sm" id="confirmDeleteBtn" onclick="doDelete()">
+            <span id="deleteText"><i class="bi bi-trash-fill"></i> Hapus</span>
+            <div class="spinner-sm" id="deleteSpinner"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/notif-bell.js"></script>
+
+    <script>
+      const SUPABASE_URL  = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      // Auth guard
+      if (!localStorage.getItem("access_token") || localStorage.getItem("role") !== "admin") {
+        window.location.href = "../home_user.html";
+      }
+
+      function logout() {
+        ["access_token","refresh_token","expires_at","user","username","role"].forEach(k => localStorage.removeItem(k));
+        window.location.href = "../login/login.html";
+      }
+
+      // Token helpers
+      function isTokenValid(tok) {
+        try {
+          const p = tok.split(".");
+          if (p.length !== 3) return false;
+          const pl = JSON.parse(atob(p[1].replace(/-/g,"+").replace(/_/g,"/")));
+          return pl.exp * 1000 > Date.now() + 30000;
+        } catch { return false; }
+      }
+      async function refreshAccessToken() {
+        const rt = localStorage.getItem("refresh_token");
+        if (!rt) return null;
+        try {
+          const r = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/auth/refresh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+            body: JSON.stringify({ refresh_token: rt }),
+          });
+          if (!r.ok) return null;
+          const d = await r.json();
+          if (!d.access_token) return null;
+          localStorage.setItem("access_token", d.access_token);
+          localStorage.setItem("refresh_token", d.refresh_token);
+          localStorage.setItem("expires_at", String(d.expires_at));
+          return d.access_token;
+        } catch { return null; }
+      }
+      async function ensureValidToken() {
+        const tok = localStorage.getItem("access_token");
+        if (isTokenValid(tok)) return tok;
+        const newTok = await refreshAccessToken();
+        if (!newTok) { logout(); return null; }
+        return newTok;
+      }
+
+      // Alerts
+      function showAlert(type, msg) {
+        document.getElementById("alertError").classList.remove("show");
+        document.getElementById("alertSuccess").classList.remove("show");
+        document.getElementById(type === "error" ? "alertErrorMsg" : "alertSuccessMsg").textContent = msg;
+        document.getElementById(type === "error" ? "alertError" : "alertSuccess").classList.add("show");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Role badge colour
+      const roleColors = { admin: "#e53935", editor: "#5b9bd5", user: "#9a7b55" };
+      function roleBadge(name) {
+        const bg = roleColors[name] || "#aaa";
+        return `<span class="role-badge" style="background:${bg};">${name}</span>`;
+      }
+
+      // Avatar initials
+      function avatar(name) {
+        const parts = (name || "?").trim().split(" ");
+        const initials = parts.length >= 2
+          ? parts[0][0] + parts[parts.length-1][0]
+          : parts[0].slice(0,2);
+        return initials.toUpperCase();
+      }
+
+      // Date format
+      function fmtDate(iso) {
+        if (!iso) return "-";
+        return new Date(iso).toLocaleDateString("id-ID", { day:"numeric", month:"short", year:"numeric" });
+      }
+
+      // ── State ──
+      let allUsers = [];
+      let allRoles = [];
+      let allCategories = [];
+      let modalMode = "add"; // "add" | "edit"
+      let editTargetId = null;
+      let deleteTargetId = null;
+      const currentUserId = (() => {
+        try { return JSON.parse(localStorage.getItem("user"))?.id || ""; } catch { return ""; }
+      })();
+
+      // ── Load categories ──
+      async function loadCategories() {
+        try {
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/categories`, {
+            headers: { "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON }
+          });
+          if (!res.ok) return;
+          const d = await res.json();
+          allCategories = d.data || [];
+        } catch {}
+      }
+
+      // ── Load roles ──
+      async function loadRoles() {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/roles?select=id,role_name&order=role_name.asc`, {
+          headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${SUPABASE_ANON}` },
+        });
+        if (!res.ok) return;
+        allRoles = await res.json();
+        const sel = document.getElementById("mRole");
+        sel.innerHTML = `<option value="">-- Pilih Role --</option>` +
+          allRoles.map(r => `<option value="${r.id}">${r.role_name}</option>`).join("");
+      }
+
+      // ── Load users ──
+      async function loadUsers() {
+        try {
+          const tok = await ensureValidToken();
+          if (!tok) return;
+
+          const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/users?select=id,name,username,created_at,role_id,roles!role_id(role_name),category_id,categories!category_id(id,name)&order=created_at.desc`,
+            { headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${tok}` } }
+          );
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          allUsers = await res.json();
+          renderTable(allUsers);
+        } catch (err) {
+          document.getElementById("userTableBody").innerHTML =
+            `<tr><td colspan="4"><div class="table-empty"><i class="bi bi-exclamation-circle" style="color:#e53935;"></i><p style="color:#c62828;">Gagal memuat data user.</p></div></td></tr>`;
+          console.error(err);
+        }
+      }
+
+      // ── Render table ──
+      function renderTable(users) {
+        const tbody = document.getElementById("userTableBody");
+        if (!users.length) {
+          tbody.innerHTML = `<tr><td colspan="4"><div class="table-empty"><i class="bi bi-people"></i><p>Belum ada user.</p></div></td></tr>`;
+          return;
+        }
+        tbody.innerHTML = users.map(u => {
+          const name     = escapeHtml(u.name || "-");
+          const uname    = escapeHtml(u.username || "-");
+          const roleName = u.roles?.role_name || "-";
+          const av       = avatar(u.name || "-");
+          const isSelf   = u.id === currentUserId;
+
+          // Class badge from user's direct category_id
+          const userClassName = roleName === "user" ? escapeHtml(u.categories?.name || "") : "";
+          const classBadges   = userClassName
+            ? `<div><span class="class-badge">${userClassName}</span></div>`
+            : "";
+
+          const actions = isSelf
+            ? `<span style="font-size:11px;color:#888;font-style:italic;">Anda</span>`
+            : `<button class="action-btn edit" title="Edit" onclick="openEditModal('${u.id}')"><i class="bi bi-pencil-fill"></i></button>
+               <button class="action-btn del" title="Hapus" onclick="openDeleteModal('${u.id}','${name.replace(/'/g,"&#39;")}')"><i class="bi bi-trash-fill"></i></button>`;
+
+          return `
+            <tr>
+              <td>
+                <div class="user-name-cell">
+                  <div class="avatar">${av}</div>
+                  <div>
+                    <div class="user-name">${name}${isSelf ? ' <span style="font-size:10px;color:#888;">(Anda)</span>' : ""}</div>
+                    <div class="user-username">@${uname}</div>
+                  </div>
+                </div>
+              </td>
+              <td>${roleBadge(roleName)}${classBadges}</td>
+              <td>${fmtDate(u.created_at)}</td>
+              <td style="text-align:right;white-space:nowrap;">${actions}</td>
+            </tr>`;
+        }).join("");
+      }
+
+      // ── Search ──
+      function filterUsers() {
+        const q = document.getElementById("searchInput").value.toLowerCase();
+        if (!q) { renderTable(allUsers); return; }
+        renderTable(allUsers.filter(u =>
+          (u.name || "").toLowerCase().includes(q) ||
+          (u.username || "").toLowerCase().includes(q)
+        ));
+      }
+
+      // ── Add modal ──
+      function openAddModal() {
+        modalMode = "add";
+        editTargetId = null;
+        document.getElementById("modalTitle").textContent = "Tambah User";
+        document.getElementById("mName").value = "";
+        document.getElementById("mUsername").value = "";
+        document.getElementById("mPassword").value = "";
+        document.getElementById("mRole").value = "";
+        // Tampilkan semua field
+        document.getElementById("mName").closest(".field-group").style.display = "";
+        document.getElementById("mUsername").closest(".field-group").style.display = "";
+        document.getElementById("mPasswordGroup").style.display = "";
+        document.getElementById("mUsername").disabled = false;
+        document.getElementById("mCategoryGroup").style.display = "none";
+        clearModalErrors();
+        document.getElementById("userModal").classList.add("show");
+      }
+
+      // ── Edit modal ──
+      function openEditModal(userId) {
+        const user = allUsers.find(u => u.id === userId);
+        if (!user) return;
+        modalMode = "edit";
+        editTargetId = userId;
+
+        document.getElementById("modalTitle").textContent = `Edit — ${user.name || user.username}`;
+
+        // Sembunyikan semua field kecuali role + kelas
+        document.getElementById("mName").closest(".field-group").style.display = "none";
+        document.getElementById("mUsername").closest(".field-group").style.display = "none";
+        document.getElementById("mPasswordGroup").style.display = "none";
+
+        const roleMatch = allRoles.find(r => r.id === user.role_id);
+        document.getElementById("mRole").value = roleMatch ? roleMatch.id : "";
+
+        // Populate category dropdown
+        const catSel = document.getElementById("mCategory");
+        catSel.innerHTML = `<option value="">-- Tidak ada kelas --</option>` +
+          allCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+        catSel.value = user.category_id ? String(user.category_id) : "";
+
+        // Show category only for "user" role
+        const isUser = user.roles?.role_name === "user";
+        document.getElementById("mCategoryGroup").style.display = isUser ? "" : "none";
+
+        clearModalErrors();
+        document.getElementById("userModal").classList.add("show");
+      }
+
+      // Show/hide category field when role changes
+      function onRoleChange(sel) {
+        if (modalMode !== "edit") return;
+        const selectedRole = allRoles.find(r => String(r.id) === String(sel.value));
+        const isUser = selectedRole?.role_name === "user";
+        document.getElementById("mCategoryGroup").style.display = isUser ? "" : "none";
+      }
+
+      function closeUserModal() { document.getElementById("userModal").classList.remove("show"); }
+
+      function clearModalErrors() {
+        document.querySelectorAll(".field-input.is-error").forEach(el => el.classList.remove("is-error"));
+      }
+
+      function togglePass(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon  = btn.querySelector("i");
+        if (input.type === "password") { input.type = "text"; icon.className = "bi bi-eye-slash"; }
+        else { input.type = "password"; icon.className = "bi bi-eye"; }
+      }
+
+      // ── Submit modal (add / edit) ──
+      async function submitUserModal() {
+        clearModalErrors();
+        const name     = document.getElementById("mName").value.trim();
+        const username = document.getElementById("mUsername").value.trim();
+        const password = document.getElementById("mPassword").value;
+        const roleId   = document.getElementById("mRole").value;
+
+        let hasErr = false;
+        if (!roleId) { document.getElementById("mRole").classList.add("is-error"); hasErr = true; }
+
+        if (modalMode === "add") {
+          if (!name)     { document.getElementById("mName").classList.add("is-error"); hasErr = true; }
+          if (!username) { document.getElementById("mUsername").classList.add("is-error"); hasErr = true; }
+          if (!password || password.length < 8) { document.getElementById("mPassword").classList.add("is-error"); hasErr = true; }
+        }
+        if (hasErr) return;
+
+        setModalLoading(true);
+
+        try {
+          const tok = await ensureValidToken();
+          if (!tok) return;
+
+          if (modalMode === "add") {
+            // Step 1: register
+            const regRes = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/auth/register`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+              body: JSON.stringify({ username, password, name }),
+            });
+            const regData = await regRes.json();
+            if (!regRes.ok) throw new Error(regData.error || "Registrasi gagal");
+            const newId = regData.user?.id;
+            if (!newId) throw new Error("User ID tidak ditemukan");
+
+            // Step 2: set role + name
+            await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${newId}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON, "Authorization": `Bearer ${tok}`, "Prefer": "return=minimal" },
+              body: JSON.stringify({ role_id: roleId, name }),
+            });
+
+            showAlert("success", `User "${username}" berhasil ditambahkan.`);
+          } else {
+            // Edit: update role_id
+            const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${editTargetId}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON, "Authorization": `Bearer ${tok}`, "Prefer": "return=minimal" },
+              body: JSON.stringify({ role_id: roleId }),
+            });
+            if (!patchRes.ok) { const t = await patchRes.text(); throw new Error(t || "Gagal update role"); }
+
+            // Set category_id: only for "user" role, null otherwise
+            const selectedRole = allRoles.find(r => String(r.id) === String(roleId));
+            const isUserRole   = selectedRole?.role_name === "user";
+            const catVal       = document.getElementById("mCategory").value;
+            const categoryId   = isUserRole && catVal ? parseInt(catVal) : null;
+
+            const catPatchRes = await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${editTargetId}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON, "Authorization": `Bearer ${tok}`, "Prefer": "return=minimal" },
+              body: JSON.stringify({ category_id: categoryId }),
+            });
+            if (!catPatchRes.ok) { const t = await catPatchRes.text(); throw new Error(t || "Gagal update kelas"); }
+
+            showAlert("success", "Data user berhasil diperbarui.");
+          }
+
+          closeUserModal();
+          await loadUsers();
+        } catch (err) {
+          showAlert("error", err.message || "Terjadi kesalahan.");
+          console.error(err);
+        } finally {
+          setModalLoading(false);
+        }
+      }
+
+      function setModalLoading(on) {
+        document.getElementById("modalSubmitBtn").disabled = on;
+        document.getElementById("modalSubmitText").textContent = on ? "Menyimpan..." : "Simpan";
+        document.getElementById("modalSpinner").classList.toggle("show", on);
+      }
+
+      // ── Delete ──
+      function openDeleteModal(userId, userName) {
+        deleteTargetId = userId;
+        document.getElementById("deleteTargetName").textContent = userName;
+        document.getElementById("deleteModal").classList.add("show");
+      }
+      function closeDeleteModal() { document.getElementById("deleteModal").classList.remove("show"); }
+
+      async function doDelete() {
+        setDeleteLoading(true);
+        try {
+          const tok = await ensureValidToken();
+          if (!tok) return;
+
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${deleteTargetId}`, {
+            method: "DELETE",
+            headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${tok}`, "Prefer": "return=minimal" },
+          });
+          if (!res.ok) { const t = await res.text(); throw new Error(t || "Gagal hapus"); }
+
+          showAlert("success", "User berhasil dihapus.");
+          closeDeleteModal();
+          await loadUsers();
+        } catch (err) {
+          showAlert("error", err.message || "Terjadi kesalahan saat menghapus.");
+          closeDeleteModal();
+          console.error(err);
+        } finally {
+          setDeleteLoading(false);
+        }
+      }
+
+      function setDeleteLoading(on) {
+        document.getElementById("confirmDeleteBtn").disabled = on;
+        document.getElementById("deleteText").innerHTML = on ? "Menghapus..." : '<i class="bi bi-trash-fill"></i> Hapus';
+        document.getElementById("deleteSpinner").classList.toggle("show", on);
+      }
+
+      // ── Init ──
+      document.addEventListener("DOMContentLoaded", async () => {
+        await Promise.all([loadRoles(), loadCategories()]);
+        await loadUsers();
+      });
+    </script>
+  </body>
+</html>

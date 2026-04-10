@@ -70,15 +70,10 @@
         transform: scale(1.05);
       }
 
-      /* Vision background - ganti dengan gambar Anda */
       .vision-bg {
-        /* background-image: url("assetkps/Icon/Icon Map-06.png"); */
         background-color: #ffa726;
       }
-
-      /* Mission background - ganti dengan gambar Anda */
       .mission-bg {
-        /* background-image: url("assetkps/Icon/Icon Map-07.png"); */
         background-color: #56ccf2;
       }
 
@@ -99,11 +94,9 @@
       .overlay-title {
         color: #ffffff !important;
       }
-
       .overlay-text {
         color: #ffffff !important;
       }
-
       .overlay-card:hover .overlay-content {
         background: rgba(0, 0, 0, 0.7);
       }
@@ -129,12 +122,11 @@
         font-size: 12px;
         font-weight: 600;
       }
-
       .login-btn:hover {
         color: #fff;
         background: #7f6546;
       }
-      
+
       .icon-container img {
         width: 60px;
         height: 60px;
@@ -148,7 +140,6 @@
         text-transform: uppercase;
         letter-spacing: 2px;
       }
-
       .overlay-text {
         font-size: 1rem;
         line-height: 1.6;
@@ -160,57 +151,19 @@
         margin: 0 auto 50px;
         text-align: center;
       }
-
       .section-intro h1 {
         font-size: 2.5rem;
         font-weight: bold;
         margin-bottom: 20px;
         color: #8b7355;
       }
-
       .section-intro p {
         font-size: 1.1rem;
         color: #8b7355;
         font-weight: 600;
       }
 
-      @media (max-width: 768px) {
-        .overlay-card {
-          height: 350px;
-          margin-bottom: 30px;
-        }
-
-        .overlay-title {
-          font-size: 1.5rem;
-        }
-
-        .overlay-text {
-          font-size: 0.9rem;
-        }
-
-        .icon-container {
-          width: 80px;
-          height: 80px;
-        }
-
-        .icon-container img {
-          width: 50px;
-          height: 50px;
-        }
-
-        .overlay-background {
-          background-size: 50%;
-        }
-
-        .artikel-card img {
-          height: 180px;
-        }
-
-        .artikel-title-main {
-          font-size: 1.6rem;
-        }
-      }
-
+      /* ── Artikel Section ── */
       .artikel-section {
         padding: 40px 0 80px;
       }
@@ -238,31 +191,41 @@
         overflow: hidden;
         height: 100%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
       }
-
       .artikel-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
       }
-
       .artikel-card img {
         width: 100%;
         height: 220px;
         object-fit: cover;
       }
+      .artikel-card-img-placeholder {
+        width: 100%;
+        height: 220px;
+        background: linear-gradient(135deg, #ffa726 0%, #56ccf2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .artikel-card-img-placeholder i {
+        font-size: 3rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
 
       .artikel-card-body {
         padding: 15px;
       }
-
       .artikel-card-body h5 {
         font-size: 1rem;
         font-weight: 700;
         margin-bottom: 8px;
         color: #333;
       }
-
       .artikel-card-body p {
         font-size: 0.9rem;
         color: #666;
@@ -274,7 +237,6 @@
         text-align: center;
         margin-top: 25px;
       }
-
       .artikel-btn {
         background-color: #8b7355;
         color: #fff;
@@ -287,18 +249,16 @@
         transition: 0.3s ease;
         display: inline-block;
       }
-
       .artikel-btn:hover {
         background-color: #6f5c46;
         color: #fff;
       }
-      
+
       .notif-link,
       .notif-link i,
       .notif-link::after {
         color: #9a7b55 !important;
       }
-
       .notif-link:hover,
       .notif-link:hover i,
       .notif-link:hover::after,
@@ -306,6 +266,69 @@
       .notif-link:focus i,
       .notif-link:focus::after {
         color: #5b9bd5 !important;
+      }
+
+      /* Skeleton */
+      .skeleton {
+        background: linear-gradient(
+          90deg,
+          #f0f0f0 25%,
+          #e0e0e0 50%,
+          #f0f0f0 75%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 4px;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+      .skeleton-img {
+        width: 100%;
+        height: 220px;
+        border-radius: 0;
+      }
+      .skeleton-line {
+        height: 14px;
+        margin-bottom: 8px;
+      }
+      .skeleton-short {
+        width: 60%;
+      }
+
+      @media (max-width: 768px) {
+        .overlay-card {
+          height: 350px;
+          margin-bottom: 30px;
+        }
+        .overlay-title {
+          font-size: 1.5rem;
+        }
+        .overlay-text {
+          font-size: 0.9rem;
+        }
+        .icon-container {
+          width: 80px;
+          height: 80px;
+        }
+        .icon-container img {
+          width: 50px;
+          height: 50px;
+        }
+        .overlay-background {
+          background-size: 50%;
+        }
+        .artikel-card img {
+          height: 180px;
+        }
+        .artikel-title-main {
+          font-size: 1.6rem;
+        }
       }
     </style>
   </head>
@@ -352,10 +375,12 @@
           >
             <i class="bi bi-bell"></i>
           </a>
-          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+          <div
+            class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0"
+          >
             <a href="artikel.html" class="dropdown-item">Pengumuman</a>
           </div>
-        </div>  
+        </div>
         <button
           type="button"
           class="navbar-toggler"
@@ -456,7 +481,7 @@
       </div>
       <!-- Carousel End -->
 
-      <!--About Kasih Paramitha School start-->
+      <!-- About Start -->
       <div class="container-xxl py-5">
         <div class="container">
           <div
@@ -488,27 +513,15 @@
           </div>
         </div>
       </div>
-
-      <!--About Kasih Paramitha School end-->
+      <!-- About End -->
 
       <!-- Vision & Mission Start -->
       <div class="vision-mission-section">
         <div class="container">
-          <!-- Section Introduction -->
           <div class="section-intro wow fadeInUp" data-wow-delay="0.1s">
             <h1 class="mb-4 text-center">Vision & Mission</h1>
-            <!-- <p>
-              <b>
-                To become a leading educational institution that nurtures
-                character, knowledge, and creativity through meaningful learning
-                experiences.
-              </b>
-            </p> -->
           </div>
-
-          <!-- Overlay Cards -->
           <div class="row g-4">
-            <!-- Card vision -->
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
               <div class="overlay-card">
                 <div class="overlay-background vision-bg"></div>
@@ -522,8 +535,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Card mission -->
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
               <div class="overlay-card">
                 <div class="overlay-background mission-bg"></div>
@@ -550,32 +561,30 @@
           <div class="artikel-wrapper">
             <h2 class="artikel-title-main">Our Event!</h2>
 
-            <div class="row g-4">
-              <!-- artikel 1 -->
+            <!-- Cards injected by JS (max 2 on homepage) -->
+            <div class="row g-4" id="artikel-container">
+              <!-- Skeleton while loading -->
               <div class="col-md-6">
                 <div class="artikel-card">
-                  <img src="img/artikel.jpg" alt="Painting class" />
+                  <div class="skeleton skeleton-img"></div>
                   <div class="artikel-card-body">
-                    
-                    <a href="artikel_form.html?id=1"><h5>Painting class</h5></a>
-                    <p>
-                      Kids will express themselves in color and create through the
-                      guidance and joyful atmosphere of our art class.
-                    </p>
+                    <div
+                      class="skeleton skeleton-line skeleton-short mb-2"
+                    ></div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line"></div>
                   </div>
                 </div>
               </div>
-
-              <!-- artikel 2 -->
               <div class="col-md-6">
                 <div class="artikel-card">
-                  <img src="img/artikel.jpg" alt="Painting class" />
+                  <div class="skeleton skeleton-img"></div>
                   <div class="artikel-card-body">
-                    <a href="artikel_form.html?id=2"><h5>Painting class</h5></a>
-                    <p>
-                      Kids will express themselves in color and create through the
-                      guidance and joyful atmosphere of our art class.
-                    </p>
+                    <div
+                      class="skeleton skeleton-line skeleton-short mb-2"
+                    ></div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line"></div>
                   </div>
                 </div>
               </div>
@@ -624,8 +633,91 @@
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth-navbar.js"></script>
+    <script src="js/notif-bell.js"></script>
+
+    <!-- Dynamic Articles Script -->
+    <script>
+      const SUPABASE_URL = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      function truncate(text, max) {
+        const plain = text.replace(/<[^>]*>/g, "");
+        return plain.length > max ? plain.substring(0, max) + "..." : plain;
+      }
+
+      function renderArtikels(articles) {
+        const container = document.getElementById("artikel-container");
+
+        if (!articles || articles.length === 0) {
+          container.innerHTML = `
+            <div class="col-12 text-center py-4 text-muted">
+              <i class="bi bi-journal-x" style="font-size:2rem;display:block;margin-bottom:10px;"></i>
+              <p>Belum ada event. Pantau terus!</p>
+            </div>`;
+          return;
+        }
+
+        // Only show max 2 on homepage
+        const preview = articles.slice(0, 2);
+
+        const cards = preview
+          .map((article) => {
+            const title = escapeHtml(article.title || "Untitled");
+            const content = article.content || "";
+            const excerpt = escapeHtml(truncate(content, 100));
+            const image = article.image_link || "";
+            const id = article.id || "";
+
+            const imgHtml = image
+              ? `<img src="${escapeHtml(image)}" alt="${title}" onerror="this.parentElement.innerHTML='<div class=\\'artikel-card-img-placeholder\\'><i class=\\'bi bi-image\\'></i></div>'" />`
+              : `<div class="artikel-card-img-placeholder"><i class="bi bi-image"></i></div>`;
+
+            return `
+            <div class="col-md-6">
+              <div class="artikel-card">
+                ${imgHtml}
+                <div class="artikel-card-body">
+                  <a href="artikel_form.html?id=${id}"><h5>${title}</h5></a>
+                  <p>${excerpt}</p>
+                </div>
+              </div>
+            </div>`;
+          })
+          .join("");
+
+        container.innerHTML = cards;
+      }
+
+      async function loadArtikels() {
+        try {
+          const res = await fetch(
+            `${SUPABASE_URL}/functions/v1/CRUD/articles`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${SUPABASE_ANON}`,
+              },
+            },
+          );
+
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+          const json = await res.json();
+          renderArtikels(json.data || []);
+        } catch (err) {
+          document.getElementById("artikel-container").innerHTML = `
+            <div class="col-12 text-center py-4 text-muted">
+              <i class="bi bi-exclamation-circle" style="font-size:2rem;display:block;margin-bottom:10px;"></i>
+              <p>Gagal memuat event. Coba lagi nanti.</p>
+            </div>`;
+          console.error("Fetch error:", err);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadArtikels);
+    </script>
   </body>
 </html>

@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Edit Article - Kasih Paramitha School</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/fonts.css" rel="stylesheet" />
+
+    <style>
+      :root {
+        --brown: #9a7b55;
+        --brown-dark: #7f6546;
+        --blue: #5b9bd5;
+        --gold: #f6bf00;
+        --bg: #f5f2ee;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--bg) !important;
+        font-family: "Montserrat", sans-serif;
+        color: #333;
+      }
+
+      .page-wrapper { background: var(--bg) !important; }
+
+      .navbar.sticky-top { top: 0 !important; transition: none !important; }
+
+      .notif-link, .notif-link i, .notif-link::after { color: var(--brown) !important; }
+      .notif-link:hover, .notif-link:hover i, .notif-link:hover::after,
+      .notif-link:focus, .notif-link:focus i, .notif-link:focus::after { color: var(--blue) !important; }
+
+      .logout-btn {
+        background: transparent;
+        border: 1.5px solid var(--brown);
+        color: var(--brown);
+        padding: 5px 16px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .logout-btn:hover { background: var(--brown); color: #fff; }
+
+      .page-wrapper {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 40px 20px 80px;
+      }
+
+      .article-page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .article-page-header h1 {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--brown);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .article-page-header h1 i { font-size: 22px; color: var(--gold); }
+
+      .back-link {
+        font-size: 13px;
+        color: var(--blue);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 500;
+      }
+      .back-link:hover { text-decoration: underline; }
+
+      .form-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+        overflow: hidden;
+      }
+
+      .form-card-section {
+        padding: 28px 32px;
+        border-bottom: 1px solid #f0ece6;
+      }
+      .form-card-section:last-child { border-bottom: none; }
+
+      .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #888;
+        margin-bottom: 16px;
+      }
+
+      .field-group { margin-bottom: 22px; }
+      .field-group:last-child { margin-bottom: 0; }
+
+      .field-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+      }
+      .field-label span.req { color: #e53935; margin-left: 2px; }
+
+      .field-input {
+        width: 100%;
+        height: 46px;
+        border: 1.5px solid #e0d8cf;
+        border-radius: 8px;
+        padding: 0 14px;
+        font-size: 14px;
+        color: #333;
+        background: #fff;
+        outline: none;
+        transition: 0.2s;
+        font-family: inherit;
+      }
+      .field-input:focus {
+        border-color: var(--brown);
+        box-shadow: 0 0 0 3px rgba(154,123,85,0.12);
+      }
+
+      /* Cover image */
+      .cover-drop-zone {
+        width: 100%;
+        min-height: 220px;
+        border: 2px dashed #d9d0c5;
+        border-radius: 10px;
+        background: #faf8f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+        position: relative;
+        overflow: hidden;
+      }
+      .cover-drop-zone:hover, .cover-drop-zone.drag-over {
+        border-color: var(--brown);
+        background: #fdf5ec;
+      }
+      .cover-drop-zone input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+      }
+      .cover-drop-zone .drop-icon { font-size: 2.4rem; color: #c8b89a; }
+      .cover-drop-zone .drop-text { font-size: 14px; font-weight: 600; color: #888; }
+      .cover-drop-zone .drop-sub { font-size: 11px; color: #888; }
+
+      .cover-preview-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 10px;
+        display: none;
+      }
+      .cover-change-btn {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--blue);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: none;
+        align-items: center;
+        gap: 4px;
+      }
+      .cover-change-btn:hover { text-decoration: underline; }
+
+      /* Rich editor */
+      .editor-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 10px 12px;
+        background: #faf8f5;
+        border: 1.5px solid #e0d8cf;
+        border-bottom: none;
+        border-radius: 8px 8px 0 0;
+      }
+      .toolbar-btn {
+        width: 32px;
+        height: 32px;
+        border: 1px solid #e0d8cf;
+        border-radius: 5px;
+        background: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        color: #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.15s;
+      }
+      .toolbar-btn:hover, .toolbar-btn.active { background: var(--brown); color: #fff; border-color: var(--brown); }
+      .toolbar-divider { width: 1px; background: #e0d8cf; margin: 4px 2px; }
+
+      .content-editor {
+        width: 100%;
+        min-height: 280px;
+        border: 1.5px solid #e0d8cf;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        padding: 16px;
+        font-size: 14px;
+        line-height: 1.8;
+        color: #333;
+        outline: none;
+        background: #fff;
+        font-family: inherit;
+      }
+      .content-editor:empty::before {
+        content: attr(data-placeholder);
+        color: #bbb;
+        pointer-events: none;
+      }
+      .content-editor:focus { border-color: var(--brown); }
+
+      .char-counter { font-size: 11px; color: #888; text-align: right; margin-top: 6px; }
+
+      /* Actions */
+      .form-actions {
+        padding: 22px 32px;
+        background: #faf8f5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .btn-delete {
+        padding: 10px 20px;
+        border: 1.5px solid #e53935;
+        border-radius: 8px;
+        background: #fff;
+        color: #e53935;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.2s;
+        font-family: inherit;
+      }
+      .btn-delete:hover { background: #e53935; color: #fff; }
+
+      .btn-group { display: flex; gap: 10px; align-items: center; }
+
+      .btn-cancel {
+        padding: 10px 22px;
+        border: 1.5px solid #d0c8be;
+        border-radius: 8px;
+        background: #fff;
+        color: #888;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.2s;
+      }
+      .btn-cancel:hover { border-color: #aaa; color: #555; }
+
+      .btn-save {
+        padding: 10px 28px;
+        border: none;
+        border-radius: 8px;
+        background: var(--brown);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.2s;
+        min-width: 130px;
+        justify-content: center;
+        font-family: inherit;
+      }
+      .btn-save:hover:not(:disabled) { background: var(--brown-dark); }
+      .btn-save:disabled { opacity: 0.65; cursor: not-allowed; }
+
+      /* Alerts */
+      .alert-box {
+        display: none;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        margin-bottom: 24px;
+      }
+      .alert-box.show { display: flex; }
+      .alert-box.error { background: #fdecea; border: 1px solid #f5c6c6; color: #c62828; }
+      .alert-box.success { background: #e8f5e9; border: 1px solid #c8e6c9; color: #2e7d32; }
+
+      /* Spinner */
+      .spinner {
+        width: 16px; height: 16px;
+        border: 2px solid rgba(255,255,255,0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
+      }
+      .spinner.show { display: block; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* Loading skeleton */
+      .skeleton {
+        background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+        border-radius: 8px;
+      }
+      @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+      /* Delete confirm modal */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.show { display: flex; }
+      .modal-box {
+        background: #fff;
+        border-radius: 14px;
+        padding: 32px;
+        max-width: 380px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      }
+      .modal-box i { font-size: 2.5rem; color: #e53935; margin-bottom: 12px; display: block; }
+      .modal-box h3 { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 8px; }
+      .modal-box p { font-size: 13px; color: #777; margin-bottom: 24px; }
+      .modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+      @media (max-width: 768px) {
+        .page-wrapper { max-width: 100%; }
+        .article-page-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      }
+
+      @media (max-width: 520px) {
+        .page-wrapper { padding: 18px 12px 60px; }
+        .article-page-header h1 { font-size: 20px; }
+        .form-card-section { padding: 18px 14px; }
+        .form-actions { flex-direction: column; align-items: stretch; gap: 8px; padding: 14px 16px; }
+        .btn-group { justify-content: stretch; flex-direction: column; gap: 8px; }
+        .btn-group .btn-cancel,
+        .btn-group .btn-save { width: 100%; justify-content: center; }
+        .btn-delete { width: 100%; justify-content: center; }
+        .cover-drop-zone { padding: 28px 16px; }
+        .toolbar { flex-wrap: wrap; }
+        /* Delete confirm modal */
+        .modal-overlay { align-items: flex-end; padding: 0; }
+        .modal-box { border-radius: 16px 16px 0 0; width: 100%; max-width: 100%; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <div class="container-xxl bg-white p-0">
+      <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+        <a href="../index.html" class="navbar-brand">
+          <div class="logo-container">
+            <img src="../assetkps/Logo/Logo Yayasan.png" alt="Vidya Parahita Foundation" />
+            <img src="../assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School" />
+          </div>
+        </a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle notif-link" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="../artikel.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <a href="../home_user.html" class="nav-item nav-link">Home</a>
+            <a href="../about.html" class="nav-item nav-link">About Us</a>
+            <a href="../classes.html" class="nav-item nav-link">Gallery</a>
+            <div class="nav-item dropdown">
+              <a href="../facility.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Program</a>
+              <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+                <a href="../facility.html#school-section" class="dropdown-item">School</a>
+                <a href="../facility.html#afterschool-section" class="dropdown-item">After-School Programme</a>
+              </div>
+            </div>
+            <a href="../contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="../kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="../testimonial.html" class="nav-item nav-link">Testimonies</a>
+          </div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Page Content -->
+    <div class="page-wrapper">
+      <div class="article-page-header">
+        <h1><i class="bi bi-pencil-square"></i> Edit Article</h1>
+        <a href="../home_user.html" class="back-link">
+          <i class="bi bi-arrow-left"></i> Back to Home
+        </a>
+      </div>
+
+      <div class="alert-box error" id="alertError">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <span id="alertErrorMsg"></span>
+      </div>
+      <div class="alert-box success" id="alertSuccess">
+        <i class="bi bi-check-circle-fill"></i>
+        <span id="alertSuccessMsg"></span>
+      </div>
+
+      <form id="articleForm">
+        <div class="form-card">
+          <!-- Cover image -->
+          <div class="form-card-section">
+            <p class="section-label"><i class="bi bi-image"></i> Cover Image</p>
+            <img id="coverPreview" class="cover-preview-img" alt="Preview" />
+            <div class="cover-drop-zone" id="dropZone">
+              <input type="file" id="coverInput" accept="image/*" />
+              <i class="bi bi-cloud-arrow-up drop-icon"></i>
+              <span class="drop-text">Klik atau drag foto ke sini</span>
+              <span class="drop-sub">PNG, JPG, WEBP — maks 5 MB</span>
+            </div>
+            <button type="button" class="cover-change-btn" id="coverChangeBtn" onclick="resetCover()">
+              <i class="bi bi-arrow-repeat"></i> Ganti foto
+            </button>
+          </div>
+
+          <!-- Title & content -->
+          <div class="form-card-section">
+            <p class="section-label"><i class="bi bi-type"></i> Konten Artikel</p>
+
+            <div class="field-group">
+              <label class="field-label" for="titleInput">Judul <span class="req">*</span></label>
+              <input type="text" id="titleInput" class="field-input skeleton" placeholder="Judul artikel..." />
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Isi Artikel <span class="req">*</span></label>
+              <div class="editor-toolbar">
+                <button type="button" class="toolbar-btn" onclick="fmt('bold')" title="Bold"><b>B</b></button>
+                <button type="button" class="toolbar-btn" onclick="fmt('italic')" title="Italic"><i>I</i></button>
+                <button type="button" class="toolbar-btn" onclick="fmt('underline')" title="Underline"><u>U</u></button>
+                <div class="toolbar-divider"></div>
+                <button type="button" class="toolbar-btn" onclick="fmt('insertUnorderedList')" title="Bullet list"><i class="bi bi-list-ul"></i></button>
+                <button type="button" class="toolbar-btn" onclick="fmt('insertOrderedList')" title="Numbered list"><i class="bi bi-list-ol"></i></button>
+                <div class="toolbar-divider"></div>
+                <button type="button" class="toolbar-btn" onclick="fmt('justifyLeft')" title="Align left"><i class="bi bi-text-left"></i></button>
+                <button type="button" class="toolbar-btn" onclick="fmt('justifyCenter')" title="Center"><i class="bi bi-text-center"></i></button>
+                <button type="button" class="toolbar-btn" onclick="fmt('justifyRight')" title="Align right"><i class="bi bi-text-right"></i></button>
+              </div>
+              <div class="content-editor skeleton" id="contentEditor" contenteditable="false"
+                data-placeholder="Isi artikel..."></div>
+              <div class="char-counter"><span id="charCount">0</span> karakter</div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn-delete" onclick="confirmDelete()">
+              <i class="bi bi-trash3-fill"></i> Hapus Artikel
+            </button>
+            <div class="btn-group">
+              <a href="../home_user.html" class="btn-cancel">
+                <i class="bi bi-x-lg"></i> Batal
+              </a>
+              <button type="submit" class="btn-save" id="saveBtn">
+                <i class="bi bi-check2-circle" id="saveIcon"></i>
+                <span id="saveText">Simpan Perubahan</span>
+                <div class="spinner" id="saveSpinner"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Delete confirm modal -->
+    <div class="modal-overlay" id="deleteModal">
+      <div class="modal-box">
+        <i class="bi bi-trash3-fill"></i>
+        <h3>Hapus Artikel?</h3>
+        <p>Tindakan ini tidak bisa dibatalkan. Artikel akan dihapus permanen.</p>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+          <button class="btn-delete" id="confirmDeleteBtn" onclick="doDelete()">
+            <i class="bi bi-trash3-fill"></i> Ya, Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/notif-bell.js"></script>
+
+    <script>
+      const SUPABASE_URL = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      // ── Auth guard ──
+      const userRole = localStorage.getItem("role");
+      if (!localStorage.getItem("access_token") || !localStorage.getItem("username")) {
+        window.location.href = "../login/login.html";
+      } else if (userRole !== "editor" && userRole !== "admin") {
+        window.location.href = "../home_user.html";
+      }
+
+      const articleId = new URLSearchParams(window.location.search).get("id");
+      if (!articleId) window.location.href = "../home_user.html";
+
+      function logout() {
+        ["access_token","refresh_token","expires_at","user","username","role"]
+          .forEach(k => localStorage.removeItem(k));
+        window.location.href = "../login/login.html";
+      }
+
+      // ── Token helpers ──
+      function isTokenValid(token) {
+        try {
+          const parts = token.split(".");
+          if (parts.length !== 3) return false;
+          const payload = JSON.parse(atob(parts[1].replace(/-/g,"+").replace(/_/g,"/")));
+          return payload.exp * 1000 > Date.now() + 30000;
+        } catch { return false; }
+      }
+
+      async function refreshAccessToken() {
+        const refreshTok = localStorage.getItem("refresh_token");
+        if (!refreshTok) return null;
+        try {
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/auth/refresh`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+            body: JSON.stringify({ refresh_token: refreshTok }),
+          });
+          if (!res.ok) return null;
+          const data = await res.json();
+          if (!data.access_token) return null;
+          localStorage.setItem("access_token", data.access_token);
+          localStorage.setItem("refresh_token", data.refresh_token);
+          localStorage.setItem("expires_at", String(data.expires_at));
+          return data.access_token;
+        } catch { return null; }
+      }
+
+      async function ensureValidToken() {
+        const token = localStorage.getItem("access_token");
+        if (isTokenValid(token)) return token;
+        const newToken = await refreshAccessToken();
+        if (!newToken) { logout(); return null; }
+        return newToken;
+      }
+
+      // ── Cover image ──
+      let coverFile = null;
+      let existingImageUrl = "";
+
+      const dropZone     = document.getElementById("dropZone");
+      const coverInput   = document.getElementById("coverInput");
+      const coverPreview = document.getElementById("coverPreview");
+      const changeBtn    = document.getElementById("coverChangeBtn");
+
+      coverInput.addEventListener("change", e => handleFile(e.target.files[0]));
+      dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("drag-over"); });
+      dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+      dropZone.addEventListener("drop", e => {
+        e.preventDefault();
+        dropZone.classList.remove("drag-over");
+        handleFile(e.dataTransfer.files[0]);
+      });
+
+      function handleFile(file) {
+        if (!file || !file.type.startsWith("image/")) return;
+        if (file.size > 5 * 1024 * 1024) { showError("Ukuran foto maksimal 5 MB."); return; }
+        coverFile = file;
+        const reader = new FileReader();
+        reader.onload = e => {
+          coverPreview.src = e.target.result;
+          coverPreview.style.display = "block";
+          dropZone.style.display = "none";
+          changeBtn.style.display = "inline-flex";
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function showExistingImage(url) {
+        if (!url) return;
+        existingImageUrl = url;
+        coverPreview.src = url;
+        coverPreview.style.display = "block";
+        dropZone.style.display = "none";
+        changeBtn.style.display = "inline-flex";
+      }
+
+      function resetCover() {
+        coverFile = null;
+        existingImageUrl = "";
+        coverPreview.src = "";
+        coverPreview.style.display = "none";
+        dropZone.style.display = "flex";
+        changeBtn.style.display = "none";
+        coverInput.value = "";
+      }
+
+      // ── Rich editor ──
+      const editor = document.getElementById("contentEditor");
+      const charCount = document.getElementById("charCount");
+      editor.addEventListener("input", () => {
+        charCount.textContent = editor.innerText.replace(/\n/g,"").length;
+      });
+      function fmt(cmd) { document.execCommand(cmd, false, null); editor.focus(); }
+
+      // ── Alerts ──
+      function showError(msg) {
+        document.getElementById("alertErrorMsg").textContent = msg;
+        document.getElementById("alertError").classList.add("show");
+        document.getElementById("alertSuccess").classList.remove("show");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      function showSuccess(msg) {
+        document.getElementById("alertSuccessMsg").textContent = msg;
+        document.getElementById("alertSuccess").classList.add("show");
+        document.getElementById("alertError").classList.remove("show");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      function setSaveLoading(loading) {
+        document.getElementById("saveBtn").disabled = loading;
+        document.getElementById("saveText").textContent = loading ? "Menyimpan..." : "Simpan Perubahan";
+        document.getElementById("saveIcon").style.display = loading ? "none" : "inline";
+        document.getElementById("saveSpinner").classList.toggle("show", loading);
+      }
+
+      // ── Upload image ──
+      async function uploadImage(file) {
+        const ext = file.name.split(".").pop();
+        const fileName = `article_${Date.now()}.${ext}`;
+        const res = await fetch(`${SUPABASE_URL}/storage/v1/object/articles/${fileName}`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${SUPABASE_ANON}`,
+            "apikey": SUPABASE_ANON,
+            "Content-Type": file.type,
+            "x-upsert": "true",
+          },
+          body: file,
+        });
+        if (!res.ok) { const t = await res.text(); console.error("Storage error:", t); throw new Error("Gagal upload gambar."); }
+        return `${SUPABASE_URL}/storage/v1/object/public/articles/${fileName}`;
+      }
+
+      // ── Load article ──
+      async function loadArticle() {
+        try {
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles/${articleId}`, {
+            headers: { "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const json = await res.json();
+          const article = json.data;
+          if (!article) throw new Error("Artikel tidak ditemukan");
+
+          // Fill form
+          const titleEl = document.getElementById("titleInput");
+          titleEl.value = article.title || "";
+          titleEl.classList.remove("skeleton");
+
+          editor.innerHTML = article.content || "";
+          editor.contentEditable = "true";
+          editor.classList.remove("skeleton");
+          charCount.textContent = editor.innerText.replace(/\n/g,"").length;
+
+          if (article.image_link) showExistingImage(article.image_link);
+
+        } catch (err) {
+          showError("Gagal memuat artikel. " + err.message);
+          console.error(err);
+        }
+      }
+
+      // ── Submit (PATCH) ──
+      document.getElementById("articleForm").addEventListener("submit", async e => {
+        e.preventDefault();
+
+        const title   = document.getElementById("titleInput").value.trim();
+        const content = editor.innerHTML.trim();
+
+        if (!title)   { showError("Judul tidak boleh kosong."); return; }
+        if (!content || editor.innerText.trim() === "") { showError("Isi artikel tidak boleh kosong."); return; }
+
+        setSaveLoading(true);
+        document.getElementById("alertError").classList.remove("show");
+        document.getElementById("alertSuccess").classList.remove("show");
+
+        try {
+          const validToken = await ensureValidToken();
+          if (!validToken) return;
+
+          // Upload new image if selected
+          let imageLink = existingImageUrl;
+          if (coverFile) {
+            try {
+              imageLink = await uploadImage(coverFile);
+            } catch (imgErr) {
+              console.warn("Image upload failed:", imgErr);
+            }
+          }
+
+          const slug = title
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .trim()
+            .replace(/\s+/g, "-")
+            + "-" + Date.now();
+
+          const payload = { title, content, slug };
+          if (imageLink) payload.image_link = imageLink;
+
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles/${articleId}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${SUPABASE_ANON}`,
+              "apikey": SUPABASE_ANON,
+              "x-access-token": validToken,
+            },
+            body: JSON.stringify(payload),
+          });
+
+          let data = {};
+          try { data = await res.json(); } catch (_) {}
+
+          if (!res.ok) {
+            showError(`Gagal menyimpan (${res.status}): ${data.error || data.message || JSON.stringify(data)}`);
+            setSaveLoading(false);
+            return;
+          }
+
+          showSuccess("Artikel berhasil disimpan!");
+          setSaveLoading(false);
+          setTimeout(() => { window.location.href = "../home_user.html"; }, 1500);
+
+        } catch (err) {
+          showError("Terjadi kesalahan. Periksa koneksi internet kamu.");
+          console.error("Save error:", err);
+          setSaveLoading(false);
+        }
+      });
+
+      // ── Delete ──
+      function confirmDelete() {
+        document.getElementById("deleteModal").classList.add("show");
+      }
+      function closeDeleteModal() {
+        document.getElementById("deleteModal").classList.remove("show");
+      }
+
+      async function doDelete() {
+        const btn = document.getElementById("confirmDeleteBtn");
+        btn.disabled = true;
+        btn.textContent = "Menghapus...";
+
+        try {
+          const validToken = await ensureValidToken();
+          if (!validToken) return;
+
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles/${articleId}`, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${SUPABASE_ANON}`,
+              "apikey": SUPABASE_ANON,
+              "x-access-token": validToken,
+            },
+          });
+
+          if (!res.ok) {
+            let data = {};
+            try { data = await res.json(); } catch (_) {}
+            closeDeleteModal();
+            showError(`Gagal hapus (${res.status}): ${data.error || data.message || ""}`);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-trash3-fill"></i> Ya, Hapus';
+            return;
+          }
+
+          closeDeleteModal();
+          showSuccess("Artikel berhasil dihapus. Mengalihkan...");
+          setTimeout(() => { window.location.href = "../home_user.html"; }, 1500);
+
+        } catch (err) {
+          closeDeleteModal();
+          showError("Terjadi kesalahan saat menghapus.");
+          console.error("Delete error:", err);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="bi bi-trash3-fill"></i> Ya, Hapus';
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadArticle);
+    </script>
+  </body>
+</html>
