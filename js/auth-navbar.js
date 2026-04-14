@@ -11,7 +11,7 @@
   // Tentukan href home berdasarkan role
   const homeHref = (role === "admin" || role === "editor") ? "home_user.html" : "home_user.html";
 
-  // Buat grup: tombol Home + Logout
+  // Buat grup: tombol dashboard sama logout
   const wrap = document.createElement("div");
   wrap.style.cssText = "display:inline-flex;align-items:center;gap:8px;";
 
@@ -22,7 +22,7 @@
       display:inline-flex;align-items:center;gap:5px;transition:0.2s;"
       onmouseover="this.style.background='#9a7b55';this.style.color='#fff';"
       onmouseout="this.style.background='';this.style.color='#9a7b55';">
-      <i class="bi bi-house-fill"></i> Home
+      <i class="bi bi-speedometer2"></i> Dashboard
     </a>
     <button onclick="(function(){
       ['access_token','refresh_token','expires_at','user','username','role']
