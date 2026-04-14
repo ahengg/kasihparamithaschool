@@ -30,6 +30,7 @@
       ".notif-link{position:relative}" +
       ".notif-badge{display:none;position:absolute;top:2px;right:-4px;background:#e53935;color:#fff !important;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;align-items:center;justify-content:center;padding:0 4px;line-height:1;pointer-events:none}" +
       ".notif-dropdown{width:320px;padding:0;min-width:0}" +
+      "@media(max-width:576px){.notif-dropdown{width:calc(100vw - 16px) !important;position:fixed !important;left:8px !important;right:8px !important;top:auto !important;transform:none !important}}" +
       ".notif-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;font-size:12px;font-weight:700;color:#555;border-bottom:1px solid #f0ece6}" +
       ".notif-mark-all{background:none;border:none;cursor:pointer;font-size:11px;color:#5b9bd5;font-family:inherit;font-weight:600;padding:0}" +
       ".notif-mark-all:hover{text-decoration:underline}" +
@@ -85,6 +86,23 @@
     }
 
     loadNotifications(prefix);
+
+    //posisi dropdown agar tidak terpotong layar
+    wrapper.addEventListener("shown.bs.dropdown", function () {
+      var m = wrapper.querySelector(".dropdown-menu");
+      if (!m) return;
+      //mobile: CSS fixed sudah handle, skip JS reposisi
+      if (window.innerWidth <= 576) return;
+      m.style.transform = "none";
+      var rect = m.getBoundingClientRect();
+      if (rect.left < 8) {
+        m.style.left = "0";
+        m.style.right = "auto";
+      } else if (rect.right > window.innerWidth - 8) {
+        m.style.left = "auto";
+        m.style.right = "0";
+      }
+    });
   }
 
   // ── Helpers ──
