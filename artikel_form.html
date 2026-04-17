@@ -327,7 +327,7 @@
 
           <!-- Recommendation -->
           <div class="recommendation-box">
-            <h2 class="recommendation-title">Recommendation</h2>
+            <h2 class="recommendation-title" data-en="Recommendation" data-id="Rekomendasi">Recommendation</h2>
             <div class="row g-4" id="recommendContainer">
               <!-- filled by JS -->
             </div>
@@ -354,6 +354,7 @@
     <script src="js/config.js"></script>
     <script src="js/auth-navbar.js"></script>
     <script src="js/notif-bell.js"></script>
+    <script src="js/lang.js"></script>
 
     <script>
       const SUPABASE_URL = window.__SUPABASE.URL;
@@ -465,6 +466,7 @@
 
           renderArticle(article);
           renderRecommendations(allArticles, id);
+          if (window.notifMarkRead) window.notifMarkRead(id);
         } catch (err) {
           document.getElementById("artikelTitle").textContent = "Gagal memuat artikel.";
           document.getElementById("artikelContent").innerHTML = `<p>Terjadi kesalahan. Coba lagi nanti.</p>`;

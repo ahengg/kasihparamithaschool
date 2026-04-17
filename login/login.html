@@ -150,17 +150,6 @@
         box-shadow: 0 0 0 3px rgba(154, 123, 85, 0.12);
       }
 
-      .forgot-link {
-        display: inline-block;
-        margin-top: -4px;
-        margin-bottom: 18px;
-        font-size: 12px;
-        color: #f0a22e;
-        text-decoration: none;
-      }
-      .forgot-link:hover {
-        text-decoration: underline;
-      }
 
       .login-submit-btn {
         width: 100%;
@@ -340,7 +329,7 @@
 
         <form id="loginForm" novalidate>
           <div class="form-group">
-            <label class="form-label" for="username">Username</label>
+            <label class="form-label" for="username" data-en="Username" data-id="Nama Pengguna">Username</label>
             <input
               type="text"
               id="username"
@@ -350,7 +339,7 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="password">Password</label>
+            <label class="form-label" for="password" data-en="Password" data-id="Kata Sandi">Password</label>
             <input
               type="password"
               id="password"
@@ -358,8 +347,6 @@
               autocomplete="current-password"
             />
           </div>
-
-          <a href="#" class="forgot-link">Forgot password?</a>
 
           <button type="submit" class="login-submit-btn" id="loginBtn">
             <span id="btnText">Login</span>
@@ -376,6 +363,7 @@
     <script src="../js/main.js"></script>
     <script src="../js/config.js"></script>
     <script src="../js/notif-bell.js"></script>
+    <script src="../js/lang.js"></script>
 
     <script>
       const SUPABASE_URL = window.__SUPABASE.URL;
@@ -423,12 +411,12 @@
         const password = passInput.value;
 
         if (!username) {
-          showError("Username tidak boleh kosong.");
+          showError("Field wajib diisi.");
           usernameInput.focus();
           return;
         }
         if (!password) {
-          showError("Password tidak boleh kosong.");
+          showError("Field wajib diisi.");
           passInput.focus();
           return;
         }

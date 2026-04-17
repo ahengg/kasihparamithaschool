@@ -663,7 +663,7 @@
       }
 
       // ── Upload image to Supabase Storage ──
-      async function uploadImage(file) {
+      async function uploadImage(file, userToken) {
         const ext      = file.name.split(".").pop();
         const fileName = `article_${Date.now()}.${ext}`;
         const res = await fetch(
@@ -671,7 +671,7 @@
           {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${SUPABASE_ANON}`,
+              "Authorization": `Bearer ${userToken}`,
               "apikey": SUPABASE_ANON,
               "Content-Type": file.type,
               "x-upsert": "true",
@@ -682,7 +682,7 @@
         if (!res.ok) {
           const errText = await res.text();
           console.error("Storage upload error:", res.status, errText);
-          throw new Error("Gagal upload gambar.");
+          throw new Error("Gagal upload gambar. Pastikan koneksi stabil lalu coba lagi.");
         }
         return `${SUPABASE_URL}/storage/v1/object/public/articles/${fileName}`;
       }
@@ -717,6 +717,7 @@
         const title   = document.getElementById("titleInput").value.trim();
         const content = editor.innerHTML.trim();
 
+        if (!coverFile) { showError("Cover image wajib diisi."); return; }
         if (!title)   { showError("Judul tidak boleh kosong."); return; }
         if (!content || editor.innerText.trim() === "") {
           showError("Isi artikel tidak boleh kosong."); return;
@@ -731,14 +732,14 @@
           const validToken = await ensureValidToken();
           if (!validToken) return;
 
-          // Upload image if provided
+          // Upload cover image (wajib)
           let imageLink = "";
-          if (coverFile) {
-            try {
-              imageLink = await uploadImage(coverFile);
-            } catch (imgErr) {
-              console.warn("Image upload failed, continuing without image:", imgErr);
-            }
+          try {
+            imageLink = await uploadImage(coverFile, validToken);
+          } catch (imgErr) {
+            showError(imgErr.message || "Gagal upload gambar.");
+            setLoading(false);
+            return;
           }
 
           // POST article

@@ -1001,9 +1001,11 @@
 
       async function submitEditMaterial() {
         const title = document.getElementById("editTitle").value.trim();
-        if (!title) { document.getElementById("editTitle").focus(); return; }
+        if (!title) { alert("Judul materi wajib diisi."); document.getElementById("editTitle").focus(); return; }
 
         const catVal = document.getElementById("editCategory").value;
+        if (!catVal) { alert("Kategori/Kelas wajib diisi."); document.getElementById("editCategory").focus(); return; }
+
         const desc   = document.getElementById("editDesc").value.trim();
 
         const btn = document.getElementById("editSaveBtn");

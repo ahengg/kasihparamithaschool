@@ -684,20 +684,20 @@
       }
 
       // ── Upload image ──
-      async function uploadImage(file) {
+      async function uploadImage(file, userToken) {
         const ext = file.name.split(".").pop();
         const fileName = `article_${Date.now()}.${ext}`;
         const res = await fetch(`${SUPABASE_URL}/storage/v1/object/articles/${fileName}`, {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${SUPABASE_ANON}`,
+            "Authorization": `Bearer ${userToken}`,
             "apikey": SUPABASE_ANON,
             "Content-Type": file.type,
             "x-upsert": "true",
           },
           body: file,
         });
-        if (!res.ok) { const t = await res.text(); console.error("Storage error:", t); throw new Error("Gagal upload gambar."); }
+        if (!res.ok) { const t = await res.text(); console.error("Storage error:", t); throw new Error("Gagal upload gambar. Pastikan koneksi stabil lalu coba lagi."); }
         return `${SUPABASE_URL}/storage/v1/object/public/articles/${fileName}`;
       }
 
@@ -752,9 +752,11 @@
           let imageLink = existingImageUrl;
           if (coverFile) {
             try {
-              imageLink = await uploadImage(coverFile);
+              imageLink = await uploadImage(coverFile, validToken);
             } catch (imgErr) {
-              console.warn("Image upload failed:", imgErr);
+              showError(imgErr.message || "Gagal upload gambar.");
+              setLoading(false);
+              return;
             }
           }
 

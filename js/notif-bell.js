@@ -1,11 +1,12 @@
 /**
- * Notification Bell — shows unread articles in the navbar bell dropdown.
- * Hides the bell entirely when the user is not logged in.
- * Tracks read articles per-user in localStorage.
+ * Notification Bell — tracks read articles per-user in Supabase (cross-device).
+ * localStorage is used as a fast cache; DB is source of truth.
  */
 (function () {
   var SUPABASE_URL = window.__SUPABASE.URL;
   var SUPABASE_ANON = window.__SUPABASE.ANON;
+
+  var _readCache = null; // in-memory Set, populated on first getReadIds()
 
   function init() {
     var bellLink = document.querySelector(".notif-link");
@@ -19,12 +20,10 @@
       return;
     }
 
-    // Detect sub-directory for link prefixes
     var loc = window.location.pathname.toLowerCase();
     var isSubDir = loc.indexOf("/admin/") !== -1 || loc.indexOf("/login/") !== -1;
     var prefix = isSubDir ? "../" : "";
 
-    // Inject CSS
     var style = document.createElement("style");
     style.textContent =
       ".notif-link{position:relative}" +
@@ -51,13 +50,11 @@
       ".notif-footer a:hover{text-decoration:underline}";
     document.head.appendChild(style);
 
-    // Add badge to bell link
     var badge = document.createElement("span");
     badge.className = "notif-badge";
     badge.id = "notifBadge";
     bellLink.appendChild(badge);
 
-    // Replace dropdown menu content
     var menu = wrapper.querySelector(".dropdown-menu");
     if (menu) {
       menu.className =
@@ -69,13 +66,10 @@
         "</div>" +
         '<div id="notifList"><div class="notif-loading">Memuat...</div></div>' +
         '<div class="notif-footer">' +
-        '<a href="' +
-        prefix +
-        'artikel.html">Lihat semua artikel <i class="bi bi-arrow-right"></i></a>' +
+        '<a href="' + prefix + 'artikel.html">Lihat semua artikel <i class="bi bi-arrow-right"></i></a>' +
         "</div>";
     }
 
-    // Mark All button
     var markAllBtn = document.getElementById("notifMarkAll");
     if (markAllBtn) {
       markAllBtn.addEventListener("click", function (e) {
@@ -87,11 +81,9 @@
 
     loadNotifications(prefix);
 
-    //posisi dropdown agar tidak terpotong layar
     wrapper.addEventListener("shown.bs.dropdown", function () {
       var m = wrapper.querySelector(".dropdown-menu");
       if (!m) return;
-      //mobile: CSS fixed sudah handle, skip JS reposisi
       if (window.innerWidth <= 576) return;
       m.style.transform = "none";
       var rect = m.getBoundingClientRect();
@@ -105,131 +97,99 @@
     });
   }
 
-  // ── Helpers ──
+  // ── Auth helpers ──
 
   function getUserId() {
-    try {
-      return JSON.parse(localStorage.getItem("user") || "{}").id || null;
-    } catch (e) {
-      return null;
-    }
+    try { return JSON.parse(localStorage.getItem("user") || "{}").id || null; }
+    catch (e) { return null; }
   }
 
-  function getStorageKey() {
+  function getToken() {
+    return localStorage.getItem("access_token");
+  }
+
+  // ── localStorage cache (fast, per-device backup) ──
+
+  function getLocalKey() {
     var uid = getUserId();
     return uid ? "notif_read_" + uid : null;
   }
 
-  function getReadIds() {
-    var key = getStorageKey();
+  function getLocalReadIds() {
+    var key = getLocalKey();
     if (!key) return new Set();
-    try {
-      return new Set(
-        JSON.parse(localStorage.getItem(key) || "[]").map(String)
-      );
-    } catch (e) {
-      return new Set();
-    }
+    try { return new Set(JSON.parse(localStorage.getItem(key) || "[]").map(String)); }
+    catch (e) { return new Set(); }
   }
 
-  function saveReadIds(readSet) {
-    var key = getStorageKey();
-    if (key) localStorage.setItem(key, JSON.stringify(Array.from(readSet)));
+  function saveLocalReadIds(set) {
+    var key = getLocalKey();
+    if (key) localStorage.setItem(key, JSON.stringify(Array.from(set)));
   }
 
-  // ── Load & render ──
+  // ── Supabase DB sync ──
 
-  function loadNotifications(prefix) {
-    if (!getUserId()) return;
+  function fetchReadFromDB() {
+    var userId = getUserId();
+    var token = getToken();
+    if (!userId || !token) return Promise.resolve(null);
 
-    fetch(SUPABASE_URL + "/functions/v1/CRUD/articles", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + SUPABASE_ANON,
-        apikey: SUPABASE_ANON,
-      },
+    return fetch(SUPABASE_URL + "/rest/v1/users?id=eq." + userId + "&select=read_articles", {
+      headers: { "Authorization": "Bearer " + token, "apikey": SUPABASE_ANON }
     })
-      .then(function (res) {
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        return res.json();
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        if (!data || !data[0]) return null;
+        return new Set((data[0].read_articles || []).map(String));
       })
-      .then(function (json) {
-        var articles = json.data || [];
-        var readIds = getReadIds();
-        var unread = articles.filter(function (a) {
-          return !readIds.has(String(a.id));
-        });
-
-        // Badge
-        var b = document.getElementById("notifBadge");
-        if (unread.length > 0) {
-          b.textContent = unread.length > 9 ? "9+" : String(unread.length);
-          b.style.display = "flex";
-        } else {
-          b.style.display = "none";
-        }
-
-        // List
-        var list = document.getElementById("notifList");
-        if (articles.length === 0) {
-          list.innerHTML =
-            '<div class="notif-empty"><i class="bi bi-journal-x"></i>Belum ada artikel.</div>';
-          return;
-        }
-        if (unread.length === 0) {
-          list.innerHTML =
-            '<div class="notif-empty"><i class="bi bi-check-circle"></i>Semua sudah dibaca.</div>';
-          return;
-        }
-
-        var display = unread.slice(0, 6);
-        var html = '<div class="notif-list-scroll">';
-        display.forEach(function (a) {
-          var date = new Date(a.created_at).toLocaleDateString("id-ID", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          });
-          html +=
-            '<a href="' +
-            prefix +
-            "artikel_form.html?id=" +
-            a.id +
-            '" class="notif-item unread" data-id="' +
-            a.id +
-            '">' +
-            '<div class="notif-unread-dot"></div>' +
-            '<div class="notif-item-title">' +
-            escapeHtml(a.title) +
-            "</div>" +
-            '<div class="notif-item-date">' +
-            date +
-            "</div>" +
-            "</a>";
-        });
-        html += "</div>";
-        list.innerHTML = html;
-
-        // Attach mark-read handlers
-        list.querySelectorAll(".notif-item[data-id]").forEach(function (el) {
-          el.addEventListener("click", function () {
-            markRead(el.dataset.id);
-          });
-        });
-      })
-      .catch(function (e) {
-        var el = document.getElementById("notifList");
-        if (el)
-          el.innerHTML =
-            '<div class="notif-loading">Gagal memuat.</div>';
-        console.error("notif-bell:", e);
-      });
+      .catch(function () { return null; });
   }
+
+  function patchReadToDB(set) {
+    var userId = getUserId();
+    var token = getToken();
+    if (!userId || !token) return;
+
+    fetch(SUPABASE_URL + "/rest/v1/users?id=eq." + userId, {
+      method: "PATCH",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "apikey": SUPABASE_ANON,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal",
+      },
+      body: JSON.stringify({ read_articles: Array.from(set) })
+    }).catch(function () {});
+  }
+
+  // ── Get read IDs: DB (source of truth) merged with localStorage cache ──
+
+  function getReadIds() {
+    if (_readCache !== null) return Promise.resolve(_readCache);
+
+    return fetchReadFromDB().then(function (dbSet) {
+      var localSet = getLocalReadIds();
+      if (dbSet) {
+        localSet.forEach(function (id) { dbSet.add(id); });
+        _readCache = dbSet;
+      } else {
+        _readCache = localSet;
+      }
+      saveLocalReadIds(_readCache);
+      return _readCache;
+    });
+  }
+
+  // ── Mark read ──
 
   function markRead(articleId) {
-    var readIds = getReadIds();
-    readIds.add(String(articleId));
-    saveReadIds(readIds);
+    if (!getUserId()) return;
+    if (!_readCache) _readCache = getLocalReadIds();
+    if (_readCache.has(String(articleId))) return; // already read
+
+    _readCache.add(String(articleId));
+    saveLocalReadIds(_readCache);
+    patchReadToDB(_readCache);
 
     var b = document.getElementById("notifBadge");
     if (b) {
@@ -241,24 +201,111 @@
         b.textContent = next > 9 ? "9+" : String(next);
       }
     }
+
+    var item = document.querySelector("#notifList .notif-item[data-id='" + articleId + "']");
+    if (item) item.remove();
   }
 
   function markAllRead() {
     var els = document.querySelectorAll("#notifList .notif-item[data-id]");
-    var readIds = getReadIds();
-    els.forEach(function (el) {
-      readIds.add(el.dataset.id);
-    });
-    saveReadIds(readIds);
+    if (!_readCache) _readCache = getLocalReadIds();
+    els.forEach(function (el) { _readCache.add(el.dataset.id); });
+    saveLocalReadIds(_readCache);
+    patchReadToDB(_readCache);
+
     var list = document.getElementById("notifList");
     if (list)
-      list.innerHTML =
-        '<div class="notif-empty"><i class="bi bi-check-circle"></i>Semua sudah dibaca.</div>';
+      list.innerHTML = '<div class="notif-empty"><i class="bi bi-check-circle"></i>Semua sudah dibaca.</div>';
     var b = document.getElementById("notifBadge");
     if (b) b.style.display = "none";
   }
 
-  // ── Bootstrap ──
+  // ── Expose globally so artikel_form.html can call on page load ──
+  window.notifMarkRead = markRead;
+
+  // ── Load & render ──
+
+  function loadNotifications(prefix) {
+    if (!getUserId()) return;
+
+    Promise.all([
+      fetch(SUPABASE_URL + "/functions/v1/CRUD/articles", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + SUPABASE_ANON,
+          apikey: SUPABASE_ANON,
+        },
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(function (json) { return json.data || []; }),
+      getReadIds()
+    ])
+      .then(function (results) {
+        var articles = results[0];
+        var readIds = results[1];
+        var unread = articles.filter(function (a) {
+          return !readIds.has(String(a.id));
+        });
+
+        var b = document.getElementById("notifBadge");
+        if (unread.length > 0) {
+          b.textContent = unread.length > 9 ? "9+" : String(unread.length);
+          b.style.display = "flex";
+        } else {
+          b.style.display = "none";
+        }
+
+        var list = document.getElementById("notifList");
+        if (articles.length === 0) {
+          list.innerHTML = '<div class="notif-empty"><i class="bi bi-journal-x"></i>Belum ada artikel.</div>';
+          return;
+        }
+        if (unread.length === 0) {
+          list.innerHTML = '<div class="notif-empty"><i class="bi bi-check-circle"></i>Semua sudah dibaca.</div>';
+          return;
+        }
+
+        var display = unread.slice(0, 6);
+        var html = '<div class="notif-list-scroll">';
+        display.forEach(function (a) {
+          var date = new Date(a.created_at).toLocaleDateString("id-ID", {
+            day: "numeric", month: "short", year: "numeric",
+          });
+          html +=
+            '<a href="' + prefix + "artikel_form.html?id=" + a.id +
+            '" class="notif-item unread" data-id="' + a.id + '">' +
+            '<div class="notif-unread-dot"></div>' +
+            '<div class="notif-item-title">' + escapeHtml(a.title) + "</div>" +
+            '<div class="notif-item-date">' + date + "</div>" +
+            "</a>";
+        });
+        html += "</div>";
+        list.innerHTML = html;
+
+        list.querySelectorAll(".notif-item[data-id]").forEach(function (el) {
+          el.addEventListener("click", function () {
+            markRead(el.dataset.id);
+          });
+        });
+      })
+      .catch(function (e) {
+        var el = document.getElementById("notifList");
+        if (el) el.innerHTML = '<div class="notif-loading">Gagal memuat.</div>';
+        console.error("notif-bell:", e);
+      });
+  }
+
+  function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {
