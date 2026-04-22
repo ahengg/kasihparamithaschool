@@ -8,6 +8,22 @@
 
   var _readCache = null; // in-memory Set, populated on first getReadIds()
 
+  // ── Visibility: link "Academic Calendar" hanya untuk role=user ──
+  // Berlaku di semua halaman karena notif-bell.js loaded di semua page.
+  function applyCalendarVisibility() {
+    var role = localStorage.getItem("role") || "";
+    var token = localStorage.getItem("access_token");
+    var isUser = !!token && role === "user";
+    document.querySelectorAll('a[href*="kalenderakademik.html"]').forEach(function (el) {
+      el.style.display = isUser ? "" : "none";
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applyCalendarVisibility);
+  } else {
+    applyCalendarVisibility();
+  }
+
   function init() {
     var bellLink = document.querySelector(".notif-link");
     if (!bellLink) return;
@@ -66,7 +82,7 @@
         "</div>" +
         '<div id="notifList"><div class="notif-loading">Memuat...</div></div>' +
         '<div class="notif-footer">' +
-        '<a href="' + prefix + 'artikel.html">Lihat semua artikel <i class="bi bi-arrow-right"></i></a>' +
+        '<a href="' + prefix + 'pengumuman.html">Lihat semua pengumuman <i class="bi bi-arrow-right"></i></a>' +
         "</div>";
     }
 
@@ -223,24 +239,50 @@
   // ── Expose globally so artikel_form.html can call on page load ──
   window.notifMarkRead = markRead;
 
+  // ── Fetch announcements with audience filter (server-side) ──
+
+  function fetchAnnouncements() {
+    var userId = getUserId();
+    var token  = getToken();
+    if (!userId || !token) return Promise.resolve([]);
+
+    // Lookup user's category_id, lalu request announcements yang match
+    return fetch(SUPABASE_URL + "/rest/v1/users?id=eq." + userId + "&select=category_id", {
+      headers: { "Authorization": "Bearer " + token, "apikey": SUPABASE_ANON }
+    })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (rows) {
+        var catId = rows && rows[0] ? rows[0].category_id : null;
+        var url = SUPABASE_URL + "/functions/v1/CRUD/articles?type=announcement";
+        if (catId) {
+          url += "&audience_category_id=" + encodeURIComponent(catId);
+        }
+        // admin/editor (no category_id) → tidak dilfilter, lihat semua pengumuman
+        return fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + SUPABASE_ANON,
+            "apikey": SUPABASE_ANON
+          }
+        });
+      })
+      .then(function (res) {
+        if (!res || !res.ok) return [];
+        return res.json();
+      })
+      .then(function (json) { return (json && json.data) || []; })
+      .catch(function () { return []; });
+  }
+
   // ── Load & render ──
 
   function loadNotifications(prefix) {
     if (!getUserId()) return;
 
+    // Bell hanya menampilkan pengumuman (type=announcement). Filter audience
+    // dilakukan client-side karena kita perlu inspect category_id user dulu.
     Promise.all([
-      fetch(SUPABASE_URL + "/functions/v1/CRUD/articles", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + SUPABASE_ANON,
-          apikey: SUPABASE_ANON,
-        },
-      })
-        .then(function (res) {
-          if (!res.ok) throw new Error("HTTP " + res.status);
-          return res.json();
-        })
-        .then(function (json) { return json.data || []; }),
+      fetchAnnouncements(),
       getReadIds()
     ])
       .then(function (results) {
@@ -260,7 +302,7 @@
 
         var list = document.getElementById("notifList");
         if (articles.length === 0) {
-          list.innerHTML = '<div class="notif-empty"><i class="bi bi-journal-x"></i>Belum ada artikel.</div>';
+          list.innerHTML = '<div class="notif-empty"><i class="bi bi-journal-x"></i>Belum ada pengumuman.</div>';
           return;
         }
         if (unread.length === 0) {

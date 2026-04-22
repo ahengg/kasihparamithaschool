@@ -205,26 +205,72 @@ async function refreshToken(supabase: SupabaseClient, req: Request): Promise<Res
 // ARTICLES HANDLERS
 // ============================================================
 
-async function getArticles(supabase: SupabaseClient): Promise<Response> {
-  const { data, error } = await supabase
-    .from("articles").select("*").order("created_at", { ascending: false });
+// GET /articles — opsional ?type=article|announcement & ?audience_category_id=
+// audience_category_id="public" → hanya yang NULL
+// audience_category_id="<id>"   → NULL ATAU match category id (untuk user kelas)
+async function getArticles(supabase: SupabaseClient, url: URL): Promise<Response> {
+  const type     = url.searchParams.get("type");
+  const audience = url.searchParams.get("audience_category_id");
+
+  let query = supabase
+    .from("articles")
+    .select("*, categories!audience_category_id(id, name)")
+    .order("created_at", { ascending: false });
+
+  if (type) query = query.eq("type", type);
+
+  if (audience === "public") {
+    query = query.is("audience_category_id", null);
+  } else if (audience) {
+    const cid = Number(audience);
+    if (Number.isFinite(cid)) {
+      // Match user's category OR public (NULL audience)
+      query = query.or(`audience_category_id.eq.${cid},audience_category_id.is.null`);
+    }
+  }
+
+  const { data, error } = await query;
   if (error) return jsonResponse(400, { error: error.message });
   return jsonResponse(200, { data });
 }
 
 async function getArticleById(supabase: SupabaseClient, id: string): Promise<Response> {
   const { data, error } = await supabase
-    .from("articles").select("*").eq("id", id).maybeSingle();
+    .from("articles")
+    .select("*, categories!audience_category_id(id, name)")
+    .eq("id", id)
+    .maybeSingle();
   if (error) return jsonResponse(400, { error: error.message });
   if (!data) return jsonResponse(404, { error: "Artikel tidak ditemukan" });
   return jsonResponse(200, { data });
 }
 
+// Whitelist field yang boleh di-set untuk articles
+function sanitizeArticleBody(body: Json): Json {
+  const allowed = ["title", "content", "slug", "status", "image_link", "type", "audience_category_id"];
+  const out: Json = {};
+  for (const key of allowed) {
+    if (body[key] !== undefined) out[key] = body[key];
+  }
+  // Validate type
+  if (out.type !== undefined && out.type !== "article" && out.type !== "announcement") {
+    out.type = "article";
+  }
+  // audience hanya bermakna untuk announcement; paksa null untuk article
+  if (out.type === "article") {
+    out.audience_category_id = null;
+  } else if (out.audience_category_id !== undefined && out.audience_category_id !== null) {
+    out.audience_category_id = Number(out.audience_category_id);
+  }
+  return out;
+}
+
 async function createArticle(supabase: SupabaseClient, user: User, req: Request): Promise<Response> {
   const body = (await req.json().catch(() => null)) as Json | null;
   if (!body) return jsonResponse(400, { error: "Invalid JSON" });
+  const payload = sanitizeArticleBody(body);
   const { data, error } = await supabase
-    .from("articles").insert({ ...body, user_id: user.id }).select("*").single();
+    .from("articles").insert({ ...payload, user_id: user.id }).select("*").single();
   if (error) return jsonResponse(400, { error: error.message });
   return jsonResponse(201, { data });
 }
@@ -232,9 +278,9 @@ async function createArticle(supabase: SupabaseClient, user: User, req: Request)
 async function updateArticle(supabase: SupabaseClient, id: string, req: Request): Promise<Response> {
   const body = (await req.json().catch(() => null)) as Json | null;
   if (!body) return jsonResponse(400, { error: "Invalid JSON" });
-  delete (body as Json).user_id;
+  const payload = sanitizeArticleBody(body);
   const { data, error } = await supabase
-    .from("articles").update(body).eq("id", id).select("*").maybeSingle();
+    .from("articles").update(payload).eq("id", id).select("*").maybeSingle();
   if (error) return jsonResponse(400, { error: error.message });
   if (!data) return jsonResponse(404, { error: "Artikel tidak ditemukan atau tidak diizinkan" });
   return jsonResponse(200, { data });
@@ -286,10 +332,22 @@ async function updateUser(supabase: SupabaseClient, user: User, id: string, req:
   return jsonResponse(200, { data });
 }
 
-async function deleteUser(supabase: SupabaseClient, user: User, id: string): Promise<Response> {
-  if (user.id !== id) return jsonResponse(403, { error: "Tidak diizinkan" });
-  const { error } = await supabase.from("users").delete().eq("id", id);
-  if (error) return jsonResponse(400, { error: error.message });
+async function deleteUser(_supabase: SupabaseClient, user: User, id: string): Promise<Response> {
+  // Admin boleh hapus user lain. Selain admin hanya boleh hapus dirinya sendiri.
+  const role = await getUserRole(user.id);
+  if (role !== "admin" && user.id !== id) {
+    return jsonResponse(403, { error: "Tidak diizinkan" });
+  }
+
+  // Hapus dari auth.users (service role) — sekaligus invalidasi semua sesi/refresh token.
+  // public.users biasanya cascade, tapi delete eksplisit sebagai jaring pengaman.
+  const service = buildServiceClient();
+  const { error: authErr } = await service.auth.admin.deleteUser(id);
+  if (authErr && !/not.?found/i.test(authErr.message)) {
+    return jsonResponse(400, { error: authErr.message });
+  }
+
+  await service.from("users").delete().eq("id", id);
   return jsonResponse(200, { ok: true });
 }
 
@@ -442,6 +500,111 @@ async function getCategories(supabase: SupabaseClient): Promise<Response> {
 }
 
 // ============================================================
+// CLEANUP HANDLER (called by pg_cron via /CRUD/cleanup)
+// ============================================================
+//
+// Hapus pengumuman & materi yang sudah > 5 hari kerja (Senin–Jumat).
+// Materi: hapus row + file di Storage bucket 'materials'.
+// Pengumuman: hapus row articles WHERE type='announcement'.
+//
+// Akses: butuh header `x-cleanup-secret` yang cocok dengan env CLEANUP_SECRET.
+async function runCleanup(req: Request): Promise<Response> {
+  const expected = Deno.env.get("CLEANUP_SECRET") ?? "";
+  const provided = req.headers.get("x-cleanup-secret") ?? "";
+  if (!expected || provided !== expected) {
+    return unauthorized("Invalid cleanup secret");
+  }
+
+  const service = buildServiceClient();
+  const result: Json = { announcements_deleted: 0, materials_deleted: 0, files_deleted: 0, errors: [] };
+
+  // ── Pengumuman ──
+  // Cari pengumuman yang business-day usianya >= 5
+  const { data: anns, error: annErr } = await service
+    .from("articles")
+    .select("id, created_at")
+    .eq("type", "announcement");
+  if (annErr) {
+    (result.errors as unknown[]).push({ stage: "select announcements", error: annErr.message });
+  } else if (anns && anns.length > 0) {
+    const expired = anns.filter((a) => businessDaysSince((a as { created_at: string }).created_at) >= 5);
+    if (expired.length > 0) {
+      const ids = expired.map((a) => (a as { id: string }).id);
+      const { error: delErr } = await service.from("articles").delete().in("id", ids);
+      if (delErr) {
+        (result.errors as unknown[]).push({ stage: "delete announcements", error: delErr.message });
+      } else {
+        result.announcements_deleted = ids.length;
+      }
+    }
+  }
+
+  // ── Materi ──
+  const { data: mats, error: matErr } = await service
+    .from("materials")
+    .select("id, created_at, file_url");
+  if (matErr) {
+    (result.errors as unknown[]).push({ stage: "select materials", error: matErr.message });
+  } else if (mats && mats.length > 0) {
+    const expired = mats.filter((m) => businessDaysSince((m as { created_at: string }).created_at) >= 5);
+    if (expired.length > 0) {
+      // 1. Hapus file dari storage (best-effort)
+      const marker = "/storage/v1/object/public/materials/";
+      const filePaths: string[] = [];
+      for (const m of expired) {
+        const url = (m as { file_url?: string }).file_url ?? "";
+        const idx = url.indexOf(marker);
+        if (idx !== -1) filePaths.push(url.slice(idx + marker.length));
+      }
+      if (filePaths.length > 0) {
+        const { data: removed, error: stErr } = await service.storage.from("materials").remove(filePaths);
+        if (stErr) {
+          (result.errors as unknown[]).push({ stage: "delete storage files", error: stErr.message });
+        } else {
+          result.files_deleted = removed?.length ?? 0;
+        }
+      }
+
+      // 2. Hapus row materi
+      const ids = expired.map((m) => (m as { id: string }).id);
+      const { error: rowErr } = await service.from("materials").delete().in("id", ids);
+      if (rowErr) {
+        (result.errors as unknown[]).push({ stage: "delete materials rows", error: rowErr.message });
+      } else {
+        result.materials_deleted = ids.length;
+      }
+    }
+  }
+
+  return jsonResponse(200, result);
+}
+
+// Hitung jumlah hari kerja (Senin–Jumat) yang sudah lewat sejak `since`
+// menggunakan zona waktu Asia/Jakarta. Hari mulai tidak dihitung.
+function businessDaysSince(since: string): number {
+  const start = new Date(since);
+  const now   = new Date();
+  if (Number.isNaN(start.getTime()) || now <= start) return 0;
+
+  // Convert ke WIB date string lalu loop hari demi hari
+  const fmt = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Jakarta", year: "numeric", month: "2-digit", day: "2-digit" });
+  const startStr = fmt.format(start);
+  const endStr   = fmt.format(now);
+  const startDate = new Date(startStr + "T00:00:00Z");
+  const endDate   = new Date(endStr   + "T00:00:00Z");
+
+  let cnt = 0;
+  const cur = new Date(startDate);
+  cur.setUTCDate(cur.getUTCDate() + 1); // hari mulai tidak dihitung
+  while (cur <= endDate) {
+    const dow = cur.getUTCDay(); // 0=Sun, 6=Sat
+    if (dow !== 0 && dow !== 6) cnt++;
+    cur.setUTCDate(cur.getUTCDate() + 1);
+  }
+  return cnt;
+}
+
+// ============================================================
 // MAIN ROUTER
 // ============================================================
 
@@ -472,7 +635,7 @@ Deno.serve(async (req: Request) => {
 
     // ── ARTICLES ROUTES ──────────────────────────────────────
     if (resource === "articles") {
-      if (req.method === "GET"    && segments.length === 1) return await getArticles(supabase);
+      if (req.method === "GET"    && segments.length === 1) return await getArticles(supabase, url);
       if (req.method === "GET"    && segments.length === 2) return await getArticleById(supabase, segments[1]);
       if (req.method === "POST"   && segments.length === 1) {
         const user = await requireAuthed(supabase, token);
@@ -554,6 +717,13 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // ── CLEANUP ROUTE (cron-only) ─────────────────────────────
+    if (resource === "cleanup") {
+      if (req.method === "POST" && segments.length === 1) {
+        return await runCleanup(req);
+      }
+    }
+
     // ── ROOT ─────────────────────────────────────────────────
     if (!resource) {
       return jsonResponse(200, {
@@ -564,9 +734,9 @@ Deno.serve(async (req: Request) => {
           "POST   /CRUD/auth/logout",
           "POST   /CRUD/auth/refresh   — { refresh_token }",
           "GET    /CRUD/auth/me",
-          "GET    /CRUD/articles",
+          "GET    /CRUD/articles               — ?type=article|announcement, ?audience_category_id=public|<id>",
           "GET    /CRUD/articles/:id",
-          "POST   /CRUD/articles",
+          "POST   /CRUD/articles               — { title, content, slug, type?, audience_category_id?, image_link? }",
           "PATCH  /CRUD/articles/:id",
           "DELETE /CRUD/articles/:id",
           "GET    /CRUD/users",
@@ -578,6 +748,7 @@ Deno.serve(async (req: Request) => {
           "POST   /CRUD/materials",
           "DELETE /CRUD/materials/:id",
           "GET    /CRUD/categories",
+          "POST   /CRUD/cleanup                — cron-only, header x-cleanup-secret",
         ],
       });
     }

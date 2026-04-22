@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kasih Paramitha School - Pengumuman</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <link href="img/favicon.ico" rel="icon" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <link href="lib/animate/animate.min.css" rel="stylesheet" />
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/fonts.css" rel="stylesheet" />
+
+    <style>
+      .login-btn {
+        background: #9a7b55;
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .login-btn:hover { color: #fff; background: #7f6546; }
+
+      .pengumuman-page-section { padding: 60px 0 80px; }
+
+      .pengumuman-page-title {
+        text-align: center;
+        font-size: 3rem;
+        font-weight: 700;
+        color: #9a7b55;
+        margin-bottom: 12px;
+      }
+      .pengumuman-page-subtitle {
+        text-align: center;
+        font-size: 1rem;
+        color: #8b6d4f;
+        margin-bottom: 40px;
+      }
+
+      .pengumuman-list-wrapper { max-width: 1020px; margin: 0 auto; }
+
+      .pengumuman-link { display: block; text-decoration: none; color: inherit; }
+      .pengumuman-link:hover { text-decoration: none; color: inherit; }
+
+      .pengumuman-item {
+        background: #ffffff;
+        border: 1px solid #d3d3d3;
+        border-radius: 6px;
+        padding: 14px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        cursor: pointer;
+      }
+      .pengumuman-item:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12); }
+
+      .pengumuman-thumb {
+        width: 100%;
+        height: 360px;
+        object-fit: cover;
+        display: block;
+        border: 1px solid #d9d9d9;
+      }
+
+      .pengumuman-content { padding: 12px 6px 4px; }
+      .pengumuman-content h5 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #111;
+      }
+      .pengumuman-content p {
+        margin-bottom: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #8b6d4f;
+      }
+
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 8px;
+      }
+      .type-badge,
+      .audience-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .type-badge { background: #fde8e8; color: #b22a2a; }
+      .audience-badge.public  { background: #e8f4fd; color: #1976d2; }
+      .audience-badge.private { background: #fef3e0; color: #c97a00; }
+
+      /* Pagination */
+      .custom-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+      }
+      .pagination-btn {
+        min-width: 28px;
+        height: 28px;
+        border: none;
+        border-radius: 4px;
+        background-color: #9a7b55;
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+      .pagination-btn:hover { background-color: #7f6546; }
+      .pagination-btn.active { background-color: #6c5338; }
+      .pagination-btn.disabled { opacity: 0.45; pointer-events: none; }
+
+      /* Skeleton */
+      .skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 4px;
+      }
+      @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      .skeleton-thumb { width: 100%; height: 360px; border-radius: 0; display: block; }
+      .skeleton-line { height: 14px; margin-bottom: 8px; border-radius: 4px; }
+      .skeleton-short { width: 55%; }
+
+      .notif-link, .notif-link i, .notif-link::after { color: #9a7b55 !important; }
+      .notif-link:hover, .notif-link:hover i, .notif-link:hover::after,
+      .notif-link:focus, .notif-link:focus i, .notif-link:focus::after { color: #5b9bd5 !important; }
+
+      .login-cta {
+        background: #fff8eb;
+        border: 1px solid #f0d9a8;
+        color: #8b6d4f;
+        padding: 14px 18px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .login-cta a { color: #5b9bd5; font-weight: 600; text-decoration: none; }
+      .login-cta a:hover { text-decoration: underline; }
+
+      @media (max-width: 768px) {
+        .pengumuman-page-title { font-size: 2.2rem; }
+        .pengumuman-thumb { height: 220px; }
+        .pengumuman-content h5 { font-size: 1rem; }
+        .pengumuman-content p { font-size: 0.88rem; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-xxl bg-white p-0">
+      <!-- Navbar Start -->
+      <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+        <a href="index.html" class="navbar-brand">
+          <div class="logo-container">
+            <img src="assetkps/Logo/Logo Yayasan.png" alt="Vidya Parahita Foundation" />
+            <img src="assetkps/Logo/LogoKasihParamitha.png" alt="Kasih Paramitha School" />
+          </div>
+        </a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle notif-link" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-bell"></i>
+          </a>
+          <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+            <a href="pengumuman.html" class="dropdown-item">Pengumuman</a>
+          </div>
+        </div>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav mx-auto">
+            <a href="index.html" class="nav-item nav-link">Home</a>
+            <a href="about.html" class="nav-item nav-link">About Us</a>
+            <a href="classes.html" class="nav-item nav-link">Gallery</a>
+            <div class="nav-item dropdown">
+              <a href="facility.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Program</a>
+              <div class="dropdown-menu rounded-0 rounded-bottom border-0 shadow-sm m-0">
+                <a href="facility.html#school-section" class="dropdown-item">School</a>
+                <a href="facility.html#afterschool-section" class="dropdown-item">After-School Programme</a>
+              </div>
+            </div>
+            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+            <a href="kalenderakademik.html" class="nav-item nav-link">Academic Calendar</a>
+            <a href="testimonial.html" class="nav-item nav-link">Testimonies</a>
+          </div>
+          <a href="login/login.html" class="login-btn">Login</a>
+        </div>
+      </nav>
+      <!-- Navbar End -->
+
+      <!-- Pengumuman Page -->
+      <div class="container pengumuman-page-section">
+        <div class="pengumuman-list-wrapper">
+          <h1 class="pengumuman-page-title" data-en="Announcements" data-id="Pengumuman">Pengumuman</h1>
+          <p class="pengumuman-page-subtitle"
+             data-en="The latest updates from Kasih Paramitha School"
+             data-id="Informasi & pengumuman terbaru dari Kasih Paramitha School">
+             Informasi & pengumuman terbaru dari Kasih Paramitha School
+          </p>
+
+          <div id="loginCta" class="login-cta" style="display:none;">
+            <i class="bi bi-info-circle-fill"></i>
+            <span data-en="Login to also see announcements for your class."
+                  data-id="Login untuk melihat pengumuman khusus kelas Anda juga.">
+              Login untuk melihat pengumuman khusus kelas Anda juga.
+            </span>
+            <a href="login/login.html">Login &rarr;</a>
+          </div>
+
+          <div id="pengumumanContainer">
+            <div class="pengumuman-item">
+              <div class="skeleton skeleton-thumb"></div>
+              <div class="pengumuman-content">
+                <div class="skeleton skeleton-line skeleton-short"></div>
+                <div class="skeleton skeleton-line"></div>
+              </div>
+            </div>
+            <div class="pengumuman-item">
+              <div class="skeleton skeleton-thumb"></div>
+              <div class="pengumuman-content">
+                <div class="skeleton skeleton-line skeleton-short"></div>
+                <div class="skeleton skeleton-line"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="pagination" class="custom-pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth-navbar.js"></script>
+    <script src="js/notif-bell.js"></script>
+    <script src="js/lang.js"></script>
+
+    <script>
+      const SUPABASE_URL = window.__SUPABASE.URL;
+      const SUPABASE_ANON = window.__SUPABASE.ANON;
+
+      const ITEMS_PER_PAGE = 6;
+      let currentPage = 1;
+      let allItems = [];
+
+      function escapeHtml(str) {
+        return String(str || "")
+          .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+      function truncate(text, max) {
+        const plain = text.replace(/<[^>]*>/g, "");
+        return plain.length > max ? plain.substring(0, max) + "..." : plain;
+      }
+
+      function renderPengumuman() {
+        const container = document.getElementById("pengumumanContainer");
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const page = allItems.slice(start, end);
+
+        if (page.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-megaphone" style="font-size:3rem;display:block;margin-bottom:12px;"></i>
+              <p>Belum ada pengumuman.</p>
+            </div>`;
+          return;
+        }
+
+        const userRole = localStorage.getItem("role") || "";
+        const canEdit = userRole === "editor" || userRole === "admin";
+
+        container.innerHTML = page
+          .map((item) => {
+            const title = escapeHtml(item.title || "Untitled");
+            const excerpt = escapeHtml(truncate(item.content || "", 160));
+            const id = item.id || "";
+            const imgSrc = escapeHtml(item.image_link || "assetkps/Home/JAV_9935.jpg");
+            const imgHtml = `<img src="${imgSrc}" alt="${title}" class="pengumuman-thumb" onerror="this.src='assetkps/Home/JAV_9935.jpg'" />`;
+
+            const typeBadge = `<span class="type-badge"><i class="bi bi-megaphone-fill"></i> Pengumuman</span>`;
+            const catName = item.categories?.name ? escapeHtml(item.categories.name) : "";
+            const audienceBadge = item.audience_category_id == null
+              ? `<span class="audience-badge public"><i class="bi bi-globe2"></i> Publik</span>`
+              : `<span class="audience-badge private"><i class="bi bi-people-fill"></i> ${catName || "Khusus Kelas"}</span>`;
+
+            const editBtn = canEdit
+              ? `<a href="admin/edit_article.html?id=${id}"
+                   onclick="event.stopPropagation();"
+                   style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#fff;background:#9a7b55;padding:5px 12px;border-radius:5px;text-decoration:none;">
+                   <i class="bi bi-pencil-fill"></i> Edit
+                 </a>`
+              : "";
+
+            return `
+              <div class="pengumuman-item">
+                <a href="artikel_form.html?id=${id}" class="pengumuman-link">
+                  ${imgHtml}
+                  <div class="pengumuman-content">
+                    <div class="badge-row">${typeBadge}${audienceBadge}</div>
+                    <h5>${title}</h5>
+                    <p>${excerpt}</p>
+                  </div>
+                </a>
+                ${canEdit ? `<div style="padding:8px 6px 4px;display:flex;justify-content:flex-end;">${editBtn}</div>` : ""}
+              </div>`;
+          })
+          .join("");
+      }
+
+      function renderPagination() {
+        const pagination = document.getElementById("pagination");
+        const totalPages = Math.ceil(allItems.length / ITEMS_PER_PAGE);
+        if (totalPages <= 1) { pagination.innerHTML = ""; return; }
+        let buttons = `<button class="pagination-btn ${currentPage === 1 ? "disabled" : ""}" onclick="changePage(${currentPage - 1})">&lt;</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+          buttons += `<button class="pagination-btn ${currentPage === i ? "active" : ""}" onclick="changePage(${i})">${i}</button>`;
+        }
+        buttons += `<button class="pagination-btn ${currentPage === totalPages ? "disabled" : ""}" onclick="changePage(${currentPage + 1})">&gt;</button>`;
+        pagination.innerHTML = buttons;
+      }
+
+      function changePage(page) {
+        const totalPages = Math.ceil(allItems.length / ITEMS_PER_PAGE);
+        if (page < 1 || page > totalPages) return;
+        currentPage = page;
+        renderPengumuman();
+        renderPagination();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      async function fetchUserCategoryId() {
+        const token = localStorage.getItem("access_token");
+        if (!token) return null;
+        try {
+          const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
+          if (!userId) return null;
+          const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/users?id=eq.${userId}&select=category_id`,
+            { headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${token}` } }
+          );
+          if (!res.ok) return null;
+          const rows = await res.json();
+          return rows[0]?.category_id || null;
+        } catch { return null; }
+      }
+
+      async function loadPengumuman() {
+        try {
+          const token = localStorage.getItem("access_token");
+          // Visitor non-login → hanya pengumuman publik (audience IS NULL)
+          // User login → pengumuman publik + pengumuman audience kelas mereka
+          let url = `${SUPABASE_URL}/functions/v1/CRUD/articles?type=announcement`;
+          if (!token) {
+            url += "&audience_category_id=public";
+            document.getElementById("loginCta").style.display = "flex";
+          } else {
+            const catId = await fetchUserCategoryId();
+            if (catId) {
+              url += `&audience_category_id=${catId}`;
+            } else {
+              // User tanpa kelas (admin/editor) → tetap lihat semua kategori (no filter)
+              // Untuk role=user tanpa category_id assigned → fallback ke publik saja
+              const role = localStorage.getItem("role") || "";
+              if (role === "user") url += "&audience_category_id=public";
+            }
+          }
+
+          const res = await fetch(url, {
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_ANON}` },
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const json = await res.json();
+          allItems = json.data || [];
+          renderPengumuman();
+          renderPagination();
+        } catch (err) {
+          document.getElementById("pengumumanContainer").innerHTML = `
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-exclamation-circle" style="font-size:3rem;display:block;margin-bottom:12px;"></i>
+              <p>Gagal memuat pengumuman. Coba lagi nanti.</p>
+            </div>`;
+          console.error("Fetch error:", err);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadPengumuman);
+    </script>
+  </body>
+</html>

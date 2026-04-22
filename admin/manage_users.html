@@ -82,6 +82,19 @@
       }
       .search-input:focus { border-color: var(--brown); }
 
+      .filter-select {
+        height: 38px; border: 1.5px solid #ddd; border-radius: 8px;
+        padding: 0 32px 0 14px; font-size: 13px; outline: none;
+        font-family: inherit; background: #fff; cursor: pointer; color: #555;
+        appearance: none; min-width: 150px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 12px center;
+        transition: border-color 0.2s;
+      }
+      .filter-select:focus { border-color: var(--brown); }
+
+      .top-bar-left { display: flex; gap: 10px; flex-wrap: wrap; }
+
       .btn-add {
         display: inline-flex; align-items: center; gap: 6px;
         background: var(--red); color: #fff; border: none; border-radius: 8px;
@@ -325,7 +338,13 @@
       <div class="alert-box success" id="alertSuccess"><i class="bi bi-check-circle-fill"></i><span id="alertSuccessMsg"></span></div>
 
       <div class="top-bar">
-        <input type="text" class="search-input" id="searchInput" placeholder="Cari nama atau username..." oninput="filterUsers()" />
+        <div class="top-bar-left">
+          <input type="text" class="search-input" id="searchInput" placeholder="Cari nama atau username..." oninput="filterUsers()" />
+          <select class="filter-select" id="categoryFilter" onchange="filterUsers()">
+            <option value="">Semua Kelas</option>
+            <option value="__none__">Tanpa Kelas</option>
+          </select>
+        </div>
         <button class="btn-add" onclick="openAddModal()">
           <i class="bi bi-person-plus-fill"></i> Tambah User
         </button>
@@ -525,6 +544,13 @@
           if (!res.ok) return;
           const d = await res.json();
           allCategories = d.data || [];
+          // Populate filter dropdown
+          const filterSel = document.getElementById("categoryFilter");
+          const opts = allCategories
+            .map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join("");
+          filterSel.innerHTML =
+            `<option value="">Semua Kelas</option>` +
+            `<option value="__none__">Tanpa Kelas</option>` + opts;
         } catch {}
       }
 
@@ -603,14 +629,32 @@
         }).join("");
       }
 
-      // ── Search ──
+      // ── Search + filter ──
       function filterUsers() {
-        const q = document.getElementById("searchInput").value.toLowerCase();
-        if (!q) { renderTable(allUsers); return; }
-        renderTable(allUsers.filter(u =>
-          (u.name || "").toLowerCase().includes(q) ||
-          (u.username || "").toLowerCase().includes(q)
-        ));
+        const q     = document.getElementById("searchInput").value.toLowerCase();
+        const catF  = document.getElementById("categoryFilter").value;
+
+        let list = allUsers;
+        if (q) {
+          list = list.filter(u =>
+            (u.name || "").toLowerCase().includes(q) ||
+            (u.username || "").toLowerCase().includes(q)
+          );
+        }
+        if (catF === "__none__") {
+          list = list.filter(u => u.category_id == null);
+        } else if (catF) {
+          list = list.filter(u => String(u.category_id) === String(catF));
+        }
+        renderTable(list);
+      }
+
+      // Populate category dropdown (shared by add + edit)
+      function populateCategorySelect(selectedId) {
+        const catSel = document.getElementById("mCategory");
+        catSel.innerHTML = `<option value="">-- Tidak ada kelas --</option>` +
+          allCategories.map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join("");
+        catSel.value = selectedId ? String(selectedId) : "";
       }
 
       // ── Add modal ──
@@ -627,6 +671,7 @@
         document.getElementById("mUsername").closest(".field-group").style.display = "";
         document.getElementById("mPasswordGroup").style.display = "";
         document.getElementById("mUsername").disabled = false;
+        populateCategorySelect("");
         document.getElementById("mCategoryGroup").style.display = "none";
         clearModalErrors();
         document.getElementById("userModal").classList.add("show");
@@ -650,10 +695,7 @@
         document.getElementById("mRole").value = roleMatch ? roleMatch.id : "";
 
         // Populate category dropdown
-        const catSel = document.getElementById("mCategory");
-        catSel.innerHTML = `<option value="">-- Tidak ada kelas --</option>` +
-          allCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
-        catSel.value = user.category_id ? String(user.category_id) : "";
+        populateCategorySelect(user.category_id);
 
         // Show category only for "user" role
         const isUser = user.roles?.role_name === "user";
@@ -663,9 +705,8 @@
         document.getElementById("userModal").classList.add("show");
       }
 
-      // Show/hide category field when role changes
+      // Show/hide category field when role changes (works in both add & edit)
       function onRoleChange(sel) {
-        if (modalMode !== "edit") return;
         const selectedRole = allRoles.find(r => String(r.id) === String(sel.value));
         const isUser = selectedRole?.role_name === "user";
         document.getElementById("mCategoryGroup").style.display = isUser ? "" : "none";
@@ -720,11 +761,17 @@
             const newId = regData.user?.id;
             if (!newId) throw new Error("User ID tidak ditemukan");
 
-            // Step 2: set role + name
+            // Determine category_id (only for user role)
+            const selectedRole = allRoles.find(r => String(r.id) === String(roleId));
+            const isUserRole   = selectedRole?.role_name === "user";
+            const catVal       = document.getElementById("mCategory").value;
+            const categoryId   = isUserRole && catVal ? parseInt(catVal) : null;
+
+            // Step 2: set role + name + category
             await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${newId}`, {
               method: "PATCH",
               headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON, "Authorization": `Bearer ${tok}`, "Prefer": "return=minimal" },
-              body: JSON.stringify({ role_id: roleId, name }),
+              body: JSON.stringify({ role_id: roleId, name, category_id: categoryId }),
             });
 
             showAlert("success", `User "${username}" berhasil ditambahkan.`);
@@ -783,11 +830,19 @@
           const tok = await ensureValidToken();
           if (!tok) return;
 
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${deleteTargetId}`, {
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/users/${deleteTargetId}`, {
             method: "DELETE",
-            headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${tok}`, "Prefer": "return=minimal" },
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${SUPABASE_ANON}`,
+              "x-access-token": tok,
+            },
           });
-          if (!res.ok) { const t = await res.text(); throw new Error(t || "Gagal hapus"); }
+          if (!res.ok) {
+            let msg = "Gagal hapus";
+            try { const j = await res.json(); msg = j.error || msg; } catch { msg = await res.text() || msg; }
+            throw new Error(msg);
+          }
 
           showAlert("success", "User berhasil dihapus.");
           closeDeleteModal();

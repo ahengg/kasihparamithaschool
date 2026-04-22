@@ -482,6 +482,24 @@
             <p class="section-label"><i class="bi bi-type"></i> Konten Artikel</p>
 
             <div class="field-group">
+              <label class="field-label" for="typeSelect">Tipe <span class="req">*</span></label>
+              <select id="typeSelect" class="field-input">
+                <option value="article">Artikel (publik)</option>
+                <option value="announcement">Pengumuman</option>
+              </select>
+            </div>
+
+            <div class="field-group" id="audienceGroup" style="display:none;">
+              <label class="field-label" for="audienceSelect">Audience Pengumuman <span class="req">*</span></label>
+              <select id="audienceSelect" class="field-input">
+                <option value="">Publik / Semua Kategori</option>
+              </select>
+              <div style="font-size:11px;color:#888;margin-top:6px;">
+                Pilih kelas tertentu (hanya user di kelas itu yang lihat) atau "Publik" untuk semua orang.
+              </div>
+            </div>
+
+            <div class="field-group">
               <label class="field-label" for="titleInput">Judul <span class="req">*</span></label>
               <input type="text" id="titleInput" class="field-input skeleton" placeholder="Judul artikel..." />
             </div>
@@ -604,6 +622,33 @@
         return newToken;
       }
 
+      // ── Type & audience selectors ──
+      const typeSelect     = document.getElementById("typeSelect");
+      const audienceGroup  = document.getElementById("audienceGroup");
+      const audienceSelect = document.getElementById("audienceSelect");
+
+      typeSelect.addEventListener("change", () => {
+        audienceGroup.style.display = typeSelect.value === "announcement" ? "" : "none";
+      });
+
+      async function loadCategories() {
+        try {
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/categories`, {
+            headers: { "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+          });
+          if (!res.ok) return;
+          const json = await res.json();
+          (json.data || []).forEach(cat => {
+            const opt = document.createElement("option");
+            opt.value = String(cat.id);
+            opt.textContent = cat.name;
+            audienceSelect.appendChild(opt);
+          });
+        } catch (_) { /* silent */ }
+      }
+      // Note: kategori di-load duluan supaya saat loadArticle() set value-nya, opsi sudah ada.
+      const categoriesReady = loadCategories();
+
       // ── Cover image ──
       let coverFile = null;
       let existingImageUrl = "";
@@ -704,6 +749,9 @@
       // ── Load article ──
       async function loadArticle() {
         try {
+          // Tunggu kategori ter-load supaya audience select bisa di-set
+          await categoriesReady;
+
           const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles/${articleId}`, {
             headers: { "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
           });
@@ -716,6 +764,11 @@
           const titleEl = document.getElementById("titleInput");
           titleEl.value = article.title || "";
           titleEl.classList.remove("skeleton");
+
+          // Type & audience
+          typeSelect.value = article.type === "announcement" ? "announcement" : "article";
+          audienceGroup.style.display = typeSelect.value === "announcement" ? "" : "none";
+          audienceSelect.value = article.audience_category_id != null ? String(article.audience_category_id) : "";
 
           editor.innerHTML = article.content || "";
           editor.contentEditable = "true";
@@ -767,8 +820,15 @@
             .replace(/\s+/g, "-")
             + "-" + Date.now();
 
-          const payload = { title, content, slug };
+          const articleType = typeSelect.value === "announcement" ? "announcement" : "article";
+          const payload = { title, content, slug, type: articleType };
           if (imageLink) payload.image_link = imageLink;
+          if (articleType === "announcement") {
+            const aud = audienceSelect.value;
+            payload.audience_category_id = aud ? Number(aud) : null;
+          } else {
+            payload.audience_category_id = null;
+          }
 
           const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles/${articleId}`, {
             method: "PATCH",

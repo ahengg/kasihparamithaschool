@@ -78,36 +78,90 @@
     applyLang(lang);
   }
 
+  /* ── CSS: compact navbar agar label ID (lebih panjang dari EN) tetap muat
+        tanpa overflow ke kanan. Berlaku untuk semua bahasa supaya
+        layout konsisten. ──────────────────────────────────── */
+  function injectNavbarStyle() {
+    if (document.getElementById("langNavbarStyle")) return;
+    var s = document.createElement("style");
+    s.id = "langNavbarStyle";
+    s.textContent =
+      /* Desktop: tighten nav-link spacing */
+      "@media (min-width: 992px) {" +
+      "  .navbar-expand-lg .navbar-nav .nav-link," +
+      "  .navbar-expand-lg .navbar-nav .nav-item.nav-link {" +
+      "    padding-left: 10px !important;" +
+      "    padding-right: 10px !important;" +
+      "  }" +
+      "  .navbar-expand-lg .navbar-nav .nav-item.dropdown > .nav-link {" +
+      "    padding-right: 18px !important;" +
+      "  }" +
+      "  .lang-pill { margin: 0 8px !important; }" +
+      "}" +
+      /* Mid-desktop (≤1400): kecilkan font-size sedikit untuk muat lebih banyak teks */
+      "@media (min-width: 992px) and (max-width: 1399.98px) {" +
+      "  .navbar-nav .nav-link," +
+      "  .navbar-nav .nav-item.nav-link {" +
+      "    font-size: 13px !important;" +
+      "    white-space: nowrap;" +
+      "  }" +
+      "}" +
+      /* Narrow desktop (<1200): biarkan navbar bisa wrap kalau benar2 mepet */
+      "@media (min-width: 992px) and (max-width: 1199.98px) {" +
+      "  .navbar.navbar-expand-lg { flex-wrap: wrap; }" +
+      "  .navbar.navbar-expand-lg .navbar-collapse { flex-basis: auto; }" +
+      "}";
+    document.head.appendChild(s);
+  }
+
   /* ── Inject pill into navbar ─────────────────────────────── */
   function injectPill() {
     if (document.getElementById("langPill")) return;
+
+    function buildPill(idSuffix) {
+      var pill = document.createElement("div");
+      pill.id = "langPill" + (idSuffix || "");
+      pill.className = "lang-pill";
+      pill.style.cssText =
+        "display:inline-flex;align-items:center;border:1.5px solid #9a7b55;" +
+        "border-radius:20px;overflow:hidden;flex-shrink:0;";
+
+      ["en", "id"].forEach(function (lang) {
+        var btn = document.createElement("button");
+        btn.className = "lang-btn";
+        btn.setAttribute("data-lang", lang);
+        btn.textContent = lang.toUpperCase();
+        btn.style.cssText =
+          "background:transparent;border:none;padding:4px 11px;font-size:11px;" +
+          "font-weight:700;cursor:pointer;color:#9a7b55;font-family:inherit;transition:0.15s;";
+        btn.addEventListener("click", function () { setLang(lang); });
+        pill.appendChild(btn);
+      });
+      return pill;
+    }
+
+    /* Mobile: pill di luar collapse, sebelum hamburger toggler — selalu visible.
+       Desktop: collapse selalu terbuka jadi sama-sama visible.            */
+    var toggler = document.querySelector(".navbar-toggler");
+    if (toggler && toggler.parentNode) {
+      var mobilePill = buildPill("");
+      mobilePill.style.margin = "0 8px 0 0";
+      mobilePill.classList.add("d-inline-flex", "d-lg-none");
+      toggler.parentNode.insertBefore(mobilePill, toggler);
+    }
+
+    // Desktop pill: di dalam collapse, sebelum login-btn
     var collapse = document.getElementById("navbarCollapse");
-    if (!collapse) return;
-
-    var pill = document.createElement("div");
-    pill.id = "langPill";
-    pill.style.cssText =
-      "display:inline-flex;align-items:center;border:1.5px solid #9a7b55;" +
-      "border-radius:20px;overflow:hidden;margin:0 12px;flex-shrink:0;";
-
-    ["en", "id"].forEach(function (lang) {
-      var btn = document.createElement("button");
-      btn.className = "lang-btn";
-      btn.setAttribute("data-lang", lang);
-      btn.textContent = lang.toUpperCase();
-      btn.style.cssText =
-        "background:transparent;border:none;padding:4px 11px;font-size:11px;" +
-        "font-weight:700;cursor:pointer;color:#9a7b55;font-family:inherit;transition:0.15s;";
-      btn.addEventListener("click", function () { setLang(lang); });
-      pill.appendChild(btn);
-    });
-
-    // Insert before .login-btn, or append
-    var loginBtn = collapse.querySelector(".login-btn");
-    if (loginBtn) {
-      collapse.insertBefore(pill, loginBtn);
-    } else {
-      collapse.appendChild(pill);
+    if (collapse) {
+      var desktopPill = buildPill("Desktop");
+      desktopPill.style.margin = "0 12px";
+      desktopPill.classList.add("d-none", "d-lg-inline-flex");
+      var loginBtn = collapse.querySelector(".login-btn");
+      if (loginBtn) {
+        collapse.insertBefore(desktopPill, loginBtn);
+      } else {
+        collapse.appendChild(desktopPill);
+      }
     }
   }
 
@@ -116,6 +170,7 @@
 
   /* ── Init ───────────────────────────────────────────────── */
   function init() {
+    injectNavbarStyle();
     injectPill();
     applyLang(current);
   }

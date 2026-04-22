@@ -60,6 +60,12 @@ All routes go through one Edge Function. Key behaviour:
 
 **Article table required fields**: `title`, `content`, `slug` (generate from title + `Date.now()`), `status` (use `"published"`). `image_link` is optional — omit the key entirely if no image rather than sending `null`.
 
+**Article type & audience** (migration 004):
+- `type` — `'article'` (default, public, shows on `artikel.html`) or `'announcement'` (shows on `pengumuman.html`).
+- `audience_category_id` — FK to `categories(id)`, **only used when `type='announcement'`**. `NULL` = public/all classes (visible without login). Non-null = only users whose `users.category_id` matches.
+- `GET /CRUD/articles` accepts `?type=article|announcement` and `?audience_category_id=public|<id>` (`<id>` returns rows where audience matches that id OR is NULL).
+- The Edge Function `sanitizeArticleBody` whitelists fields and force-nulls `audience_category_id` when type is `article`.
+
 **Supabase REST API** (used for users/roles, bypasses Edge Function):
 - `GET /rest/v1/users?select=*,roles!role_id(role_name)` — join syntax for FK
 - `PATCH /rest/v1/users?id=eq.${id}` — update user fields
@@ -69,12 +75,26 @@ All routes go through one Edge Function. Key behaviour:
 
 | File | Purpose |
 |------|---------|
-| `add_article.html` | Create article — editor/admin only |
-| `edit_article.html` | Edit/delete article — editor/admin only, pre-fills form from `?id=` param |
+| `add_article.html` | Create article OR pengumuman — editor/admin only; type dropdown reveals audience (public/categories) when type=announcement |
+| `edit_article.html` | Edit/delete article — editor/admin only, pre-fills type & audience from `?id=` param |
 | `manage_users.html` | CRUD users — admin only; edit modal shows only role dropdown; current user row shows no action buttons |
 | `add_user.html` | Legacy standalone add user (now superseded by manage_users.html) |
 
 Admin pages use `../` relative paths for all assets.
+
+### Cleanup Cron (migration 005)
+
+A daily cron (00:00 WIB / 17:00 UTC) calls `POST /CRUD/cleanup` via `pg_net` from `pg_cron`. The Edge Function deletes:
+- `articles WHERE type='announcement'` AND age ≥ 5 business days (Mon–Fri, weekends skipped)
+- `materials` AND age ≥ 5 business days — also removes the file from the `materials` Storage bucket.
+
+Auth is via `x-cleanup-secret` header matching `CLEANUP_SECRET` env on the Edge Function. Required Postgres GUCs: `app.supabase_url`, `app.supabase_anon`, `app.cleanup_secret`. See `005_cleanup_cron.sql` header for one-time setup steps (must enable `pg_cron` + `pg_net` extensions).
+
+### Navbar conditional links
+
+`js/notif-bell.js` (loaded on every page) hides any `a[href*="kalenderakademik.html"]` unless `localStorage.role === "user"`. Don't duplicate this guard in page-level scripts.
+
+`js/lang.js` injects two EN/ID toggle pills: a mobile pill (`d-lg-none`, before the navbar-toggler — always visible) and a desktop pill (`d-none d-lg-inline-flex`, inside `#navbarCollapse`). Both update together when clicked.
 
 ### Default Article Image
 

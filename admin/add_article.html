@@ -481,6 +481,24 @@
           <div class="section-label">Informasi Artikel</div>
 
           <div class="field-group">
+            <label class="field-label" for="typeSelect">Tipe <span class="req">*</span></label>
+            <select id="typeSelect" class="field-input">
+              <option value="article">Artikel (publik)</option>
+              <option value="announcement">Pengumuman</option>
+            </select>
+          </div>
+
+          <div class="field-group" id="audienceGroup" style="display:none;">
+            <label class="field-label" for="audienceSelect">Audience Pengumuman <span class="req">*</span></label>
+            <select id="audienceSelect" class="field-input">
+              <option value="">Publik / Semua Kategori</option>
+            </select>
+            <div style="font-size:11px;color:#888;margin-top:6px;">
+              Pilih kelas tertentu (hanya user di kelas itu yang lihat) atau "Publik" untuk semua orang.
+            </div>
+          </div>
+
+          <div class="field-group">
             <label class="field-label" for="titleInput">Judul <span class="req">*</span></label>
             <input type="text" id="titleInput" class="field-input" placeholder="Masukkan judul artikel..." maxlength="150" />
           </div>
@@ -607,6 +625,32 @@
         if (!newToken) { logout(); return null; }
         return newToken;
       }
+
+      // ── Type & audience selectors ──
+      const typeSelect     = document.getElementById("typeSelect");
+      const audienceGroup  = document.getElementById("audienceGroup");
+      const audienceSelect = document.getElementById("audienceSelect");
+
+      typeSelect.addEventListener("change", () => {
+        audienceGroup.style.display = typeSelect.value === "announcement" ? "" : "none";
+      });
+
+      async function loadCategories() {
+        try {
+          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/categories`, {
+            headers: { "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON },
+          });
+          if (!res.ok) return;
+          const json = await res.json();
+          (json.data || []).forEach(cat => {
+            const opt = document.createElement("option");
+            opt.value = String(cat.id);
+            opt.textContent = cat.name;
+            audienceSelect.appendChild(opt);
+          });
+        } catch (_) { /* silent */ }
+      }
+      loadCategories();
 
       // ── Cover image ──
       let coverFile = null;
@@ -751,8 +795,13 @@
             .trim()
             .replace(/\s+/g, "-")
             + "-" + Date.now();
-          const articlePayload = { title, content, slug, status: "published" };
+          const articleType = typeSelect.value === "announcement" ? "announcement" : "article";
+          const articlePayload = { title, content, slug, status: "published", type: articleType };
           if (imageLink) articlePayload.image_link = imageLink;
+          if (articleType === "announcement") {
+            const aud = audienceSelect.value;
+            articlePayload.audience_category_id = aud ? Number(aud) : null;
+          }
           const articleBody = JSON.stringify(articlePayload);
 
           const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles`, {

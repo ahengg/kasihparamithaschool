@@ -689,9 +689,8 @@
             const image = article.image_link || "";
             const id = article.id || "";
 
-            const imgHtml = image
-              ? `<img src="${escapeHtml(image)}" alt="${title}" onerror="this.parentElement.innerHTML='<div class=\\'artikel-card-img-placeholder\\'><i class=\\'bi bi-image\\'></i></div>'" />`
-              : `<div class="artikel-card-img-placeholder"><i class="bi bi-image"></i></div>`;
+            const imgSrc = escapeHtml(image || "assetkps/Home/JAV_9935.jpg");
+            const imgHtml = `<img src="${imgSrc}" alt="${title}" onerror="this.src='assetkps/Home/JAV_9935.jpg'" />`;
 
             return `
             <div class="col-md-6">
@@ -712,7 +711,7 @@
       async function loadArtikels() {
         try {
           const res = await fetch(
-            `${SUPABASE_URL}/functions/v1/CRUD/articles`,
+            `${SUPABASE_URL}/functions/v1/CRUD/articles?type=article`,
             {
               headers: {
                 "Content-Type": "application/json",

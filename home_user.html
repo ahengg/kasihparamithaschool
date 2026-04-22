@@ -211,6 +211,55 @@
         text-decoration: underline;
       }
 
+      /* ── Filter bar (compact) ── */
+      .ann-filter-bar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+      }
+      .ann-filter-bar .ann-filter-search {
+        flex: 1 1 240px;
+        min-width: 200px;
+        height: 38px;
+        border: 1.5px solid #e3d9c5;
+        border-radius: 10px;
+        padding: 0 14px 0 36px;
+        font-size: 13px;
+        outline: none;
+        font-family: inherit;
+        background: #fff;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 16 16'%3E%3Cpath fill='%239a7b55' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.868-3.833zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: 12px center;
+        transition: border-color 0.2s;
+      }
+      .ann-filter-bar .ann-filter-search:focus { border-color: var(--brown); }
+      .ann-filter-bar .ann-filter-sort {
+        height: 38px;
+        border: 1.5px solid #e3d9c5;
+        border-radius: 10px;
+        padding: 0 32px 0 14px;
+        font-size: 12px;
+        outline: none;
+        font-family: inherit;
+        background: #fff;
+        cursor: pointer;
+        color: var(--brown-dark);
+        font-weight: 600;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239a7b55' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+      }
+      .ann-filter-bar .ann-filter-sort:focus { border-color: var(--brown); }
+      .ann-filter-info {
+        font-size: 12px;
+        color: #8b6d4f;
+        margin: -8px 0 12px;
+      }
+
       /* ── Announcement cards ── */
       .announcement-grid {
         display: grid;
@@ -575,11 +624,24 @@
           <a id="uploadMateriBtn" href="admin/upload_materi.html" class="admin-action-btn btn-blue">
             <i class="bi bi-cloud-arrow-up-fill"></i> Upload Materi
           </a>
-          <a href="artikel.html" style="font-size:13px;color:#5b9bd5;text-decoration:none;font-weight:500;white-space:nowrap;">
+          <a href="pengumuman.html" style="font-size:13px;color:#5b9bd5;text-decoration:none;font-weight:500;white-space:nowrap;">
             <span data-en="See all" data-id="Lihat semua">Lihat semua</span> <i class="bi bi-arrow-right"></i>
           </a>
         </div>
       </div>
+
+      <div class="ann-filter-bar">
+        <input type="text" id="annSearchInput" class="ann-filter-search"
+               placeholder="Cari nama pengumuman..."
+               data-en-placeholder="Search announcement..."
+               data-id-placeholder="Cari nama pengumuman..."
+               oninput="onAnnFilterChange()" />
+        <select id="annSortSelect" class="ann-filter-sort" onchange="onAnnFilterChange()">
+          <option value="newest">Terbaru</option>
+          <option value="oldest">Terlama</option>
+        </select>
+      </div>
+      <div id="annFilterInfo" class="ann-filter-info" style="display:none;"></div>
 
       <div id="announcementGrid" class="announcement-grid">
         <!-- Skeletons while loading -->
@@ -740,15 +802,62 @@
         return plain.length > max ? plain.substring(0, max) + "..." : plain;
       }
 
+      function escapeHtml(str) {
+        return String(str ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      // ── Filter state for announcements ──
+      let allAnnouncements = [];
+      let filteredAnnouncements = [];
+
+      function applyAnnFilters() {
+        const q    = (document.getElementById("annSearchInput").value || "").trim().toLowerCase();
+        const sort = document.getElementById("annSortSelect").value;
+
+        let list = allAnnouncements.slice();
+        if (q) list = list.filter(a => (a.title || "").toLowerCase().includes(q));
+
+        list.sort((a, b) => {
+          const ta = new Date(a.created_at || 0).getTime();
+          const tb = new Date(b.created_at || 0).getTime();
+          return sort === "oldest" ? ta - tb : tb - ta;
+        });
+
+        filteredAnnouncements = list;
+
+        const info = document.getElementById("annFilterInfo");
+        if (q) {
+          info.textContent = `${list.length} pengumuman ditemukan untuk "${q}"`;
+          info.style.display = "block";
+        } else {
+          info.style.display = "none";
+        }
+      }
+
+      function onAnnFilterChange() {
+        applyAnnFilters();
+        renderAnnouncements(filteredAnnouncements);
+      }
+
       function renderAnnouncements(articles) {
         const grid = document.getElementById("announcementGrid");
 
         if (!articles || articles.length === 0) {
-          grid.innerHTML = `
-            <div class="empty-state">
-              <i class="bi bi-journal-x"></i>
-              <p>Belum ada pengumuman. Pantau terus!</p>
-            </div>`;
+          const isSearching = (document.getElementById("annSearchInput").value || "").trim() !== "";
+          grid.innerHTML = isSearching
+            ? `<div class="empty-state">
+                 <i class="bi bi-search"></i>
+                 <p>Tidak ada pengumuman yang cocok dengan pencarian.</p>
+               </div>`
+            : `<div class="empty-state">
+                 <i class="bi bi-journal-x"></i>
+                 <p>Belum ada pengumuman. Pantau terus!</p>
+               </div>`;
           return;
         }
 
@@ -772,15 +881,23 @@
                  </a>`
               : "";
 
+            const catName = a.categories?.name ? escapeHtml(a.categories.name) : "";
+            const audiencePill = a.audience_category_id == null
+              ? `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;background:#e8f4fd;color:#1976d2;text-transform:uppercase;letter-spacing:.04em;"><i class="bi bi-globe2"></i> Publik</span>`
+              : `<span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;background:#fef3e0;color:#c97a00;text-transform:uppercase;letter-spacing:.04em;"><i class="bi bi-people-fill"></i> ${catName || "Khusus Kelas"}</span>`;
+
             return `
               <div class="ann-card ${isNew ? "is-new" : ""}" style="cursor:pointer;">
                 <a href="artikel_form.html?id=${a.id}" style="text-decoration:none;color:inherit;display:block;">
                   ${imgHtml}
                   <div class="ann-card-body">
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                      <div class="ann-badge" style="margin-bottom:0;">
-                        <i class="bi bi-megaphone-fill"></i> Pengumuman
-                        ${isNew ? `<span class="new-pill ms-1">Baru</span>` : ""}
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap;">
+                      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+                        <div class="ann-badge" style="margin-bottom:0;">
+                          <i class="bi bi-megaphone-fill"></i> Pengumuman
+                          ${isNew ? `<span class="new-pill ms-1">Baru</span>` : ""}
+                        </div>
+                        ${audiencePill}
                       </div>
                       ${editBtn}
                     </div>
@@ -798,8 +915,28 @@
 
       async function loadAnnouncements() {
         try {
-          // getArticles adalah public endpoint — pakai anon key, tidak perlu user JWT
-          const res = await fetch(`${SUPABASE_URL}/functions/v1/CRUD/articles`, {
+          // Pengumuman terbaru — type=announcement, filter audience by user category
+          let url = `${SUPABASE_URL}/functions/v1/CRUD/articles?type=announcement`;
+          if (userRole === "user") {
+            // Ambil category_id user → tampilkan publik + kategori user
+            try {
+              const userId = JSON.parse(localStorage.getItem("user") || "{}").id;
+              if (userId) {
+                const uRes = await fetch(
+                  `${SUPABASE_URL}/rest/v1/users?id=eq.${userId}&select=category_id`,
+                  { headers: { "apikey": SUPABASE_ANON, "Authorization": `Bearer ${SUPABASE_ANON}` } }
+                );
+                if (uRes.ok) {
+                  const rows = await uRes.json();
+                  const catId = rows[0]?.category_id;
+                  url += catId ? `&audience_category_id=${catId}` : "&audience_category_id=public";
+                }
+              }
+            } catch (_) { /* fallback: no audience filter */ }
+          }
+          // admin/editor → tidak ada filter audience (lihat semua)
+
+          const res = await fetch(url, {
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${SUPABASE_ANON}`,
@@ -810,7 +947,9 @@
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
           const json = await res.json();
-          renderAnnouncements(json.data || []);
+          allAnnouncements = json.data || [];
+          applyAnnFilters();
+          renderAnnouncements(filteredAnnouncements);
         } catch (err) {
           document.getElementById("announcementGrid").innerHTML = `
             <div class="empty-state">
