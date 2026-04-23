@@ -14,7 +14,9 @@ To develop locally, open any `.html` file directly in a browser or use a simple 
 
 All public pages follow the same structure:
 - Wrapped in `<div class="container-xxl bg-white p-0">`
-- Scripts at bottom: jQuery → Bootstrap bundle → WOW.js → `js/main.js` → `js/auth-navbar.js` → page-specific inline `<script>`
+- Scripts at bottom: jQuery → Bootstrap bundle → WOW.js → `js/config.js` → `js/main.js` → `js/auth-navbar.js` → `js/notif-bell.js` → `js/lang.js` → page-specific inline `<script>`
+
+**`js/config.js` must load before any page script** — it sets `window.__SUPABASE = { URL, ANON }` and `window.escapeHtml()`, which all other scripts depend on.
 
 **Exception — `login/login.html`:** Navbar NOT wrapped in `container-xxl` (sits directly in `<body>`) for full width. Does NOT load `main.js` or `auth-navbar.js`.
 
@@ -37,8 +39,8 @@ All public pages follow the same structure:
 4. Redirect to `home_user.html`
 
 **Roles**: `user`, `editor`, `admin` — stored in `localStorage.role`. Role controls UI visibility:
-- `editor` + `admin`: see Add Article button
-- `admin` only: see Manage Users button
+- `editor` + `admin`: see Add Article button, can upload/edit materials
+- `admin` only: see Manage Users button, can delete materials
 
 **Token pattern** used in all authenticated pages:
 ```javascript
@@ -52,24 +54,58 @@ Refresh endpoint requires `Authorization: Bearer ${SUPABASE_ANON}` (not user JWT
 
 ### Supabase Edge Function (`/functions/v1/CRUD/`)
 
-All routes go through one Edge Function. Key behaviour:
-- **GET /articles** — public, accepts anon key as Authorization
-- **POST /articles**, **PATCH /articles/:id**, **DELETE /articles/:id** — requires user JWT validated via `supabase.auth.getUser(token)`
-- The Edge Function reads user JWT from `x-access-token` header (custom) to bypass Supabase gateway JWT validation. `Authorization` header must always be `Bearer ${SUPABASE_ANON}` for all Edge Function calls.
-- **POST /auth/register** — accepts anon key as Authorization (same as login)
+All routes go through one Edge Function (`supabase/functions/CRUD/index.ts`). The `Authorization` header must always be `Bearer ${SUPABASE_ANON}` for all Edge Function calls. User JWTs go in the custom `x-access-token` header to bypass Supabase gateway validation.
+
+**Auth routes:**
+- `POST /CRUD/auth/login` — public (anon key)
+- `POST /CRUD/auth/register` — public (anon key)
+- `POST /CRUD/auth/refresh` — public (anon key), body: `{ refresh_token }`
+- `POST /CRUD/auth/logout` — requires `x-access-token`
+- `GET /CRUD/auth/me` — requires `x-access-token`
+
+**Article routes:**
+- `GET /CRUD/articles` — public; `?type=article|announcement`; `?audience_category_id=public|<id>`
+- `GET /CRUD/articles/:id` — public
+- `POST /CRUD/articles` — requires `x-access-token`
+- `PATCH /CRUD/articles/:id` — requires `x-access-token` (own articles only via RLS)
+- `DELETE /CRUD/articles/:id` — requires `x-access-token`
 
 **Article table required fields**: `title`, `content`, `slug` (generate from title + `Date.now()`), `status` (use `"published"`). `image_link` is optional — omit the key entirely if no image rather than sending `null`.
 
 **Article type & audience** (migration 004):
 - `type` — `'article'` (default, public, shows on `artikel.html`) or `'announcement'` (shows on `pengumuman.html`).
 - `audience_category_id` — FK to `categories(id)`, **only used when `type='announcement'`**. `NULL` = public/all classes (visible without login). Non-null = only users whose `users.category_id` matches.
-- `GET /CRUD/articles` accepts `?type=article|announcement` and `?audience_category_id=public|<id>` (`<id>` returns rows where audience matches that id OR is NULL).
 - The Edge Function `sanitizeArticleBody` whitelists fields and force-nulls `audience_category_id` when type is `article`.
+
+**Materials routes:**
+- `GET /CRUD/materials` — public; `?category_id=<id>` for filtering
+- `POST /CRUD/materials` — requires `x-access-token` + editor/admin role; body: `{ title, file_url, file_name, description?, file_size?, category_id? }`
+- `PATCH /CRUD/materials/:id` — requires `x-access-token` + editor/admin role; replaces old Storage file if `file_url` changes
+- `DELETE /CRUD/materials/:id` — requires `x-access-token` + admin role; also removes file from Storage bucket
+
+**Other routes:**
+- `GET /CRUD/categories` — public; returns `[{ id, name }]`
+- `GET /CRUD/users` — requires `x-access-token` + admin role
+- `GET /CRUD/users/:id` — requires `x-access-token`
+- `DELETE /CRUD/users/:id` — requires `x-access-token`; admin can delete anyone, others can only delete themselves
+- `POST /CRUD/cleanup` — internal cron only; auth via `x-cleanup-secret` header
 
 **Supabase REST API** (used for users/roles, bypasses Edge Function):
 - `GET /rest/v1/users?select=*,roles!role_id(role_name)` — join syntax for FK
-- `PATCH /rest/v1/users?id=eq.${id}` — update user fields
+- `PATCH /rest/v1/users?id=eq.${id}` — update user fields (includes `read_articles` array for notification tracking)
 - Uses `Authorization: Bearer ${userToken}` + `apikey: ${SUPABASE_ANON}`
+
+### Users Table Fields
+
+Key fields beyond standard auth: `role_id` (FK → `roles`), `category_id` (FK → `categories`, determines which announcements a student sees), `read_articles` (array of article UUIDs, synced cross-device by `notif-bell.js`).
+
+### Materials System
+
+`materi.html` (public page) lists downloadable school materials. Files are stored in the Supabase **`materials` Storage bucket** (public bucket — files accessible via public URL).
+
+- Materials have an optional `category_id` (FK → `categories`) for filtering by class.
+- `admin/upload_materi.html` handles upload: file goes to Storage first (via direct `fetch` to Storage API), then `POST /CRUD/materials` records the metadata.
+- When deleting or replacing a material file, the Edge Function removes the old file from Storage.
 
 ### Admin Section (`/admin/`)
 
@@ -78,7 +114,10 @@ All routes go through one Edge Function. Key behaviour:
 | `add_article.html` | Create article OR pengumuman — editor/admin only; type dropdown reveals audience (public/categories) when type=announcement |
 | `edit_article.html` | Edit/delete article — editor/admin only, pre-fills type & audience from `?id=` param |
 | `manage_users.html` | CRUD users — admin only; edit modal shows only role dropdown; current user row shows no action buttons |
-| `add_user.html` | Legacy standalone add user (now superseded by manage_users.html) |
+| `upload_materi.html` | Upload/manage school materials — editor/admin upload, admin-only delete |
+| `add_user.html` | **Legacy** standalone add user (superseded by `manage_users.html`) |
+| `artikelAdmin.html` | **Legacy** article list for admin (superseded by `add_article.html`/`edit_article.html`) |
+| `edit-artikel.html` | **Legacy** edit article (superseded by `edit_article.html`) |
 
 Admin pages use `../` relative paths for all assets.
 
@@ -94,7 +133,11 @@ Auth is via `x-cleanup-secret` header matching `CLEANUP_SECRET` env on the Edge 
 
 `js/notif-bell.js` (loaded on every page) hides any `a[href*="kalenderakademik.html"]` unless `localStorage.role === "user"`. Don't duplicate this guard in page-level scripts.
 
-`js/lang.js` injects two EN/ID toggle pills: a mobile pill (`d-lg-none`, before the navbar-toggler — always visible) and a desktop pill (`d-none d-lg-inline-flex`, inside `#navbarCollapse`). Both update together when clicked.
+`js/lang.js` injects two EN/ID toggle pills: a mobile pill (`d-lg-none`, before the navbar-toggler — always visible) and a desktop pill (`d-none d-lg-inline-flex`, inside `#navbarCollapse`). Both update together when clicked. To make a text element translatable, add `data-en="..."` and `data-id="..."` attributes — `lang.js` applies them automatically.
+
+### Notification Bell (`js/notif-bell.js`)
+
+Shows unread announcements for logged-in users. Read state is synced to `users.read_articles` in Supabase (source of truth) and cached in `localStorage` as `notif_read_<userId>`. Audience filtering: fetches user's `category_id` first, then requests announcements with matching `audience_category_id`. Exposes `window.notifMarkRead(articleId)` for `artikel_form.html` to call on page load.
 
 ### Default Article Image
 
