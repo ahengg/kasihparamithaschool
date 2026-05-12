@@ -498,19 +498,64 @@
                 </div>
               </div>
 
-              <!-- Testimonial 8 - Video -->
+              <!-- Testimonial 8 -->
               <div class="col-lg-6 col-md-6">
                 <div class="bg-white rounded p-4 shadow-sm testimonial-card">
                   <div class="profile-header">
                     <div class="profile-icon">
-                      <img src="assetkps/Icon/Icon Map-07.png " alt="Shanum's Mom" />
+                      <img src="assetkps/Icon/New Normal-07.png" alt="Rannea's mom & dad" />
+                    </div>
+                    <div class="profile-info">
+                      <h5>Rannea's mom & dad</h5>
+                      <p>Orang tua murid dari Rannea</p>
+                    </div>
+                  </div>
+                  <div class="testimonial-text collapsed" id="testimonial8">
+                    <p>
+                      Kami sangat bersyukur telah mempercayakan pendidikan di Kasih Paramitha School. Lingkungan sekolah yang aman, nyaman, dan penuh kasih membuat nia selalu antusias berangkat setiap hari. Miss-nya sangat sabar, perhatian, dan mampu mengajar dengan metode yang menyenangkan sehingga anak mudah memahami dan menikmati proses belajar.
+
+                      Sejak bersekolah di Kasih Paramitha School, kami melihat perkembangan, baik dari segi kemandirian, mengendalikan emosi, maupun kepercayaan diri anak kami. Kami juga merasa tenang karena komunikasi antara sekolah dan orang tua berjalan dengan baik.
+
+                      Terima kasih kepada seluruh Tim Kasih Paramitha School atas dedikasi dan kasih sayang yang diberikan kepada anak kami.
+                    </p>
+                  </div>
+                  <button class="view-more-btn" data-en="View More" data-id="Lihat Selengkapnya" onclick="toggleTestimonial('testimonial8', this)">View More</button>
+                </div>
+              </div>
+
+              <!-- Testimonial 9 - Video (Shanum's Mom) -->
+              <div class="col-lg-6 col-md-6">
+                <div class="bg-white rounded p-4 shadow-sm testimonial-card">
+                  <div class="profile-header">
+                    <div class="profile-icon">
+                      <img src="assetkps/Icon/Icon Map-07.png" alt="Shanum's Mom" />
                     </div>
                     <div class="profile-info">
                       <h5>Shanum's Mom</h5>
                       <p>Orang tua murid dari Shanum</p>
                     </div>
                   </div>
-                  <button class="btn btn-primary btn-sm" onclick="openVideoModal()" style="background-color: #007bff; border-color: #007bff">
+                  <!-- Memanggil openVideoModal dengan argumen 'video9Modal' -->
+                  <button class="btn btn-primary btn-sm" onclick="openVideoModal('video9Modal')" style="background-color: #007bff; border-color: #007bff">
+                    <i class="fas fa-play-circle me-2"></i>Play Video Testimonial
+                  </button>
+                </div>
+              </div>
+
+              <!-- Testimonial 10 - Video (Archie's dad) -->
+              <div class="col-lg-6 col-md-6">
+                <div class="bg-white rounded p-4 shadow-sm testimonial-card">
+                  <div class="profile-header">
+                    <div class="profile-icon">
+                      <img src="assetkps/Icon/Icon Map-07.png" alt="Archie's dad" />
+                    </div>
+                    <div class="profile-info">
+                      <h5>Archie's dad</h5>
+                      <p>Orang tua murid dari Archie</p>
+                    </div>
+                  </div>
+                  <!-- Memanggil openVideoModal dengan argumen 'video10Modal' -->
+                  <button class="btn btn-primary btn-sm" onclick="openVideoModal('video10Modal')" style="background-color: #007bff; border-color: #007bff">
                     <i class="fas fa-play-circle me-2"></i>Play Video Testimonial
                   </button>
                 </div>
@@ -522,12 +567,24 @@
       </div>
       <!-- Testimonial Grid End -->
 
-      <!-- Video Modal -->
-      <div id="videoModal" class="video-modal">
-        <span class="modal-close" onclick="closeVideoModal()">&times;</span>
+      <!-- Video Modal - Testimonial 9 (Shanum's Mom) -->
+      <div id="video9Modal" class="video-modal">
+        <span class="modal-close" onclick="closeVideoModal('video9Modal')">&times;</span>
         <div class="video-modal-content">
-          <video id="testimonialVideo" controls>
+          <video id="testimonialVideo9" controls>
+
             <source src="assetkps/VideoTestimonial/Testimonial1.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <!-- Video Modal - Testimonial 10 (Archie's dad) -->
+      <div id="video10Modal" class="video-modal">
+        <span class="modal-close" onclick="closeVideoModal('video10Modal')">&times;</span>
+        <div class="video-modal-content">
+          <video id="testimonialVideo10" controls>
+
+            <source src="assetkps/VideoTestimonial/Testimonial2.mp4" type="video/mp4" />
           </video>
         </div>
       </div>
@@ -578,32 +635,51 @@
         }
       }
 
-      function openVideoModal() {
-        const modal = document.getElementById("videoModal");
-        const video = document.getElementById("testimonialVideo");
+      /**
+       * Membuka video modal berdasarkan ID modal yang diberikan.
+       * @param {string} modalId - ID elemen modal ('video9Modal' atau 'video10Modal')
+       */
+      function openVideoModal(modalId) {
+        const modal = document.getElementById(modalId);
+        // Cari elemen <video> di dalam modal ini
+        const video = modal.querySelector("video");
         modal.classList.add("active");
         video.play();
         document.body.style.overflow = "hidden";
       }
 
-      function closeVideoModal() {
-        const modal = document.getElementById("videoModal");
-        const video = document.getElementById("testimonialVideo");
+      /**
+       * Menutup video modal berdasarkan ID modal yang diberikan.
+       * @param {string} modalId - ID elemen modal ('video9Modal' atau 'video10Modal')
+       */
+      function closeVideoModal(modalId) {
+        const modal = document.getElementById(modalId);
+        const video = modal.querySelector("video");
         modal.classList.remove("active");
         video.pause();
         video.currentTime = 0;
         document.body.style.overflow = "auto";
       }
 
+      //tutup modal saat menekan tombol Esc
       document.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
-          const videoModal = document.getElementById("videoModal");
-          if (videoModal.classList.contains("active")) closeVideoModal();
+          ["video9Modal", "video10Modal"].forEach(function (modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal.classList.contains("active")) {
+              closeVideoModal(modalId);
+            }
+          });
         }
       });
 
-      document.getElementById("videoModal").addEventListener("click", function (e) {
-        if (e.target === this) closeVideoModal();
+      //tutup modal saat meng klik area gelap di luar video
+      ["video9Modal", "video10Modal"].forEach(function (modalId) {
+        document.getElementById(modalId).addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeVideoModal(modalId);
+          }
+        });
       });
     </script>
   </body>
